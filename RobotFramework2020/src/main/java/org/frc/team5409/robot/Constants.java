@@ -75,13 +75,19 @@ public final class Constants {
     public static class Trajectory{
         
     public static final double ksVolts = 0;
-	public static final double kvVoltSecondsPerMeter = 0;
+
+    public static final double kvVoltSecondsPerMeter = 0;
+    
 	public static final double kaVoltSecondsSquaredPerMeter = 0;
 
-	public static final double kMaxSpeedMetersPerSecond = 0;
-	public static final double kMaxAccelerationMetersPerSecondSquare = 0;
-	public static final double kRamseteB = 0;
-	public static final double kRamseteZeta = 0;
+    public static final double kMaxSpeedMetersPerSecond = 0;
+    
+    public static final double kMaxAccelerationMetersPerSecondSquare = 0;
+    
+    public static final double kRamseteB = 0;
+    
+    public static final double kRamseteZeta = 0;
+    
 	public static final double kPDriveVel = 0;
 
 	public static final double kTrackwidthMeters = 0;
@@ -92,18 +98,29 @@ public final class Constants {
 
     public static class DriveTrain{
         public static final IdleMode idle = IdleMode.kBrake;
+
         public static final int kLeftDriveFront = 13;
-	public static final int kLeftDriveRear = 4;
-	public static final int kRightDriveFront = 15;
-	public static final int kRightDriveRear = 6;
-	public static final int kIntakeMotor = 0;
-	public static final int kRightIntakeSolenoid1 = 0;
-	public static final int kRightIntakeSolenoid2 = 0;
-	public static final int kLeftIntakeSolenoid1 = 0;
+
+    public static final int kLeftDriveRear = 4;
+    
+    public static final int kRightDriveFront = 15;
+    
+    public static final int kRightDriveRear = 6;
+    
+    public static final int kIntakeMotor = 0;
+    
+    public static final int kRightIntakeSolenoid1 = 0;
+    
+    public static final int kRightIntakeSolenoid2 = 0;
+    
+    public static final int kLeftIntakeSolenoid1 = 0;
+    
 	public static final int kLeftIntakeSolenoid2 = 0;
 
-	public static final double ksVolts = 0;
-	public static final double kvVoltSecondsPerMeter = 0;
+    public static final double ksVolts = 0;
+    
+    public static final double kvVoltSecondsPerMeter = 0;
+    
 	public static final double kaVoltSecondsSquaredPerMeter = 0;
 
 	public static final double kTrackwidthMeters = 0;
@@ -111,17 +128,22 @@ public final class Constants {
         kTrackwidthMeters);
 
 public static final int kEncoderCPR = 0;
+
 public static final double kWheelDiameterMeters = 0.457;
+
 public static final double kEncoderDistancePerPulse =
         // Assumes the encoders are directly mounted on the wheel shafts
         (kWheelDiameterMeters * Math.PI) / (double) kEncoderCPR;
 
 // encoder port id
 public static final int[] kLeftEncoderPorts = new int[] { 0, 1 };
+
 public static final int[] kRightEncoderPorts = new int[] { 0, 1 };
 
 public static final boolean kLeftEncoderReversed = false;
+
 public static final boolean kRightEncoderReversed = true;
+
 public static final boolean kGyroReversed = true;
 
 
