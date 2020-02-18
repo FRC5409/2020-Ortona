@@ -1,10 +1,11 @@
-package org.frc.team5409.churro.subsystems;
+package org.frc.team5409.robot.subsystems;
 
 import java.util.concurrent.atomic.AtomicReference;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import org.frc.team5409.robot.util.Vec2;
-import org.frc.team5409.robot.util.Vec3;
+import frc.robot.util.Range;
+import frc.robot.util.Vec2;
+import frc.robot.util.Vec3;
 import edu.wpi.first.networktables.*;
 
 
@@ -12,10 +13,33 @@ import edu.wpi.first.networktables.*;
  * Limelight subsystem.
  * 
  * Facilitates the control and access
- * of limelight hardware through a software
- * interface.
+ * of limelight hardware.
  */
 public class Limelight extends SubsystemBase {
+    public enum LedMode {
+        MODE_PIPELINE(0), MODE_OFF(1), MODE_ON(2), MODE_BLINK(3);
+
+        LedMode(double value) {
+            this.value = value;
+        }
+
+        public final double value;
+    }
+
+    public enum CameraMode {
+        MODE_VISION(0), MODE_DRIVER(1);
+
+        CameraMode(double value) {
+            this.value = value;
+        }
+
+        public final double value;
+    }
+
+    public enum TargetType {
+        OUTER_PORT, LOWER_PORT, CONTROL_PANEL, NONE
+    }
+
     private NetworkTable      m_limelight_data;
 
     private NetworkTableEntry m_data_entry_tx,
@@ -68,41 +92,42 @@ public class Limelight extends SubsystemBase {
     public void disable() {
         m_enabled = false;
         
-        setLedMode(LedMode.LED_OFF);
+        m_target_data = TargetType.NONE;
+        setLedMode(LedMode.MODE_OFF);
     }
 
 
     /**
      * Set Camera Mode on limelight
      * 
-     * @param camera_mode Camera Mode
+     * @param mode Camera Mode
      * 
      * @see CameraMode
      */
-    public void setCameraMode(CameraMode camera_mode) {
-        m_data_entry_cam_mode.setDouble(camera_mode.get());
+    public void setCameraMode(CameraMode mode) {
+        m_data_entry_cam_mode.setDouble(mode.value);
     }
 
     /**
      * Set Led Mode on limelight
      * 
-     * @param led_mode Led Mode
+     * @param mode Led Mode
      * 
      * @see LedMode
      */
-    public void setLedMode(LedMode led_mode) {
-        m_data_entry_led_mode.setDouble(led_mode.get());
+    public void setLedMode(LedMode mode) {
+        m_data_entry_led_mode.setDouble(mode.value);
     }
 
     /**
      * Set Pipeline Index on limelight
      * 
-     * @param pipeline_index Pipeline Index
+     * @param index Pipeline Index
      * 
      * @see PipelineIndex
      */
-    public void setPipelineIndex(PipelineIndex pipeline_index) {
-        m_data_entry_pipeline.setDouble(pipeline_index.get());
+    public void setPipelineIndex(double index) {
+        m_data_entry_pipeline.setDouble(Range.clamp(0, index, 9));
     }
 
     /**
@@ -112,6 +137,10 @@ public class Limelight extends SubsystemBase {
      */
     public Vec2 getTarget() {
         return new Vec2(m_track_data.x, m_track_data.y);
+    }
+
+    public TargetType getTargetType() {
+        return m_target_data;
     }
 
     /**

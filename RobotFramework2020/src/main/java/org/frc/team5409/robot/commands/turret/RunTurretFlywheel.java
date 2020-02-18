@@ -1,4 +1,4 @@
-package org.frc.team5409.robot.commands.turret;
+package frc.robot.commands.turret;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -11,9 +11,9 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import org.frc.team5409.robot.subsystems.Indexer;
-import org.frc.team5409.robot.subsystems.turret.TurretFlywheel;
-import org.frc.team5409.robot.util.Range;
+import frc.robot.subsystems.Indexer;
+import frc.robot.subsystems.turret.TurretFlywheel;
+import frc.robot.util.Range;
 
 /**
  * Turns turret to {@code target} angle.
