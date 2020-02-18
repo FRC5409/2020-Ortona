@@ -38,11 +38,11 @@ public class RobotContainer {
 	private final IndexActive cmd_IndexActive;
 	public final Intake sys_intakeSubsystem;
 	public final IntakeActive m_intakeActive;
-	public final DriveTrain m_driveSubsystem = new DriveTrain();
+	public final DriveTrain sys_driveTrain; 
 	private final SequentialCommandGroup grp_configure_turret;
 
 	private final XboxController joy_main, joy_secondary;
-	public final DriveCommand m_driveCommand = new DriveCommand(m_driveSubsystem, joystick);
+	public final DriveCommand m_driveCommand = new DriveCommand(sys_driveTrain, joystick);
 	private final JoystickButton but_main_A, but_main_B, but_main_X, but_main_Y, but_main_sck_left, but_main_sck_right,
 			but_main_bmp_left, but_main_bmp_right;
 
@@ -67,6 +67,9 @@ public class RobotContainer {
 		// Keith's stuff
 		sys_turret_flywheel = new TurretFlywheel();
 		sys_turret_rotation = new TurretRotation();
+
+		//Karina's Stuff
+		sys_driveTrain = new DriveTrain(); 
 
 		joy_main = new XboxController(0);
 		joy_secondary = new XboxController(1);
