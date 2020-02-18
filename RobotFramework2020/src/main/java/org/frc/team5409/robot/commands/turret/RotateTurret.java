@@ -1,7 +1,7 @@
-package frc.robot.commands.turret;
+package org.frc.team5409.robot.commands.turret;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.turret.TurretRotation;
+import org.frc.team5409.robot.subsystems.turret.TurretRotation;
 
 /**
  * Turns turret to {@code target} angle.
