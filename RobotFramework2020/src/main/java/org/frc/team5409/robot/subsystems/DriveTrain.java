@@ -42,27 +42,27 @@ public class DriveTrain extends SubsystemBase {
    * Creates a new DriveTrain.
    */
   public DriveTrain() {
-    mot_leftDriveFront_sparkmax_C13 = new CANSparkMax(Constants.kLeftDriveFront, MotorType.kBrushless);
+    mot_leftDriveFront_sparkmax_C13 = new CANSparkMax(Constants.DriveTrain.kLeftDriveFront, MotorType.kBrushless);
     mot_leftDriveFront_sparkmax_C13.restoreFactoryDefaults();
     mot_leftDriveFront_sparkmax_C13.setIdleMode(Constants.DriveTrain.idle);
     mot_leftDriveFront_sparkmax_C13.setSmartCurrentLimit(40);
     mot_leftDriveFront_sparkmax_C13.setInverted(true);
     mot_leftDriveFront_sparkmax_C13.burnFlash();
 
-    mot_leftDriveRear_sparkmax_C4 = new CANSparkMax(Constants.kLeftDriveRear, MotorType.kBrushless);
+    mot_leftDriveRear_sparkmax_C4 = new CANSparkMax(Constants.DriveTrain.kLeftDriveRear, MotorType.kBrushless);
     mot_leftDriveRear_sparkmax_C4.restoreFactoryDefaults();
     mot_leftDriveRear_sparkmax_C4.setIdleMode(Constants.DriveTrain.idle);
     mot_leftDriveRear_sparkmax_C4.setSmartCurrentLimit(40);
     mot_leftDriveRear_sparkmax_C4.setInverted(true);
     mot_leftDriveRear_sparkmax_C4.burnFlash();
 
-    mot_rightDriveFront_sparkmax_C15 = new CANSparkMax(Constants.kRightDriveFront, MotorType.kBrushless);
+    mot_rightDriveFront_sparkmax_C15 = new CANSparkMax(Constants.DriveTrain.kRightDriveFront, MotorType.kBrushless);
     mot_rightDriveFront_sparkmax_C15.restoreFactoryDefaults();
     mot_rightDriveFront_sparkmax_C15.setIdleMode(Constants.DriveTrain.idle);
     mot_rightDriveFront_sparkmax_C15.setSmartCurrentLimit(40);
     mot_rightDriveFront_sparkmax_C15.burnFlash();
 
-    mot_rightDriveRear_sparkmax_C6 = new CANSparkMax(Constants.kRightDriveRear, MotorType.kBrushless);
+    mot_rightDriveRear_sparkmax_C6 = new CANSparkMax(Constants.DriveTrain.kRightDriveRear, MotorType.kBrushless);
     mot_rightDriveRear_sparkmax_C6.restoreFactoryDefaults();
     mot_rightDriveRear_sparkmax_C6.setIdleMode(Constants.DriveTrain.idle);
     mot_rightDriveRear_sparkmax_C6.setSmartCurrentLimit(40);
@@ -80,8 +80,8 @@ public class DriveTrain extends SubsystemBase {
     // Sets the distance per pulse for the encoders
     // https://www.chiefdelphi.com/t/encoder-distance-per-pulse/156742
 
-    m_leftEncoder.setPositionConversionFactor((Constants.neo_encoder_position) * Constants.kEncoderDistancePerPulse);
-    m_rightEncoder.setPositionConversionFactor((Constants.neo_encoder_position) * Constants.kEncoderDistancePerPulse);
+    m_leftEncoder.setPositionConversionFactor((Constants.DriveTrain.neo_encoder_position) * Constants.DriveTrain.kEncoderDistancePerPulse);
+    m_rightEncoder.setPositionConversionFactor((Constants.DriveTrain.neo_encoder_position) * Constants.DriveTrain.kEncoderDistancePerPulse);
 
     resetEncoders();
     m_odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
@@ -260,7 +260,7 @@ public class DriveTrain extends SubsystemBase {
    * @return the robot's heading in degrees, from -180 to 180
    */
   public double getHeading() {
-    return Math.IEEEremainder(m_navX.getAngle(), 360) * (Constants.kGyroReversed ? -1.0 : 1.0);
+    return Math.IEEEremainder(m_navX.getAngle(), 360) * (Constants.DriveTrain.kGyroReversed ? -1.0 : 1.0);
   }
 
   /**
@@ -269,7 +269,7 @@ public class DriveTrain extends SubsystemBase {
    * @return The turn rate of the robot, in degrees per second
    */
   public double getTurnRate() {
-    return m_navX.getRate() * (Constants.kGyroReversed ? -1.0 : 1.0);
+    return m_navX.getRate() * (Constants.DriveTrain.kGyroReversed ? -1.0 : 1.0);
   }
 
   public void setIdleBrake() {

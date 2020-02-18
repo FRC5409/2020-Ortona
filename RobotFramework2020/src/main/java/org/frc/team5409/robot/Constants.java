@@ -123,5 +123,8 @@ public static final int[] kRightEncoderPorts = new int[] { 0, 1 };
 public static final boolean kLeftEncoderReversed = false;
 public static final boolean kRightEncoderReversed = true;
 public static final boolean kGyroReversed = true;
+
+
+public static final double neo_encoder_position = 42.0;
     }
 }
