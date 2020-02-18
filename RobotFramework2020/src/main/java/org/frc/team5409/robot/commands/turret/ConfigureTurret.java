@@ -28,7 +28,7 @@ public final class ConfigureTurret extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        LimitSwitchType type = m_turret.getCurrentLimitSwitch();
+        LimitSwitchType type = m_turret.getActiveLimitSwitch();
 
         if (type != LimitSwitchType.kNone) {
             m_turret.resetRotation(type);

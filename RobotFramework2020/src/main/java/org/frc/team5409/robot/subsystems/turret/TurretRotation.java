@@ -19,10 +19,8 @@ public final class TurretRotation extends SubsystemBase {
      * rotation as well as their respective angles.
      */
     public enum LimitSwitchType {
-        kLeftSwitch(Constants.TurretControl.turret_limit_left_angle),
-        kCenterSwitch(Constants.TurretControl.turret_limit_center_angle),
-        kRightSwitch(Constants.TurretControl.turret_limit_right_angle),
-        kNone(-1);
+        kLeft(Constants.TurretControl.turret_limit_left_angle), kCenter(Constants.TurretControl.turret_limit_center_angle),
+        kRight(Constants.TurretControl.turret_limit_right_angle), kNone(-1);
 
         LimitSwitchType(double angle) {
             m_angle = angle;
@@ -153,7 +151,7 @@ public final class TurretRotation extends SubsystemBase {
     }
 
     /**
-     * Checks if the turret's rotation is ithin
+     * Checks if the turret's rotation is within
      * the {@code target} angle range.
      * 
      * @param target The target rotation
@@ -212,11 +210,11 @@ public final class TurretRotation extends SubsystemBase {
      */
     public LimitSwitchType getActiveLimitSwitch() {
         if (dio_C00_turret_limit_left.isLimitSwitchEnabled())
-            return LimitSwitchType.kLeftSwitch;
+            return LimitSwitchType.kLeft;
         else if (dio_i00_turret_limit_center.get())
-            return LimitSwitchType.kCenterSwitch;
+            return LimitSwitchType.kCenter;
         else if (dio_C00_turret_limit_right.isLimitSwitchEnabled())
-            return LimitSwitchType.kRightSwitch;
+            return LimitSwitchType.kRight;
         return LimitSwitchType.kNone;
     }
     

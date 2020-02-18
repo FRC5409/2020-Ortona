@@ -84,7 +84,7 @@ public final class RunTurretFlywheel extends CommandBase {
     public void initialize() {
         m_turret.enable();
         m_limelight.enable();
-        m_limelight.setLedMode(Limelight.LedMode.MODE_ON);
+        m_limelight.setLedMode(Limelight.LedMode.kModeOn);
 
         m_target = SmartDashboard.getNumber("Target Velocity", 0);
 

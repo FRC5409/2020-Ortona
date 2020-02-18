@@ -147,6 +147,9 @@ public final class TurretFlywheel extends SubsystemBase {
         m_watchdog.feed();
     }
 
+    /**
+     * Get's the current draw of the turret flywheel.
+     */
     public double getCurrent() {
         return mot_C00_turret_flywheel.getOutputCurrent();
     }

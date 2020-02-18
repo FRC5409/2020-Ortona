@@ -15,10 +15,10 @@ import org.frc.team5409.robot.util.Vec3;
  */
 public class Limelight extends SubsystemBase {
     /**
-     * The LED state of the limelight.
+     * The Led mode of the limelight.
      */
     public enum LedMode {
-        MODE_PIPELINE(0), MODE_OFF(1), MODE_ON(2), MODE_BLINK(3);
+        kModePipeline(0), kModeOff(1), kModeOn(2), kModeBlink(3);
 
         LedMode(double value) {
             this.value = value;
@@ -28,10 +28,10 @@ public class Limelight extends SubsystemBase {
     }
 
     /**
-     * The cameara mode of the limelight.
+     * The camera mode of the limelight.
      */
     public enum CameraMode {
-        MODE_VISION(0), MODE_DRIVER(1);
+        kModeVision(0), kModeDriver(1);
 
         CameraMode(double value) {
             this.value = value;
@@ -40,8 +40,11 @@ public class Limelight extends SubsystemBase {
         public final double value;
     }
 
+    /**
+     * The type of target seen by the limelight.
+     */
     public enum TargetType {
-        OUTER_PORT, LOWER_PORT, CONTROL_PANEL, NONE
+        kOuterPort, kLowerPort, kControlPanel, kNone
     }
 
     private NetworkTable      m_limelight_data;
@@ -62,7 +65,7 @@ public class Limelight extends SubsystemBase {
     private boolean           m_enabled;
 
     /**
-     * Construct subsystem and initialize limeight communication
+     * Constructs Limelight subsystem.
      */
     public Limelight() {
         m_limelight_data         = NetworkTableInstance.getDefault().getTable("limelight");
@@ -78,7 +81,7 @@ public class Limelight extends SubsystemBase {
         m_data_entry_has_targets = m_limelight_data.getEntry("tv");
 
         m_track_data             = new Vec3(0,0,0);
-        m_target_data            = TargetType.NONE;
+        m_target_data            = TargetType.kNone;
 
         m_enabled                = false;
     }
@@ -95,16 +98,15 @@ public class Limelight extends SubsystemBase {
      */
     public void disable() {
         m_enabled = false;
-        
-        m_target_data = TargetType.NONE;
-        setLedMode(LedMode.MODE_OFF);
+        m_target_data = TargetType.kNone;
+        setLedMode(LedMode.kModeOff);
     }
 
 
     /**
-     * Set Camera Mode on limelight
+     * Set's the camera mode of the limelight.
      * 
-     * @param mode Camera Mode
+     * @param mode The camera mode.
      * 
      * @see CameraMode
      */
@@ -113,9 +115,9 @@ public class Limelight extends SubsystemBase {
     }
 
     /**
-     * Set Led Mode on limelight
+     * Set's the led mode of the limelight.
      * 
-     * @param mode Led Mode
+     * @param mode The led mode.
      * 
      * @see LedMode
      */
@@ -124,33 +126,37 @@ public class Limelight extends SubsystemBase {
     }
 
     /**
-     * Set Pipeline Index on limelight
+     * Set's the pipeline index of the limelight.
      * 
-     * @param index Pipeline Index
-     * 
-     * @see PipelineIndex
+     * @param index The pipeline index. [0-9]
      */
     public void setPipelineIndex(double index) {
         m_data_entry_pipeline.setDouble(Range.clamp(0, index, 9));
     }
 
     /**
-     * Get current Tracking Target from Limelight Pipeline.
+     * Get's the current tracking target off the limelight
+     * pipeline.
      * 
-     * @return Limelight Target
+     * @return The limelight target.
      */
     public Vec2 getTarget() {
         return new Vec2(m_track_data.x, m_track_data.y);
     }
 
+    /**
+     * Get's the type of target seen by the limelight.
+     * 
+     * @return The active target.
+     */
     public TargetType getTargetType() {
         return m_target_data;
     }
 
     /**
-     * Get current Tracking Target Area from Limelight Pipeline.
+     * Get's the current tracking target area.
      * 
-     * @return Limelight Target Area
+     * @return The active target area.
      */
     public double getTargetArea() {
         return m_track_data.z;
@@ -162,7 +168,7 @@ public class Limelight extends SubsystemBase {
      * @return Whether or not the limelight is tracking a target.
      */
     public boolean hasTarget() {
-        return m_target_data != TargetType.NONE;
+        return m_target_data != TargetType.kNone;
     }
 
     private void internal_updateTarget() {
@@ -180,9 +186,9 @@ public class Limelight extends SubsystemBase {
         if (m_enabled) {
             if (internal_hasTarget()) {
                 internal_updateTarget();
-                m_target_data = TargetType.OUTER_PORT;
+                m_target_data = TargetType.kOuterPort;
             } else {
-                m_target_data = TargetType.NONE;
+                m_target_data = TargetType.kNone;
             }
         }
     }
