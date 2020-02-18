@@ -16,15 +16,13 @@ import org.frc.team5409.robot.util.Watchdog;
 public final class TurretRotation extends SubsystemBase {
     /**
      * Represents the limit switches along the turret 
-     * rotation as well as their respective reset angles.
+     * rotation as well as their respective angles.
      */
     public enum LimitSwitchType {
         kLeftSwitch(Constants.TurretControl.turret_limit_left_angle),
         kCenterSwitch(Constants.TurretControl.turret_limit_center_angle),
         kRightSwitch(Constants.TurretControl.turret_limit_right_angle),
         kNone(-1);
-
-        private final double m_angle;
 
         LimitSwitchType(double angle) {
             m_angle = angle;
@@ -33,6 +31,9 @@ public final class TurretRotation extends SubsystemBase {
         public double getAngle() {
             return m_angle;
         }
+
+        private final double m_angle;
+
     }
 
     private CANSparkMax      mot_C00_turret_rotation;
@@ -193,12 +194,23 @@ public final class TurretRotation extends SubsystemBase {
         m_safety_enabled = state;
     }
 
+    /**
+     * Reorientes the rotation to the specified
+     * active limit switch. 
+     * 
+     * @param type The limit switch type.
+     */
     public void resetRotation(LimitSwitchType type) {
         m_rotation = m_rotation_range.clamp(type.getAngle());
         enc_C01_turret_rotation.setPosition(m_rotation);
     }
 
-    public LimitSwitchType getCurrentLimitSwitch() {
+    /**
+     * Gets the currently active limit switch.
+     * 
+     * @return The active limit switch.
+     */
+    public LimitSwitchType getActiveLimitSwitch() {
         if (dio_C00_turret_limit_left.isLimitSwitchEnabled())
             return LimitSwitchType.kLeftSwitch;
         else if (dio_i00_turret_limit_center.get())
