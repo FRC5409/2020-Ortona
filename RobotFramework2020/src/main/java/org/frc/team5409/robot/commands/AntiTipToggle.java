@@ -8,25 +8,29 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.DriveTrain;
 
-public class IntakeActive extends CommandBase {
-  private final Intake m_intakeSubsystem;
+public class AntiTipToggle extends CommandBase {
+  private DriveTrain m_driveSubsystem;
 
   /**
-   * Creates a new IntakeActive.
+   * Creates a new AntiTipToggle.
    */
-  public IntakeActive(Intake subsystem) {
-    m_intakeSubsystem = subsystem;
+  public AntiTipToggle(DriveTrain subsystem) {
+    m_driveSubsystem = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(m_intakeSubsystem);
+    addRequirements(m_driveSubsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    // Call extend method and set speed to 0.5
-    m_intakeSubsystem.extend();
+    // Toggle between true and false
+    if (m_driveSubsystem.getAntiTip()) {
+      m_driveSubsystem.setAntiTipFalse();
+    } else {
+      m_driveSubsystem.setAntiTipTrue();
+    }
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -37,13 +41,11 @@ public class IntakeActive extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    // Call retract method an set speed to 0
-    m_intakeSubsystem.retract();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }

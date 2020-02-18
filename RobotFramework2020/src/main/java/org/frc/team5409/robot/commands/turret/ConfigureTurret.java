@@ -1,9 +1,9 @@
-package org.frc.team5409.robot.commands.turret;
+package frc.robot.commands.turret;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import org.frc.team5409.robot.Constants;
-import org.frc.team5409.robot.subsystems.turret.*;
-import org.frc.team5409.robot.subsystems.turret.TurretRotation.LimitSwitchType;
+import frc.robot.Constants;
+import frc.robot.subsystems.turret.*;
+import frc.robot.subsystems.turret.TurretRotation.LimitSwitchType;
 
 public final class ConfigureTurret extends CommandBase {
     private final TurretRotation m_turret;

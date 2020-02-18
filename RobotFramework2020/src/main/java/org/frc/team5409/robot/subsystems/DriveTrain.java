@@ -44,27 +44,27 @@ public class DriveTrain extends SubsystemBase {
   public DriveTrain() {
     mot_leftDriveFront_sparkmax_C13 = new CANSparkMax(Constants.kLeftDriveFront, MotorType.kBrushless);
     mot_leftDriveFront_sparkmax_C13.restoreFactoryDefaults();
-    mot_leftDriveFront_sparkmax_C13.setIdleMode(Constants.idle);
+    mot_leftDriveFront_sparkmax_C13.setIdleMode(Constants.DriveTrain.idle);
     mot_leftDriveFront_sparkmax_C13.setSmartCurrentLimit(40);
     mot_leftDriveFront_sparkmax_C13.setInverted(true);
     mot_leftDriveFront_sparkmax_C13.burnFlash();
 
     mot_leftDriveRear_sparkmax_C4 = new CANSparkMax(Constants.kLeftDriveRear, MotorType.kBrushless);
     mot_leftDriveRear_sparkmax_C4.restoreFactoryDefaults();
-    mot_leftDriveRear_sparkmax_C4.setIdleMode(Constants.idle);
+    mot_leftDriveRear_sparkmax_C4.setIdleMode(Constants.DriveTrain.idle);
     mot_leftDriveRear_sparkmax_C4.setSmartCurrentLimit(40);
     mot_leftDriveRear_sparkmax_C4.setInverted(true);
     mot_leftDriveRear_sparkmax_C4.burnFlash();
 
     mot_rightDriveFront_sparkmax_C15 = new CANSparkMax(Constants.kRightDriveFront, MotorType.kBrushless);
     mot_rightDriveFront_sparkmax_C15.restoreFactoryDefaults();
-    mot_rightDriveFront_sparkmax_C15.setIdleMode(Constants.idle);
+    mot_rightDriveFront_sparkmax_C15.setIdleMode(Constants.DriveTrain.idle);
     mot_rightDriveFront_sparkmax_C15.setSmartCurrentLimit(40);
     mot_rightDriveFront_sparkmax_C15.burnFlash();
 
     mot_rightDriveRear_sparkmax_C6 = new CANSparkMax(Constants.kRightDriveRear, MotorType.kBrushless);
     mot_rightDriveRear_sparkmax_C6.restoreFactoryDefaults();
-    mot_rightDriveRear_sparkmax_C6.setIdleMode(Constants.idle);
+    mot_rightDriveRear_sparkmax_C6.setIdleMode(Constants.DriveTrain.idle);
     mot_rightDriveRear_sparkmax_C6.setSmartCurrentLimit(40);
     mot_rightDriveRear_sparkmax_C6.burnFlash();
 

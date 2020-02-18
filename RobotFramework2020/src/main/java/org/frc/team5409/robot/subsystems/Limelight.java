@@ -1,10 +1,12 @@
 package org.frc.team5409.robot.subsystems;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.util.Range;
+import frc.robot.util.Vec2;
+import frc.robot.util.Vec3;
 import edu.wpi.first.networktables.*;
-import org.frc.team5409.robot.util.Range;
-import org.frc.team5409.robot.util.Vec2;
-import org.frc.team5409.robot.util.Vec3;
 
 
 /**
@@ -14,9 +16,6 @@ import org.frc.team5409.robot.util.Vec3;
  * of limelight hardware.
  */
 public class Limelight extends SubsystemBase {
-    /**
-     * The LED state of the limelight.
-     */
     public enum LedMode {
         MODE_PIPELINE(0), MODE_OFF(1), MODE_ON(2), MODE_BLINK(3);
 
@@ -27,9 +26,6 @@ public class Limelight extends SubsystemBase {
         public final double value;
     }
 
-    /**
-     * The cameara mode of the limelight.
-     */
     public enum CameraMode {
         MODE_VISION(0), MODE_DRIVER(1);
 

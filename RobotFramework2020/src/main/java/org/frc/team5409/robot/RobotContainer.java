@@ -7,9 +7,22 @@
 
 package org.frc.team5409.robot;
 
+import java.util.List;
+
 import org.frc.team5409.robot.commands.*;
 import org.frc.team5409.robot.subsystems.*;
 import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.controller.RamseteController;
+import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.geometry.Translation2d;
+import edu.wpi.first.wpilibj.trajectory.Trajectory;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
+import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
+
 import org.frc.team5409.robot.commands.turret.*;
 import org.frc.team5409.robot.subsystems.turret.*;
 import edu.wpi.first.wpilibj2.command.*;
@@ -30,6 +43,8 @@ public class RobotContainer {
 
 	private final XboxController joy_main, joy_secondary;
 
+	public final DriveTrain m_driveSubsystem = new DriveTrain();
+
 	private final JoystickButton but_main_A, but_main_B, but_main_X, but_main_Y, but_main_sck_left, but_main_sck_right,
 			but_main_bmp_left, but_main_bmp_right;
 
@@ -40,6 +55,7 @@ public class RobotContainer {
 	 * The container for the robot. Contains subsystems, OI devices, and commands.
 	 */
 	public RobotContainer() {
+
 
 		// Liz's stuff
 		sys_Indexer = new Indexer();
@@ -91,4 +107,61 @@ public class RobotContainer {
 
 		//but_main_X.toggleWhenPressed(cmd_IndexActive);
 	}
+
+
+	  /**
+   * Use this to pass the autonomous command to the main {@link Robot} class.
+   *
+   * @return the command to run in autonomous
+   */
+  public Command getAutonomousCommand() {
+
+    // Create a voltage constraint to ensure we don't accelerate too fast
+    final var autoVoltageConstraint = new DifferentialDriveVoltageConstraint(
+        new SimpleMotorFeedforward(Constants.Trajectory.ksVolts, Constants.Trajectory.kvVoltSecondsPerMeter,
+            Constants.Trajectory.kaVoltSecondsSquaredPerMeter),
+        Constants.Trajectory.kDriveKinematics, 10);
+
+    // Create config for trajectory
+    final TrajectoryConfig config = new TrajectoryConfig(Constants.Trajectory.kMaxSpeedMetersPerSecond,
+        Constants.Trajectory.kMaxAccelerationMetersPerSecondSquare)
+
+            // Add kinematics to ensure max speed is actually obeyed
+            .setKinematics(Constants.Trajectory.kDriveKinematics)
+
+            // Apply the voltage constraint
+            .addConstraint(autoVoltageConstraint);
+
+    // An example trajectory to follow. All units in meters.
+    final Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
+
+        // Start at the origin facing the +X direction
+        new Pose2d(0, 0, new Rotation2d(0)),
+
+        // Pass through these two interior waypoints, making an 's' curve path
+        List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
+
+        // End 3 meters straight ahead of where we started, facing forward
+        new Pose2d(3, 0, new Rotation2d(0)),
+
+        // Pass config
+        config);
+		final RamseteCommand ramseteCommand = new RamseteCommand(
+
+			trajectory, m_driveSubsystem::getPose, new RamseteController(Constants.Trajectory.kRamseteB, Constants.Trajectory.kRamseteZeta),
+	
+			new SimpleMotorFeedforward(Constants.Trajectory.ksVolts, Constants.Trajectory.kvVoltSecondsPerMeter,
+	
+				Constants.Trajectory.kaVoltSecondsSquaredPerMeter),
+	
+			Constants.Trajectory.kDriveKinematics, m_driveSubsystem::getWheelSpeeds, new PIDController(Constants.Trajectory.kPDriveVel, 0, 0),
+	
+			new PIDController(Constants.Trajectory.kPDriveVel, 0, 0),
+	
+			// RamseteCommand passes volts to the callback
+			m_driveSubsystem::tankDriveVolts, m_driveSubsystem);
+
+    // Run path following command, then stop at the end.
+    return ramseteCommand.andThen(() -> m_driveSubsystem.tankDriveVolts(0, 0));
+  }
 }
