@@ -104,9 +104,9 @@ public class Indexer extends SubsystemBase {
     if (range < 125 && range > 50
     ) {
 
-      // if (range == 115) {
-      //   numberOfPowerCellsEnter++;
-      // }
+      if (range == 115) {
+        numberOfPowerCellsEnter++;
+      }
 
       return true;
     }
