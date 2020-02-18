@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.turret.TurretFlywheel;
-import frc.robot.util.Range;
+import org.frc.team5409.robot.Range;
 
 /**
  * Turns turret to {@code target} angle.
