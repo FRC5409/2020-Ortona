@@ -10,12 +10,6 @@ package org.frc.team5409.robot;
 import java.util.List;
 
 import org.frc.team5409.robot.commands.*;
-import org.frc.team5409.robot.commands.Hanging.Extend;
-import org.frc.team5409.robot.commands.Hanging.ExtendNeo;
-import org.frc.team5409.robot.commands.Hanging.ExtendPiston;
-import org.frc.team5409.robot.commands.Hanging.Retract;
-import org.frc.team5409.robot.commands.Hanging.RetractNeo;
-import org.frc.team5409.robot.commands.Hanging.RetractPiston;
 import org.frc.team5409.robot.subsystems.*;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.controller.PIDController;
@@ -36,14 +30,6 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 public class RobotContainer {
 
-	private final Hanging m_hanging;
-  	private final ExtendPiston cmd_extendPiston;
- 	private final RetractPiston cmd_retractPiston;
-  	private final ExtendNeo cmd_extendNeo;
-  	private final RetractNeo cmd_retractNeo;
-  	private final Extend cmd_extend;
-  	private final Retract cmd_retract;
-
 	private final TurretFlywheel sys_turret_flywheel;
 	private final TurretRotation sys_turret_rotation;
 	private final Indexer sys_Indexer;
@@ -60,6 +46,9 @@ public class RobotContainer {
 	private final JoystickButton but_main_A, but_main_B, but_main_X, but_main_Y, but_main_sck_left, but_main_sck_right,
 			but_main_bmp_left, but_main_bmp_right;
 
+			 // A chooser for autonomous commands
+  SendableChooser<Command> m_chooser = new SendableChooser<>();
+
 	private final JoystickButton but_secondary_A, but_secondary_B, but_secondary_X, but_secondary_Y,
 			but_secondary_sck_left, but_secondary_sck_right, but_secondary_bmp_left, but_secondary_bmp_right;
 
@@ -67,15 +56,6 @@ public class RobotContainer {
 	 * The container for the robot. Contains subsystems, OI devices, and commands.
 	 */
 	public RobotContainer() {
-
-		//WuTang's stuff
-		m_hanging = new Hanging();
-		cmd_extendPiston = new ExtendPiston(m_hanging);
-		cmd_retractPiston = new RetractPiston(m_hanging);
-		cmd_extendNeo = new ExtendNeo(m_hanging);
-		cmd_retractNeo = new RetractNeo(m_hanging);
-		cmd_extend = new Extend(m_hanging);
-		cmd_retract = new Retract(m_hanging);
 
 		// Liz's stuff
 		sys_Indexer = new Indexer();
@@ -121,6 +101,12 @@ public class RobotContainer {
 		but_secondary_bmp_right = new JoystickButton(joy_secondary, XboxController.Button.kBumperRight.value);
 
 		configureBindings();
+
+		m_chooser.addOption("Complex Auto", m_complexAuto);
+
+		// Put the chooser on the dashboard
+		Shuffleboard.getTab("Autonomous").add(m_chooser);
+
 	}
 
 	private void configureBindings() {
@@ -185,9 +171,9 @@ public class RobotContainer {
         sys_driveTrain::tankDriveVolts, sys_driveTrain);
 
     // Run path following command, then stop at the end.
-    return ramseteCommand.andThen(() -> sys_driveTrain.tankDriveVolts(0, 0));
+	return ramseteCommand.andThen(() -> sys_driveTrain.tankDriveVolts(0, 0));
+	
+	m_chooser.getSelected();
+
   }
 }
-
-
-qsqs	
