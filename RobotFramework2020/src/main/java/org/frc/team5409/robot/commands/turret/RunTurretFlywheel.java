@@ -65,7 +65,7 @@ public final class RunTurretFlywheel extends CommandBase {
         SmartDashboard.setDefaultNumber("RPM Scale", 4.25);
         SmartDashboard.setDefaultNumber("Limelight Height", 0);
         SmartDashboard.setDefaultNumber("Target Height", 0);
-        SmartDashboard.setDefaultNumber("Limelight Angle", 0);
+        SmartDashboard.setDefaultNumber("Distance (ft)", 0);
 
         m_reached = false;
         m_debounce = false;
@@ -116,14 +116,13 @@ public final class RunTurretFlywheel extends CommandBase {
 //=========================================
 
         m_timer = Timer.getFPGATimestamp();
-
-        m_turret.startFeeder();
         System.out.println("TURRET RAN");
     }
 
     @Override
     public void execute() {
         double time = Timer.getFPGATimestamp() - m_timer;
+        m_distance = SmartDashboard.getNumber("Distance (ft)", 0);
         if (m_limelight.hasTarget()) {
             Vec2 target = m_limelight.getTarget();
 
@@ -141,8 +140,8 @@ public final class RunTurretFlywheel extends CommandBase {
             }
 
             m_debounce3 = true;
-        } else {
-            m_distance = -1;
+        } /*else {
+            //m_distance = -1;
 
             if (m_debounce3) {
                 try {
@@ -153,20 +152,23 @@ public final class RunTurretFlywheel extends CommandBase {
             }
 
             m_debounce3 = false;
-        }
+        }*/
 
         double velocity = m_turret.getVelocity();
 
-        if (velocity > m_target * Range.scalar(SmartDashboard.getNumber("Feeder Threshold", 100)) && !m_reached) {
+        if (velocity > m_target * Range.scalar(SmartDashboard.getNumber("Feeder Threshold", 100))/* && !m_reached*/) {
             m_indexer.moveIndexerMotor(SmartDashboard.getNumber("Target Indexer", 0));
-            m_reached = true;
-        }
+            //m_reached = true;
+        } else
+        m_indexer.moveIndexerMotor(0);
 
 //=========================================
 // TESTING
         if (but_X1.get() && !m_debounce2) {
             m_turret.setVelocity(m_target);
 
+
+            m_turret.startFeeder();
             try {
                 m_log_events.write(String.format("%f, TURRET STARTED [%f]\n", time, m_target));
             } catch (IOException e) {
@@ -174,10 +176,13 @@ public final class RunTurretFlywheel extends CommandBase {
                 e.printStackTrace();
             }
             m_debounce2 = true;
-        } else {
-            m_turret.setVelocity(0);
+        } else if (!but_X1.get() && m_debounce2) {
+            
 
-            if (m_debounce2)
+            //if (m_debounce2) {
+                m_turret.setVelocity(0);
+
+            m_turret.stopFeeder();
                 try {
                     m_log_events.write(String.format("%f, TURRET STOPPED [%f]\n", time, m_target));
                 } catch (IOException e) {
@@ -185,6 +190,7 @@ public final class RunTurretFlywheel extends CommandBase {
                     e.printStackTrace();
                 }
 
+            //}
             m_debounce2 = false;
         }
 
@@ -195,7 +201,7 @@ public final class RunTurretFlywheel extends CommandBase {
             if (but_X2.get() && !m_debounce) {
                 m_log_scored.write(String.format("%f, %f, %f, %f\n", time, m_distance, m_target, velocity));
                 m_debounce = true;
-            } else
+            } else if (!but_X2.get() && m_debounce)
                 m_debounce = false;
         } catch (IOException e) {
             e.printStackTrace();
