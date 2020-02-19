@@ -14,6 +14,8 @@ import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import org.frc.team5409.robot.Constants;
+
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
@@ -41,11 +43,11 @@ public class Hanging extends SubsystemBase {
 
   public Hanging() {
     // Piston
-    dsl_hangSolenoid = new DoubleSolenoid(Constants.DS1_ID, Constants.DS2_ID, Constants.DS3_ID);
+    dsl_hangSolenoid = new DoubleSolenoid(Constants.Hanging.DS1_ID, Constants.Hanging.DS2_ID, Constants.Hanging.DS3_ID);
 
     // Neo
-    mot_hanging_neo_C3 = new CANSparkMax(Constants.NEO1_ID, MotorType.kBrushless);
-    mot_hanging_neo_C5 = new CANSparkMax(Constants.NEO2_ID, MotorType.kBrushless);
+    mot_hanging_neo_C3 = new CANSparkMax(Constants.Hanging.NEO1_ID, MotorType.kBrushless);
+    mot_hanging_neo_C5 = new CANSparkMax(Constants.Hanging.NEO2_ID, MotorType.kBrushless);
 
     enc_xxxx_hanging = mot_hanging_neo_C3.getEncoder();
 
@@ -131,11 +133,11 @@ public class Hanging extends SubsystemBase {
 
   // Neo
   public void retractNeo() {
-    rotations = Constants.RETRACT_NEO_POS;
+    rotations = Constants.Hanging.RETRACT_NEO_POS;
   }
 
   public void extendNeo() {
-    rotations = Constants.EXTEND_NEO_POS;
+    rotations = Constants.Hanging.EXTEND_NEO_POS;
   }
 
   public void endNeo() {
