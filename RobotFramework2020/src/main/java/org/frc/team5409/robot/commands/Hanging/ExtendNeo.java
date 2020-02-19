@@ -7,6 +7,7 @@
 
 package org.frc.team5409.robot.commands.Hanging;
 
+import org.frc.team5409.robot.Constants;
 import org.frc.team5409.robot.subsystems.Hanging;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -44,7 +45,7 @@ public class ExtendNeo extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (m_hangingSubsystem.enc_xxxx_hanging.getPosition() >= Constants.EXTEND_NEO_POS) {
+    if (m_hangingSubsystem.enc_xxxx_hanging.getPosition() >= Constants.Hanging.EXTEND_NEO_POS) {
       finished = true;
     }
     // if(m_hanging.isSwitchSet() == false){

@@ -9,6 +9,17 @@ import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 
 public final class Constants {
 
+    public static final class Hanging{
+        public static int NEO1_ID = 5;
+        public static int NEO2_ID = 3;
+        public static double EXTEND_NEO_POS = 3 * 12;
+        public static double RETRACT_NEO_POS = 0 * 12;
+        public static int DS1_ID = 1;
+        public static int DS2_ID = 2;
+        public static int DS3_ID = 3;
+        public static int LS_ID = 1;
+    }
+
     public static final class TurretControl {
         public static final PIDFConfig pid_turret_rotation = new PIDFConfig(0, 0, 0, 0);
 
