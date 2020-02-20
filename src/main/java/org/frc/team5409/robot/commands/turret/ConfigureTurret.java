@@ -34,6 +34,7 @@ public final class ConfigureTurret extends CommandBase {
             m_turret.resetRotation(type);
             return true;
         }
-        return false;
+
+        return !m_turret.isEnabled();
     }
 }
