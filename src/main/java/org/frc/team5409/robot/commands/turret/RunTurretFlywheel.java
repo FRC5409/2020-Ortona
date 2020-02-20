@@ -1,26 +1,18 @@
 package org.frc.team5409.robot.commands.turret;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.time.Instant;
 
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
-import org.frc.team5409.robot.Constants;
-import org.frc.team5409.robot.subsystems.Indexer;
 import org.frc.team5409.robot.subsystems.turret.TurretFlywheel;
-import org.frc.team5409.robot.subsystems.Limelight;
-import org.frc.team5409.robot.util.Range;
-import org.frc.team5409.robot.util.SimpleEquation;
-import org.frc.team5409.robot.util.Vec2;
+import org.frc.team5409.robot.subsystems.*;
+import org.frc.team5409.robot.Constants;
+import org.frc.team5409.robot.util.*;
 
 /**
- * Turns turret to {@code target} angle.
+ * This command runs the turret flywheel at a speed
+ * porportional to the distance of the turret from the
+ * shooting target and operates the indexer once the rpm
+ * reaches it's setpoint.
  * 
  * @author Keith Davies
  */
@@ -49,6 +41,7 @@ public final class RunTurretFlywheel extends CommandBase {
         m_limelight = sys_limelight;
 
         m_height = Math.abs(Constants.Vision.vision_outerport_height - Constants.Vision.vision_limelight_height);
+
         m_distance_range = Constants.TurretControl.turret_distance_range;
         m_distance_rpm_curve = Constants.TurretControl.turret_distance_rpm_curve;
 
