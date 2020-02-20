@@ -1,9 +1,10 @@
 package org.frc.team5409.robot.util;
 
 /**
- * Simple interface for the representation of
- * simple input, output mathematical equations
- * such as polynomials.
+ * A simple interface for the representation of
+ * simple input and output mathematical equations,
+ * such as polynomials and other single variable
+ * equations.
  * 
  * @author Keith Davies
  */
