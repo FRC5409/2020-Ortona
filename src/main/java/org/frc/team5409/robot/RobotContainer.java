@@ -10,6 +10,12 @@ package org.frc.team5409.robot;
 import java.util.List;
 
 import org.frc.team5409.robot.commands.*;
+import org.frc.team5409.robot.commands.Hanging.Extend;
+import org.frc.team5409.robot.commands.Hanging.ExtendArmNeo;
+import org.frc.team5409.robot.commands.Hanging.LockPiston;
+import org.frc.team5409.robot.commands.Hanging.Retract;
+import org.frc.team5409.robot.commands.Hanging.RetractArmNeo;
+import org.frc.team5409.robot.commands.Hanging.UnlockPiston;
 import org.frc.team5409.robot.subsystems.*;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.controller.PIDController;
@@ -38,7 +44,7 @@ public class RobotContainer {
 	private final IndexActive cmd_IndexActive;
 	public final Intake sys_intakeSubsystem;
 	public final IntakeActive m_intakeActive;
-	public final DriveTrain sys_driveTrain; 
+	public final DriveTrain sys_driveTrain;
 	private final SequentialCommandGroup grp_configure_turret;
 
 	private final XboxController joy_main, joy_secondary;
@@ -49,10 +55,27 @@ public class RobotContainer {
 	private final JoystickButton but_secondary_A, but_secondary_B, but_secondary_X, but_secondary_Y,
 			but_secondary_sck_left, but_secondary_sck_right, but_secondary_bmp_left, but_secondary_bmp_right;
 
+	public final Hanging m_hanging;
+	public final RetractArmNeo cmd_RetractArmNeo;
+	public final ExtendArmNeo cmd_ExtendArmNeo;
+	public final UnlockPiston cmd_UnlockPiston;
+	public final LockPiston cmd_LockPiston;
+	public final Retract cmd_Retract;
+	public final Extend cmd_Extend;
+
 	/**
 	 * The container for the robot. Contains subsystems, OI devices, and commands.
 	 */
 	public RobotContainer() {
+
+		//WuTang's stuff
+		m_hanging = new Hanging();
+		cmd_RetractArmNeo = new RetractArmNeo(m_hanging);
+		cmd_ExtendArmNeo = new ExtendArmNeo(m_hanging);
+		cmd_UnlockPiston = new UnlockPiston(m_hanging);
+		cmd_LockPiston = new LockPiston(m_hanging);
+		cmd_Retract = new Retract(m_hanging);
+		cmd_Extend = new Extend(m_hanging);
 
 		// Liz's stuff
 		sys_Indexer = new Indexer();

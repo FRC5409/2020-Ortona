@@ -7,26 +7,27 @@
 
 package org.frc.team5409.robot.commands.Hanging;
 
+import org.frc.team5409.robot.Constants;
 import org.frc.team5409.robot.subsystems.Hanging;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-public class ExtendNeo extends CommandBase {
+public class ExtendArmNeo extends CommandBase {
   /**
    * Creates a new ExtendNeo.
    */
-  private final Hanging m_hangingSubsystem;
+  private final Hanging m_hanging;
 
-  public ExtendNeo(Hanging subsystem) {
+  public ExtendArmNeo(Hanging subsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
-    m_hangingSubsystem = subsystem;
-    addRequirements(m_hangingSubsystem);
+    m_hanging = subsystem;
+    addRequirements(m_hanging);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_hangingSubsystem.extendNeo();
+    m_hanging.extendArmNeo();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -44,7 +45,7 @@ public class ExtendNeo extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (m_hangingSubsystem.enc_xxxx_hanging.getPosition() >= Constants.EXTEND_NEO_POS) {
+    if ((m_hanging.enc1_hanging.getPosition() + m_hanging.enc2_hanging.getPosition())/2 >= Constants.Hanging.EXTEND_NEO_POS) {
       finished = true;
     }
     // if(m_hanging.isSwitchSet() == false){

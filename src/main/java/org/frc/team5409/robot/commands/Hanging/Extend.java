@@ -18,9 +18,9 @@ public class Extend extends SequentialCommandGroup {
   /**
    * Creates a new Extend.
    */
-  public Extend(Hanging m_hangingSubsystem) {
+  public Extend(Hanging m_hanging) {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
-    addCommands(new RetractPiston(m_hangingSubsystem), new ExtendNeo(m_hangingSubsystem));
+    addCommands(new UnlockPiston(m_hanging), new ExtendArmNeo(m_hanging));
   }
 }

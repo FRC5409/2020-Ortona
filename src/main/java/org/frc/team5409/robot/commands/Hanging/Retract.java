@@ -18,9 +18,9 @@ public class Retract extends SequentialCommandGroup {
   /**
    * Creates a new Retract.
    */
-  public Retract(Hanging m_hangingSubsystem) {
+  public Retract(Hanging m_hanging) {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
-    addCommands(new ExtendNeo(m_hangingSubsystem), new ExtendPiston(m_hangingSubsystem));
+    addCommands(new ExtendArmNeo(m_hanging), new LockPiston(m_hanging));
   }
 }

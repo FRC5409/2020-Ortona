@@ -199,5 +199,15 @@ public final class Constants {
         public static final double kFF = 0;
         public static final double kMaxOutput = 0.1;
         public static final double kMinOutput = -0.1;
+
+        //Neo Variables
+        public static final int NEO1_ID = 3;
+        public static final int NEO2_ID = 5;
+        public static final double EXTEND_NEO_POS = 10;
+        public static final double RETRACT_NEO_POS = 0;
+
+        //Piston
+        public static final int FORWARD_CHANEL = 1;
+        public static final int BACKWARD_CHANEL = 2;
     }
 }
