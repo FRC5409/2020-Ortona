@@ -32,9 +32,9 @@ public class Hanging extends SubsystemBase {
 
   //Neo
   private final CANSparkMax mot_hanging_neo_C3;
-  public CANEncoder enc_xxxx_hanging;
+  public CANEncoder enc1_xxxx_hanging;
   private final CANSparkMax mot_hanging_neo_C5;
-  public CANEncoder encoder2;
+  public CANEncoder enc2_xxxx_hanging;
   private CANPIDController m_pidController_hanging;
   private double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM;
   public double rotations;
@@ -47,20 +47,26 @@ public class Hanging extends SubsystemBase {
     mot_hanging_neo_C3 = new CANSparkMax(Constants.NEO1_ID, MotorType.kBrushless);
     mot_hanging_neo_C5 = new CANSparkMax(Constants.NEO2_ID, MotorType.kBrushless);
 
-    enc_xxxx_hanging = mot_hanging_neo_C3.getEncoder();
+    mot_hanging_neo_C3.restoreFactoryDefaults();
+    mot_hanging_neo_C5.restoreFactoryDefaults();
+
+    mot_hanging_neo_C3.setSmartCurrentLimit(40);    
+    mot_hanging_neo_C5.setSmartCurrentLimit(40);
 
     mot_hanging_neo_C3.setIdleMode(IdleMode.kBrake);
     mot_hanging_neo_C5.setIdleMode(IdleMode.kBrake);
 
-    mot_hanging_neo_C3.restoreFactoryDefaults();
-    mot_hanging_neo_C3.setSmartCurrentLimit(40);
-    mot_hanging_neo_C5.restoreFactoryDefaults();
-    mot_hanging_neo_C5.setSmartCurrentLimit(40);
+    enc1_xxxx_hanging.setPosition(0);
+    enc2_xxxx_hanging.setPosition(0); 
+
+    enc1_xxxx_hanging = mot_hanging_neo_C3.getEncoder();
+    enc2_xxxx_hanging = mot_hanging_neo_C5.getEncoder();    
 
     mot_hanging_neo_C5.follow(mot_hanging_neo_C3, true);
-    enc_xxxx_hanging.setPosition(0);
 
-    // encoder2 = mot_hanging_neo_C3.getEncoder();
+    mot_hanging_neo_C3.burnFlash();
+    mot_hanging_neo_C5.burnFlash();
+       
 
     setPid();
 
@@ -97,50 +103,53 @@ public class Hanging extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    adjustPid();
+    // adjustPid();
   }
 
   public void adjustPid() {
     // makes you able to input values on smart dashboard (pid configuration)
-    // double p = SmartDashboard.getNumber("P Gain", 0);
-    // double i = SmartDashboard.getNumber("I Gain", 0);
-    // double d = SmartDashboard.getNumber("D Gain", 0);
-    // double iz = SmartDashboard.getNumber("I Zone", 0);
-    // double ff = SmartDashboard.getNumber("Feed Forward", 0);
-    // double max = SmartDashboard.getNumber("Max Output", 0);
-    // double min = SmartDashboard.getNumber("Min Output", 0);
-    // rotations = SmartDashboard.getNumber("Set Rotations", 0);
+    double p = SmartDashboard.getNumber("P Gain", 0);
+    double i = SmartDashboard.getNumber("I Gain", 0);
+    double d = SmartDashboard.getNumber("D Gain", 0);
+    double iz = SmartDashboard.getNumber("I Zone", 0);
+    double ff = SmartDashboard.getNumber("Feed Forward", 0);
+    double max = SmartDashboard.getNumber("Max Output", 0);
+    double min = SmartDashboard.getNumber("Min Output", 0);
+    rotations = SmartDashboard.getNumber("Set Rotations", 0);
 
-    // if((p != kP)) { m_pidController.setP(p); kP = p; }
-    // if((i != kI)) { m_pidController.setI(i); kI = i; }
-    // if((d != kD)) { m_pidController.setD(d); kD = d; }
-    // if((iz != kIz)) { m_pidController.setIZone(iz); kIz = iz; }
-    // if((ff != kFF)) { m_pidController.setFF(ff); kFF = ff; }
-    // if((max != kMaxOutput) || (min != kMinOutput)) {
-    // m_pidController.setOutputRange(min, max);
-    // kMinOutput = min; kMaxOutput = max;
-    // }
+    if((p != kP)) { m_pidController_hanging.setP(p); kP = p; }
+    if((i != kI)) { m_pidController_hanging.setI(i); kI = i; }
+    if((d != kD)) { m_pidController_hanging.setD(d); kD = d; }
+    if((iz != kIz)) { m_pidController_hanging.setIZone(iz); kIz = iz; }
+    if((ff != kFF)) { m_pidController_hanging.setFF(ff); kFF = ff; }
+    if((max != kMaxOutput) || (min != kMinOutput)) {
+    m_pidController_hanging.setOutputRange(min, max);
+    kMinOutput = min; kMaxOutput = max;
+    }
 
     // set rotations
     m_pidController_hanging.setReference(rotations, ControlType.kPosition);
 
     // put new values on smart dashboard
     SmartDashboard.putNumber("SetPoint", rotations);
-    SmartDashboard.putNumber("ProcessVariable", enc_xxxx_hanging.getPosition());
+    SmartDashboard.putNumber("ProcessVariable", enc1_xxxx_hanging.getPosition());
   }
 
   // Neo
   public void retractNeo() {
     rotations = Constants.RETRACT_NEO_POS;
+    m_pidController_hanging.setReference(rotations, ControlType.kPosition);
   }
 
   public void extendNeo() {
     rotations = Constants.EXTEND_NEO_POS;
+    m_pidController_hanging.setReference(rotations, ControlType.kPosition);
   }
 
   public void endNeo() {
     // mot_hanging_neo_C3.set(0);
-    rotations = enc_xxxx_hanging.getPosition();
+    rotations = enc1_xxxx_hanging.getPosition();
+    m_pidController_hanging.setReference(rotations, ControlType.kPosition);
   }
 
   // Limit Switch
