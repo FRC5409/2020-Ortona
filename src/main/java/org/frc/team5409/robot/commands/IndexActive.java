@@ -44,7 +44,7 @@ public class IndexActive extends CommandBase {
 		TOF_Ball1 = m_indexer.ballDetectionBall1();
 		TOF_Exit = m_indexer.ballDetectionExit();
 
-		powerCellsInIndexer = m_indexer.numberOfPowerCellsEnter(); 
+		powerCellsInIndexer = m_indexer.getNumberOfPowerCellsEnter(); 
 
 	}
 

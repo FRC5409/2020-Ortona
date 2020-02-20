@@ -47,7 +47,7 @@ public class Indexer extends SubsystemBase {
   protected double getRangeBall1;
 
   // number of power cells going through each sensor
-  public int numberOfPowerCellsEnter;
+  public int getNumberOfPowerCellsEnter;
 
   // detection whether or not ball has passed through sensor
   public boolean ballDetectionEnter;
@@ -55,11 +55,6 @@ public class Indexer extends SubsystemBase {
   public boolean ballDetectionBall1;
 
   public boolean ballDetectionExit;
-
-  // get ranging modes of all three sensors
-  protected TimeOfFlight.RangingMode getRangingModeEnter;
-  protected TimeOfFlight.RangingMode getRangingModeExit;
-  protected TimeOfFlight.RangingMode getRangingModeBall1;
 
   protected final CANSparkMax m_Indexer_neo550_C16;
 
@@ -72,16 +67,16 @@ public class Indexer extends SubsystemBase {
     TOF_Exit = new TimeOfFlight(Constants.Indexer.TOF_Exit);
     TOF_Ball1 = new TimeOfFlight(Constants.Indexer.TOF_Ball1);
 
-    numberOfPowerCellsEnter = 0;
+    getNumberOfPowerCellsEnter = 0;
 
     m_Indexer_neo550_C16 = new CANSparkMax(Constants.Indexer.m_Indexer_neo550_C16, MotorType.kBrushless);
     m_Indexer_neo550_C16.setSmartCurrentLimit(Constants.Indexer.currentLimit);
-    m_Indexer_neo550_C16.burnFlash();
     m_Indexer_neo550_C16.setIdleMode(IdleMode.kBrake);
+    m_Indexer_neo550_C16.burnFlash();
 
     TOF_Enter.setRangingMode(TimeOfFlight.RangingMode.Short, Constants.Indexer.sampleTime);
-    TOF_Exit.setRangingMode(TimeOfFlight.RangingMode.Short, 24);
-    TOF_Ball1.setRangingMode(TimeOfFlight.RangingMode.Short, 24);
+    TOF_Exit.setRangingMode(TimeOfFlight.RangingMode.Short, Constants.Indexer.sampleTime);
+    TOF_Ball1.setRangingMode(TimeOfFlight.RangingMode.Short, Constants.Indexer.sampleTime);
 
   }
 
@@ -105,7 +100,7 @@ public class Indexer extends SubsystemBase {
     ) {
 
       if (range == 115) {
-        numberOfPowerCellsEnter++;
+        getNumberOfPowerCellsEnter++;
       }
 
       return true;
@@ -113,8 +108,8 @@ public class Indexer extends SubsystemBase {
     return false;
   }
 
-  public int numberOfPowerCellsEnter(){
-	  return numberOfPowerCellsEnter; 
+  public int getNumberOfPowerCellsEnter(){
+	  return getNumberOfPowerCellsEnter; 
   }
 
   public boolean ballDetectionBall1() {
@@ -147,19 +142,6 @@ public class Indexer extends SubsystemBase {
     return TOF_Ball1.isRangeValid();
   }
 
-  // getting ranging mode (short, medium, long)
-  public TimeOfFlight.RangingMode getRangingModeEnter() {
-    return TOF_Enter.getRangingMode();
-  }
-
-  public TimeOfFlight.RangingMode getRangingModeExit() {
-    return TOF_Exit.getRangingMode();
-  }
-
-  public TimeOfFlight.RangingMode getRangingModeBall1() {
-    return TOF_Ball1.getRangingMode();
-  }
-
   // set ranging mode (short)
   public void setRangingMode(TimeOfFlight.RangingMode rangeModeIn, double sampleTime) {
     if (sampleTime == 24) { // Error Checking for sample time <24
@@ -183,7 +165,7 @@ public class Indexer extends SubsystemBase {
     SmartDashboard.putBoolean("Is the range of the ExitSensor valid?", TOF_Exit.isRangeValid());
     SmartDashboard.putBoolean("Is the range of the Ball1Sensor valid?", TOF_Ball1.isRangeValid());
 
-    SmartDashboard.putNumber("Number of Power Cells", numberOfPowerCellsEnter);
+    SmartDashboard.putNumber("Number of Power Cells", getNumberOfPowerCellsEnter);
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand())
 
