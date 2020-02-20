@@ -68,6 +68,14 @@ public class DriveCommand extends CommandBase {
         autoBalanceYMode = true;
       }
 
+      if (autoBalanceYMode && (Math.abs(pitchAngleDegrees) <= Math.abs(kOonBalanceAngleThresholdDegrees))) {
+        autoBalanceYMode = false;
+      }
+  
+      if (autoBalanceXMode && (Math.abs(pitchAngleDegrees) <= Math.abs(kOonBalanceAngleThresholdDegrees))) {
+        autoBalanceXMode = false;
+      }
+
       // Control drive system automatically,
       // driving in reverse direction of pitch/roll angle,
       // with a magnitude based upon the angle

@@ -90,8 +90,8 @@ public class DriveTrain extends SubsystemBase {
     m_navX = new AHRS(SPI.Port.kMXP);
     //Add NAVX calibration here
 
-    // Set intial toggle value to true
-    m_antiTipToggle = true;
+    // Set intial toggle value to false
+    m_antiTipToggle = false;
   }
 
   @Override
@@ -118,14 +118,14 @@ public class DriveTrain extends SubsystemBase {
   /**
    * Method to set AntiTip value to true
    */
-  public void setAntiTipTrue() {
+  public void turnAntiTipOn() {
     m_antiTipToggle = true;
   }
 
   /**
    * Method to set AntiTip value to false
    */
-  public void setAntiTipFalse() {
+  public void turnAntiTipOff() {
     m_antiTipToggle = false;
   }
 

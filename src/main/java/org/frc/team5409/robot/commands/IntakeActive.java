@@ -25,7 +25,7 @@ public class IntakeActive extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    // Call extend method and set speed to 0.5
+    // Call extend method to start intake
     m_intakeSubsystem.extend();
   }
 
@@ -37,7 +37,7 @@ public class IntakeActive extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    // Call retract method an set speed to 0
+    // Call retract method to stop intake
     m_intakeSubsystem.retract();
   }
 

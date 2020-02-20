@@ -107,6 +107,9 @@ public final class Constants {
         public static final int kLeftIntakeSolenoid1 = 0;
 
         public static final int kLeftIntakeSolenoid2 = 0;
+
+		public void retract() {
+		}
     }
 
     public static class Trajectory{

@@ -27,9 +27,9 @@ public class AntiTipToggle extends CommandBase {
   public void initialize() {
     // Toggle between true and false
     if (m_driveTrain.getAntiTip()) {
-      m_driveTrain.setAntiTipFalse();
+      m_driveTrain.turnAntiTipOff();
     } else {
-      m_driveTrain.setAntiTipTrue();
+      m_driveTrain.turnAntiTipOn();
     }
   }
 
