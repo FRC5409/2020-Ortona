@@ -110,7 +110,7 @@ public final class TurretFlywheel extends SubsystemBase {
             return;
 
         pid_C00_turret_flywheel.setReference(
-            m_velocity_range.clamp(target) * SmartDashboard.getNumber("RPM Scale", 4.45),
+            m_velocity_range.clamp(target) * Constants.TurretControl.turret_flywheel_rpm_scale,
             ControlType.kVelocity
         );
        
