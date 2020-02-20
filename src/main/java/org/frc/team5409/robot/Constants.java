@@ -82,6 +82,18 @@ public final class Constants {
 
         public static final int currentLimit = 20; 
 
+        public static final int rangeEnter_1 = 125; 
+        
+        public static final int rangeEnter_2 = 50; 
+
+        public static final int rangeBall1_1 = 130; 
+
+        public static final int rangeBall1_2 = 100; 
+
+        public static final int rangeExit_1 = 150; 
+
+        public static final int rangeExit_2 = 100; 
+
     }
 
     public static final class Intake {

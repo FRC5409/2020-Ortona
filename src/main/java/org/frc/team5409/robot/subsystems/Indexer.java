@@ -96,8 +96,7 @@ public class Indexer extends SubsystemBase {
   // ball detection functions
   public boolean ballDetectionEnter() {
     double range = TOF_Enter.getRange();
-    if (range < 125 && range > 50
-    ) {
+    if (range < Constants.Indexer.rangeEnter_1 && range > Constants.Indexer.rangeEnter_2) {
 
       if (range == 115) {
         getNumberOfPowerCellsEnter++;
@@ -114,7 +113,7 @@ public class Indexer extends SubsystemBase {
 
   public boolean ballDetectionBall1() {
     double range = TOF_Ball1.getRange();
-    if (range < 130 && range > 100) {
+    if (range < Constants.Indexer.rangeBall1_1 && range > Constants.Indexer.rangeBall1_2) {
       return true;
     }
     return false;
@@ -123,7 +122,7 @@ public class Indexer extends SubsystemBase {
   // Note: test range for exit sensor
   public boolean ballDetectionExit() {
     double range = TOF_Exit.getRange();
-    if (range < 150 && range > 100) {
+    if (range < Constants.Indexer.rangeExit_1 && range > Constants.Indexer.rangeExit_2) {
       return true;
     }
     return false;
