@@ -15,23 +15,20 @@ import org.frc.team5409.robot.util.Watchdog;
  */
 public final class TurretRotation extends SubsystemBase {
     /**
-     * Represents the limit switches along the turret 
+     * Represents the reset (limit) switches along the turret 
      * rotation as well as their respective angles.
      */
-    public enum LimitSwitchType {
-        kLeft(Constants.TurretControl.turret_limit_left_angle), kCenter(Constants.TurretControl.turret_limit_center_angle),
-        kRight(Constants.TurretControl.turret_limit_right_angle), kNone(-1);
+    public enum ResetSwitchType {
+        kLeft(Constants.TurretControl.turret_rotation_limit_left_angle),
+        kCenter(Constants.TurretControl.turret_rotation_limit_center_angle),
+        kRight(Constants.TurretControl.turret_rotation_limit_right_angle),
+        kNone(-1);
 
-        LimitSwitchType(double angle) {
-            m_angle = angle;
+        ResetSwitchType(double angle) {
+            this.angle = angle;
         }
 
-        public double getAngle() {
-            return m_angle;
-        }
-
-        private final double m_angle;
-
+        public final double angle;
     }
 
     private CANSparkMax      mot_C00_turret_rotation;
@@ -193,29 +190,29 @@ public final class TurretRotation extends SubsystemBase {
     }
 
     /**
-     * Reorientes the rotation to the specified
+     * Reorients the rotation to the specified
      * active limit switch. 
      * 
      * @param type The limit switch type.
      */
-    public void resetRotation(LimitSwitchType type) {
-        m_rotation = m_rotation_range.clamp(type.getAngle());
+    public void resetRotation(ResetSwitchType type) {
+        m_rotation = m_rotation_range.clamp(type.angle);
         enc_C01_turret_rotation.setPosition(m_rotation);
     }
 
     /**
-     * Gets the currently active limit switch.
+     * Gets the currently active reset (limit) switch.
      * 
-     * @return The active limit switch.
+     * @return The active reset switch.
      */
-    public LimitSwitchType getActiveLimitSwitch() {
+    public ResetSwitchType getActiveResetSwitch() {
         if (dio_C00_turret_limit_left.isLimitSwitchEnabled())
-            return LimitSwitchType.kLeft;
+            return ResetSwitchType.kLeft;
         else if (dio_i00_turret_limit_center.get())
-            return LimitSwitchType.kCenter;
+            return ResetSwitchType.kCenter;
         else if (dio_C00_turret_limit_right.isLimitSwitchEnabled())
-            return LimitSwitchType.kRight;
-        return LimitSwitchType.kNone;
+            return ResetSwitchType.kRight;
+        return ResetSwitchType.kNone;
     }
     
     @Override

@@ -3,15 +3,15 @@ package org.frc.team5409.robot.commands.turret;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import org.frc.team5409.robot.Constants;
 import org.frc.team5409.robot.subsystems.turret.*;
-import org.frc.team5409.robot.subsystems.turret.TurretRotation.LimitSwitchType;
+import org.frc.team5409.robot.subsystems.turret.TurretRotation.ResetSwitchType;
 
 public final class ConfigureTurret extends CommandBase {
     private final TurretRotation m_turret;
 
-    public ConfigureTurret(TurretRotation m_turret_rotation, TurretFlywheel m_turret_flywheel) {
-        m_turret = m_turret_rotation;
+    public ConfigureTurret(TurretRotation turret_rotation, TurretFlywheel turret_flywheel) {
+        m_turret = turret_rotation;
 
-        addRequirements(m_turret_rotation, m_turret_flywheel);
+        addRequirements(turret_rotation, turret_flywheel);
     }
 
     @Override
@@ -28,13 +28,12 @@ public final class ConfigureTurret extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        LimitSwitchType type = m_turret.getActiveLimitSwitch();
+        ResetSwitchType type = m_turret.getActiveResetSwitch();
 
-        if (type != LimitSwitchType.kNone) {
+        if (type != ResetSwitchType.kNone) {
             m_turret.resetRotation(type);
             return true;
         }
-
         return false;
     }
 }
