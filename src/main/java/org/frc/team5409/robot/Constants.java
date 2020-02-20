@@ -7,11 +7,30 @@ import org.frc.team5409.robot.util.*;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 
 public final class Constants {
+    public static final class Vision {
+//========================================================
+    // Target Constants
+        public static final double vision_outerport_height = 0;
+
+//========================================================
+    // Robot configuration Constants
+        public static final double vision_limelight_height = 0;
+
+        public static final double vision_limelight_pitch = 0;
+    }
 
     public static final class TurretControl {
 //========================================================
-    // PID Configurations
+    // General Configurations
+        public static final double turret_watchdog_expire_time = 0.8;
 
+        public static final int turret_rotation_current_limit = 25;
+
+        public static final int turret_flywheel_current_limit = 40;
+
+        public static final int turret_feeder_current_limit = 25;
+//========================================================
+    // PID Configurations
         public static final PIDFConfig pid_turret_rotation = new PIDFConfig(0, 0, 0, 0);
 
         public static final PIDFConfig pid_turret_flywheel = new PIDFConfig(6e-5, 0, 0, 0.000015);
@@ -22,39 +41,31 @@ public final class Constants {
 
         public static final Range turret_velocity_range = new Range(0, 7000);
 
+        public static final Range turret_distance_range = new Range(15, 33);
+
 //========================================================
-    // Curve fitting Equations
+    // Curve fitting Constants
         public static final SimpleEquation turret_distance_rpm_curve = d -> {
             return 0.129*(d*d*d) + -7.94*(d*d) + 205*(d) + 1266;
         };
 
 //========================================================
-    // Floating-point Constants
+    // Turret Rotation Constants
         public static final double turret_rotation_target_thresh = 0;
 
-        public static final double turret_flywheel_diameter = 0;
+        public static final double turret_rotation_limit_left_angle = -270;
 
-        public static final double turret_intake_enable_thresh = 1000;
+        public static final double turret_rotation_limit_center_angle = 0.5;
 
-        public static final double turret_watchdog_expire_time = 0.8;
-
-        public static final double turret_limit_left_angle = -270;
-
-        public static final double turret_limit_center_angle = 270;
-
-        public static final double turret_limit_right_angle = 0.5;
+        public static final double turret_rotation_limit_right_angle = 270;
 
         public static final double turret_sweep_speed = 0.5;
 
-        public static final double turret_flywheel_rpm_scale = 4.25;
-
 //========================================================
-    // Integer Constants
-        public static final int turret_rotation_current_limit = 25;
+    // Turret Flywheel Constants
+        public static final double turret_flywheel_target_thresh = 0.93;
 
-        public static final int turret_flywheel_current_limit = 40;
-
-        public static final int turret_feeder_current_limit = 25;
+        public static final double turret_flywheel_rpm_scale = 4.25;
     }
 
     public static final class Indexer {
