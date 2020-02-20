@@ -122,6 +122,16 @@ public final class TurretRotation extends SubsystemBase {
     }
 
     /**
+     * Checks whether or not the turret rotation 
+     * subsystem is currently enabled.
+     * 
+     * @return The subsystems enabled state.
+     */
+    public boolean isEnabled() {
+        return m_enabled;
+    }
+
+    /**
      * Sets the rotation of the turret.
      * 
      * @param target The target angle.

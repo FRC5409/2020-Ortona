@@ -91,6 +91,16 @@ public final class TurretFlywheel extends SubsystemBase {
     }
 
     /**
+     * Checks whether or not the turret flywheel 
+     * subsystem is currently enabled.
+     * 
+     * @return The subsystems enabled state.
+     */
+    public boolean isEnabled() {
+        return m_enabled;
+    }
+
+    /**
      * Sets the velocity of the turret flywheel.
      * 
      * @param target The target velocity.

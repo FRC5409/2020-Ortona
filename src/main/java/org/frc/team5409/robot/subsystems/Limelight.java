@@ -102,6 +102,15 @@ public class Limelight extends SubsystemBase {
         setLedMode(LedMode.kModeOff);
     }
 
+    /**
+     * Checks whether or not the limelight subsystem
+     * is currently enabled.
+     * 
+     * @return The subsystems enabled state.
+     */
+    public boolean isEnabled() {
+        return m_enabled;
+    }
 
     /**
      * Set's the camera mode of the limelight.
