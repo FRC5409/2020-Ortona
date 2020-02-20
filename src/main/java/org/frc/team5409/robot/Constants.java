@@ -186,4 +186,15 @@ public final class Constants {
 
         public static final double neo_encoder_position = 42.0;
     }
+    public static class Hanging{
+
+        //PID Variables
+        public static final double kP = 0.1;
+        public static final double kI = 1e-4;
+        public static final double kD = 1;
+        public static final double kIz = 0;
+        public static final double kFF = 0;
+        public static final double kMaxOutput = 0.1;
+        public static final double kMinOutput = -0.1;
+    }
 }
