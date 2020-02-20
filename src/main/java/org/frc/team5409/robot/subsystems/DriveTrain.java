@@ -286,4 +286,10 @@ public class DriveTrain extends SubsystemBase {
   public void setIdleCoast() {
     setMotorIdleMode(IdleMode.kCoast);
   }
+
+  public void auto(){
+
+    
+
+  }
 }
