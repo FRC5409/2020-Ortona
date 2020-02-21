@@ -11,6 +11,7 @@ import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
+import com.revrobotics.CANDigitalInput.LimitSwitchPolarity;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -56,6 +57,11 @@ public class Hanging extends SubsystemBase {
 
     mot_hanging_neo_C3.setSmartCurrentLimit(40);    
     mot_hanging_neo_C5.setSmartCurrentLimit(40);
+
+    mot_hanging_neo_C3.getForwardLimitSwitch(LimitSwitchPolarity.kNormallyOpen).enableLimitSwitch(false);
+    mot_hanging_neo_C3.getReverseLimitSwitch(LimitSwitchPolarity.kNormallyOpen).enableLimitSwitch(false);
+    mot_hanging_neo_C5.getForwardLimitSwitch(LimitSwitchPolarity.kNormallyOpen).enableLimitSwitch(false);
+    mot_hanging_neo_C5.getReverseLimitSwitch(LimitSwitchPolarity.kNormallyOpen).enableLimitSwitch(false);
 
     mot_hanging_neo_C3.setIdleMode(IdleMode.kBrake);
     mot_hanging_neo_C5.setIdleMode(IdleMode.kBrake);
