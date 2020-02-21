@@ -9,6 +9,7 @@ package org.frc.team5409.robot;
 
 import java.util.List;
 
+
 import org.frc.team5409.robot.commands.*;
 import org.frc.team5409.robot.commands.Hanging.Extend;
 import org.frc.team5409.robot.commands.Hanging.ExtendArmNeo;
@@ -50,15 +51,9 @@ public class RobotContainer {
 	private final SequentialCommandGroup grp_configure_turret;
 	private final AntiTipToggle m_AntiTipToggle;
 	private final XboxController joy_main, joy_secondary;
-	public final DriveCommand m_driveCommand = new DriveCommand(sys_driveTrain, joystick);
-	private final JoystickButton but_main_A, but_main_B, but_main_X;
-	public final static JoystickButton but_main_Y;
-	private final JoystickButton but_main_sck_left;
-	private final JoystickButton but_main_sck_right;
-	private final JoystickButton but_main_bmp_left;
-	private final JoystickButton but_main_bmp_right;
-	private final JoystickButton but_main_start;
-	private final JoystickButton but_main_back;
+	public final DriveCommand m_driveCommand;
+	private final JoystickButton but_main_A, but_main_B, but_main_X, but_main_Y, but_main_sck_left, but_main_sck_right,
+			but_main_bmp_left, but_main_bmp_right,but_main_start,but_main_back;
 
 	private final JoystickButton but_secondary_A, but_secondary_B, but_secondary_X, but_secondary_Y,
 			but_secondary_sck_left, but_secondary_sck_right, but_secondary_bmp_left, but_secondary_bmp_right;
@@ -70,6 +65,7 @@ public class RobotContainer {
 	public final LockPiston cmd_LockPiston;
 	public final Retract cmd_Retract;
 	public final Extend cmd_Extend;
+	public final DriveStraightAuto cmd_DriveStraightAuto;
 
 	/**
 	 * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -78,6 +74,8 @@ public class RobotContainer {
 
 		//WuTang's stuff
 		m_hanging = new Hanging();
+		m_driveCommand = new DriveCommand(sys_driveTrain, joy_main);
+		cmd_DriveStraightAuto = new DriveStraightAuto(sys_driveTrain);
 		cmd_RetractArmNeo = new RetractArmNeo(m_hanging);
 		cmd_ExtendArmNeo = new ExtendArmNeo(m_hanging);
 		cmd_UnlockPiston = new UnlockPiston(m_hanging);
@@ -123,11 +121,12 @@ public class RobotContainer {
 		but_main_bmp_right = new JoystickButton(joy_main, XboxController.Button.kBumperRight.value);
 		but_main_start = new JoystickButton(joy_main, XboxController.Button.kStart.value);
 		but_main_back = new JoystickButton(joy_main, XboxController.Button.kBack.value);
+	
+
 		but_secondary_A = new JoystickButton(joy_secondary, XboxController.Button.kA.value);
 		but_secondary_B = new JoystickButton(joy_secondary, XboxController.Button.kB.value);
 		but_secondary_X = new JoystickButton(joy_secondary, XboxController.Button.kX.value);
 		but_secondary_Y = new JoystickButton(joy_secondary, XboxController.Button.kY.value);
-		// Toggle AntiTip
 		but_secondary_Y.whenPressed(new AntiTipToggle(sys_driveTrain));
 		but_secondary_sck_left = new JoystickButton(joy_secondary, XboxController.Button.kStickLeft.value);
 		but_secondary_sck_right = new JoystickButton(joy_secondary, XboxController.Button.kStickRight.value);
@@ -154,55 +153,59 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  public Command getAutonomousCommand() {
+//   public Command getAutonomousCommand() {
 
-    // Create a voltage constraint to ensure we don't accelerate too fast
-    final var autoVoltageConstraint = new DifferentialDriveVoltageConstraint(
-        new SimpleMotorFeedforward(Constants.Trajectory.ksVolts, Constants.Trajectory.kvVoltSecondsPerMeter,
-            Constants.Trajectory.kaVoltSecondsSquaredPerMeter),
-        Constants.Trajectory.kDriveKinematics, 10);
+//     // Create a voltage constraint to ensure we don't accelerate too fast
+//     final var autoVoltageConstraint = new DifferentialDriveVoltageConstraint(
+//         new SimpleMotorFeedforward(Constants.Trajectory.ksVolts, Constants.Trajectory.kvVoltSecondsPerMeter,
+//             Constants.Trajectory.kaVoltSecondsSquaredPerMeter),
+//         Constants.Trajectory.kDriveKinematics, 10);
 
-    // Create config for trajectory
-    final TrajectoryConfig config = new TrajectoryConfig(Constants.Trajectory.kMaxSpeedMetersPerSecond,
-        Constants.Trajectory.kMaxAccelerationMetersPerSecondSquare)
+//     // Create config for trajectory
+//     final TrajectoryConfig config = new TrajectoryConfig(Constants.Trajectory.kMaxSpeedMetersPerSecond,
+//         Constants.Trajectory.kMaxAccelerationMetersPerSecondSquare)
 
-            // Add kinematics to ensure max speed is actually obeyed
-            .setKinematics(Constants.Trajectory.kDriveKinematics)
+//             // Add kinematics to ensure max speed is actually obeyed
+//             .setKinematics(Constants.Trajectory.kDriveKinematics)
 
-            // Apply the voltage constraint
-            .addConstraint(autoVoltageConstraint);
+//             // Apply the voltage constraint
+//             .addConstraint(autoVoltageConstraint);
 
-    // An example trajectory to follow. All units in meters.
-    final Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
+//     // An example trajectory to follow. All units in meters.
+//     final Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
 
-        // Start at the origin facing the +X direction
-        new Pose2d(0, 0, new Rotation2d(0)),
+//         // Start at the origin facing the +X direction
+//         new Pose2d(0, 0, new Rotation2d(0)),
 
-        // Pass through these two interior waypoints, making an 's' curve path
-        List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
+//         // Pass through these two interior waypoints, making an 's' curve path
+//         List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
 
-        // End 3 meters straight ahead of where we started, facing forward
-        new Pose2d(3, 0, new Rotation2d(0)),
+//         // End 3 meters straight ahead of where we started, facing forward
+//         new Pose2d(3, 0, new Rotation2d(0)),
 
-        // Pass config
-        config);
+//         // Pass config
+//         config);
 
-    final RamseteCommand ramseteCommand = new RamseteCommand( 
+//     final RamseteCommand ramseteCommand = new RamseteCommand( 
 
-        trajectory, sys_driveTrain::getPose, new RamseteController(Constants.Trajectory.kRamseteB, Constants.Trajectory.kRamseteZeta),
+//         trajectory, sys_driveTrain::getPose, new RamseteController(Constants.Trajectory.kRamseteB, Constants.Trajectory.kRamseteZeta),
 
-        new SimpleMotorFeedforward(Constants.Trajectory.ksVolts, Constants.Trajectory.kvVoltSecondsPerMeter,
+//         new SimpleMotorFeedforward(Constants.Trajectory.ksVolts, Constants.Trajectory.kvVoltSecondsPerMeter,
 
-            Constants.Trajectory.kaVoltSecondsSquaredPerMeter),
+//             Constants.Trajectory.kaVoltSecondsSquaredPerMeter),
 
-        Constants.Trajectory.kDriveKinematics, sys_driveTrain::getWheelSpeeds, new PIDController(Constants.Trajectory.kPDriveVel, 0, 0),
+//         Constants.Trajectory.kDriveKinematics, sys_driveTrain::getWheelSpeeds, new PIDController(Constants.Trajectory.kPDriveVel, 0, 0),
 
-        new PIDController(Constants.Trajectory.kPDriveVel, 0, 0),
+//         new PIDController(Constants.Trajectory.kPDriveVel, 0, 0),
 
-        // RamseteCommand passes volts to the callback
-        sys_driveTrain::tankDriveVolts, sys_driveTrain);
+//         // RamseteCommand passes volts to the callback
+//         sys_driveTrain::tankDriveVolts, sys_driveTrain);
 
-    // Run path following command, then stop at the end.
-    return ramseteCommand.andThen(() -> sys_driveTrain.tankDriveVolts(0, 0));
-  }
+//     // Run path following command, then stop at the end.
+//     return ramseteCommand.andThen(() -> sys_driveTrain.tankDriveVolts(0, 0));
+//   }
+
+	public Command getAutonomousCommand() {
+		return cmd_DriveStraightAuto;
+	}
 }

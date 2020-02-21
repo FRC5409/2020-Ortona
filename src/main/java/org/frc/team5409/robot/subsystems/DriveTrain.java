@@ -76,22 +76,25 @@ public class DriveTrain extends SubsystemBase {
 
     m_leftEncoder = mot_leftDriveFront_sparkmax_C13.getEncoder();
     m_rightEncoder = mot_rightDriveFront_sparkmax_C15.getEncoder();
+    
 
     // Sets the distance per pulse for the encoders
     // https://www.chiefdelphi.com/t/encoder-distance-per-pulse/156742
 
-    m_leftEncoder.setPositionConversionFactor((Constants.DriveTrain.neo_encoder_position) * Constants.DriveTrain.kEncoderDistancePerPulse);
-    m_rightEncoder.setPositionConversionFactor((Constants.DriveTrain.neo_encoder_position) * Constants.DriveTrain.kEncoderDistancePerPulse);
+    m_leftEncoder.setPositionConversionFactor(
+        (Constants.DriveTrain.neo_encoder_position) * Constants.DriveTrain.kEncoderDistancePerPulse);
+    m_rightEncoder.setPositionConversionFactor(
+        (Constants.DriveTrain.neo_encoder_position) * Constants.DriveTrain.kEncoderDistancePerPulse);
 
     resetEncoders();
     m_odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
 
     // Calibrate the gyro
     m_navX = new AHRS(SPI.Port.kMXP);
-    //Add NAVX calibration here
+    // Add NAVX calibration here
 
-    // Set intial toggle value to false
-    m_antiTipToggle = false;
+    // Set intial toggle value to true
+    m_antiTipToggle = true;
   }
 
   @Override
@@ -118,14 +121,14 @@ public class DriveTrain extends SubsystemBase {
   /**
    * Method to set AntiTip value to true
    */
-  public void turnAntiTipOn() {
+  public void setAntiTipTrue() {
     m_antiTipToggle = true;
   }
 
   /**
    * Method to set AntiTip value to false
    */
-  public void turnAntiTipOff() {
+  public void setAntiTipFalse() {
     m_antiTipToggle = false;
   }
 
@@ -228,6 +231,10 @@ public class DriveTrain extends SubsystemBase {
     return m_leftEncoder;
   }
 
+  public double getLeftEncoderPosition() {
+    return m_leftEncoder.getPosition();
+  }
+
   /**
    * Gets the right drive encoder.
    *
@@ -235,6 +242,10 @@ public class DriveTrain extends SubsystemBase {
    */
   public CANEncoder getRightEncoder() {
     return m_rightEncoder;
+  }
+
+  public double getRightEncoderPosition() {
+    return m_rightEncoder.getPosition();
   }
 
   /**
@@ -287,9 +298,26 @@ public class DriveTrain extends SubsystemBase {
     setMotorIdleMode(IdleMode.kCoast);
   }
 
-  public void auto(){
+  public void setLeftMotors(double speed) {
+    m_leftMotors.set(speed);
+  }
+  public void setRightMotors(double speed) {
+    m_rightMotors.set(speed);
+  }
 
-    
+  public void auto() {
+final double startingEncoderDistance= m_leftEncoder.getPosition()*Constants.DriveTrain.distanceCalculate;
+
+    if (m_leftEncoder.getPosition()*Constants.DriveTrain.distanceCalculate <= (1)) {
+      m_leftMotors.set(0.5);
+      m_rightMotors.set(0.5);
+
+    } else {
+
+      m_leftMotors.set(0);
+      m_rightMotors.set(0);
+
+    }
 
   }
 }
