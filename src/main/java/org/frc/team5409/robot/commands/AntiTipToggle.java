@@ -11,25 +11,25 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import org.frc.team5409.robot.subsystems.DriveTrain;
 
 public class AntiTipToggle extends CommandBase {
-  private DriveTrain m_driveTrain;
+  private DriveTrain m_driveSubsystem;
 
   /**
    * Creates a new AntiTipToggle.
    */
   public AntiTipToggle(DriveTrain subsystem) {
-    m_driveTrain = subsystem;
+    m_driveSubsystem = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(m_driveTrain);
+    addRequirements(m_driveSubsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     // Toggle between true and false
-    if (m_driveTrain.getAntiTip()) {
-      m_driveTrain.turnAntiTipOff();
+    if (m_driveSubsystem.getAntiTip()) {
+      m_driveSubsystem.turnAntiTipOff();
     } else {
-      m_driveTrain.turnAntiTipOn();
+      m_driveSubsystem.turnAntiTipOn();
     }
   }
 

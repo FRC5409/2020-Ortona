@@ -8,25 +8,26 @@
 package org.frc.team5409.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+
 import org.frc.team5409.robot.subsystems.Intake;
 
 public class IntakeActive extends CommandBase {
-  private final Intake m_intakeSubsystem;
+  private final Intake sys_intakeSubsystem;
 
   /**
    * Creates a new IntakeActive.
    */
-  public IntakeActive(Intake subsystem) {
-    m_intakeSubsystem = subsystem;
+  public IntakeActive(Intake intakeSubsystem) {
+    sys_intakeSubsystem = intakeSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(m_intakeSubsystem);
+    addRequirements(sys_intakeSubsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     // Call extend method to start intake
-    m_intakeSubsystem.extend();
+    sys_intakeSubsystem.extend();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -38,7 +39,7 @@ public class IntakeActive extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     // Call retract method to stop intake
-    m_intakeSubsystem.retract();
+    sys_intakeSubsystem.retract();
   }
 
   // Returns true when the command should end.

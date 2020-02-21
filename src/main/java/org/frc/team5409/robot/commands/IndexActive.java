@@ -106,10 +106,10 @@ public class IndexActive extends CommandBase {
 			m_indexerSubsystem.moveIndexerMotor(0);
 		}
 
-		if (intakeRun == true) {
-			m_intakeSubsystem.extend();
+		if (but_main_Y.whileHeld == true) {
+			intakeRun = true;
 		} else {
-			m_intakeSubsystem.retract();
+			intakeRun = false;
 		}
 
 		if (powerCellsInIndexer == 5) {
