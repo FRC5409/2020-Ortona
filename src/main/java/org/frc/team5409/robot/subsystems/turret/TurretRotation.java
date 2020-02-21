@@ -200,8 +200,8 @@ public final class TurretRotation extends SubsystemBase {
     }
 
     /**
-     * Resets the rotation to the specified
-     * active reset switch position. 
+     * Resets the rotation to that of the
+     * specified active reset switch angle. 
      * 
      * @param type The active reset switch.
      */
@@ -211,17 +211,20 @@ public final class TurretRotation extends SubsystemBase {
     }
 
     /**
-     * Gets the currently active reset (limit) switch.
+     * Get's the currently active reset switch.
      * 
      * @return The active reset switch.
      */
     public ResetSwitchType getActiveResetSwitch() {
         if (dio_C00_turret_limit_left.isLimitSwitchEnabled())
             return ResetSwitchType.kLeft;
-        else if (dio_i00_turret_limit_center.get())
+
+        if (dio_i00_turret_limit_center.get())
             return ResetSwitchType.kCenter;
-        else if (dio_C00_turret_limit_right.isLimitSwitchEnabled())
+        
+        if (dio_C00_turret_limit_right.isLimitSwitchEnabled())
             return ResetSwitchType.kRight;
+        
         return ResetSwitchType.kNone;
     }
     
