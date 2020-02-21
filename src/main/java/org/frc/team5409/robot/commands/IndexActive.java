@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import org.frc.team5409.robot.subsystems.Intake;
+import org.frc.team5409.robot.RobotContainer;
 import org.frc.team5409.robot.commands.IndexActive;
 import org.frc.team5409.robot.subsystems.Indexer;
 
@@ -106,7 +107,7 @@ public class IndexActive extends CommandBase {
 			m_indexerSubsystem.moveIndexerMotor(0);
 		}
 
-		if (but_main_Y.whileHeld == true) {
+		if (RobotContainer.but_main_Y.get()) {
 			intakeRun = true;
 		} else {
 			intakeRun = false;

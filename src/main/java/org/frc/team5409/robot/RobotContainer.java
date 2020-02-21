@@ -51,8 +51,14 @@ public class RobotContainer {
 	private final AntiTipToggle m_AntiTipToggle;
 	private final XboxController joy_main, joy_secondary;
 	public final DriveCommand m_driveCommand = new DriveCommand(sys_driveTrain, joystick);
-	private final JoystickButton but_main_A, but_main_B, but_main_X, but_main_Y, but_main_sck_left, but_main_sck_right,
-			but_main_bmp_left, but_main_bmp_right,but_main_start,but_main_back;
+	private final JoystickButton but_main_A, but_main_B, but_main_X;
+	public final static JoystickButton but_main_Y;
+	private final JoystickButton but_main_sck_left;
+	private final JoystickButton but_main_sck_right;
+	private final JoystickButton but_main_bmp_left;
+	private final JoystickButton but_main_bmp_right;
+	private final JoystickButton but_main_start;
+	private final JoystickButton but_main_back;
 
 	private final JoystickButton but_secondary_A, but_secondary_B, but_secondary_X, but_secondary_Y,
 			but_secondary_sck_left, but_secondary_sck_right, but_secondary_bmp_left, but_secondary_bmp_right;
@@ -115,17 +121,13 @@ public class RobotContainer {
 		but_main_sck_right = new JoystickButton(joy_main, XboxController.Button.kStickRight.value);
 		but_main_bmp_left = new JoystickButton(joy_main, XboxController.Button.kBumperLeft.value);
 		but_main_bmp_right = new JoystickButton(joy_main, XboxController.Button.kBumperRight.value);
-<<<<<<< Updated upstream
 		but_main_start = new JoystickButton(joy_main, XboxController.Button.kStart.value);
 		but_main_back = new JoystickButton(joy_main, XboxController.Button.kBack.value);
-	
-
-=======
->>>>>>> Stashed changes
 		but_secondary_A = new JoystickButton(joy_secondary, XboxController.Button.kA.value);
 		but_secondary_B = new JoystickButton(joy_secondary, XboxController.Button.kB.value);
 		but_secondary_X = new JoystickButton(joy_secondary, XboxController.Button.kX.value);
 		but_secondary_Y = new JoystickButton(joy_secondary, XboxController.Button.kY.value);
+		// Toggle AntiTip
 		but_secondary_Y.whenPressed(new AntiTipToggle(sys_driveTrain));
 		but_secondary_sck_left = new JoystickButton(joy_secondary, XboxController.Button.kStickLeft.value);
 		but_secondary_sck_right = new JoystickButton(joy_secondary, XboxController.Button.kStickRight.value);
