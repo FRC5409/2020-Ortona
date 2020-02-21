@@ -80,7 +80,7 @@ public class RobotContainer {
 		// Liz's stuff
 		sys_Indexer = new Indexer();
 
-		cmd_IndexActive = new IndexActive(sys_Indexer);
+		cmd_IndexActive = new IndexActive(sys_Indexer, sys_intakeSubsystem);
 
 		// Sanad's stuff
 		sys_intakeSubsystem = new Intake();
@@ -178,20 +178,20 @@ public class RobotContainer {
 
     final RamseteCommand ramseteCommand = new RamseteCommand( 
 
-        trajectory, m_driveSubsystem::getPose, new RamseteController(Constants.Trajectory.kRamseteB, Constants.Trajectory.kRamseteZeta),
+        trajectory, sys_driveTrain::getPose, new RamseteController(Constants.Trajectory.kRamseteB, Constants.Trajectory.kRamseteZeta),
 
         new SimpleMotorFeedforward(Constants.Trajectory.ksVolts, Constants.Trajectory.kvVoltSecondsPerMeter,
 
             Constants.Trajectory.kaVoltSecondsSquaredPerMeter),
 
-        Constants.Trajectory.kDriveKinematics, m_driveSubsystem::getWheelSpeeds, new PIDController(Constants.Trajectory.kPDriveVel, 0, 0),
+        Constants.Trajectory.kDriveKinematics, sys_driveTrain::getWheelSpeeds, new PIDController(Constants.Trajectory.kPDriveVel, 0, 0),
 
         new PIDController(Constants.Trajectory.kPDriveVel, 0, 0),
 
         // RamseteCommand passes volts to the callback
-        m_driveSubsystem::tankDriveVolts, m_driveSubsystem);
+        sys_driveTrain::tankDriveVolts, sys_driveTrain);
 
     // Run path following command, then stop at the end.
-    return ramseteCommand.andThen(() -> m_driveSubsystem.tankDriveVolts(0, 0));
+    return ramseteCommand.andThen(() -> sys_driveTrain.tankDriveVolts(0, 0));
   }
 }
