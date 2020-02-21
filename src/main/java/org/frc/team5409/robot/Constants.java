@@ -47,7 +47,9 @@ public final class Constants {
     // Curve fitting Constants
         public static final SimpleEquation turret_distance_rpm_curve = d -> {
             d += (10.d/12.0d);
-            return 0.129*(d*d*d) + -7.94*(d*d) + 205*(d) + 1266;
+            //return 1.8*(d*d) - 26.8*(d) + 2929; //2nd POLY CURVE
+            return 1326*Math.log(d) - 784; // LOG CURVE
+            //return 978*Math.pow(d, 0.393); // POWER SERIES CURVE
         };
 
 //========================================================
