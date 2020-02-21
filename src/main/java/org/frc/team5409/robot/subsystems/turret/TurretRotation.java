@@ -200,8 +200,8 @@ public final class TurretRotation extends SubsystemBase {
     }
 
     /**
-     * Resets the rotation to that of the
-     * specified active reset switch angle. 
+     * Resets the rotation to he
+     * specified reset switch angle. 
      * 
      * @param type The active reset switch.
      */
