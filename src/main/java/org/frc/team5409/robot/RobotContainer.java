@@ -134,7 +134,7 @@ public class RobotContainer {
 		//but_main_X.toggleWhenPressed(cmd_IndexActive);
 
 		//WuTang's Stuff
-		but_main_start.whenPressed(new Retract(m_hanging));
+		but_main_start.whenPressed(new Extend(m_hanging));
 		but_main_back.whenPressed(new Retract(m_hanging));
 	}
 
