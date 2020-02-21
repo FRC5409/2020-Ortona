@@ -21,7 +21,10 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
+/**
+ * Hanging subsystem.
+ * Contains all the methods needed for climb
+ */
 public class Hanging extends SubsystemBase {
   /**
    * Creates a new Hanging.
@@ -138,32 +141,50 @@ public class Hanging extends SubsystemBase {
     SmartDashboard.putNumber("ProcessVariable", enc2_hanging.getPosition());
   }
 
-  // Neo
+/**
+ * ExtendArmNeo Command
+ * Runs neo to move while hang retracts
+ */
   public void retractArmNeo() {
     rotations = Constants.Hanging.RETRACT_NEO_POS;
     m_pidController_hanging.setReference(rotations, ControlType.kPosition);
   }
-
+/**
+ * ExtendArmNeo 
+ * Runs neo to move while hang extends
+ */
   public void extendArmNeo() {
     rotations = Constants.Hanging.EXTEND_NEO_POS;
     m_pidController_hanging.setReference(rotations, ControlType.kPosition);
   }
-
+/**
+ * stopNeo
+ * Stops the neo (sets the PID poisition to current position) once limit switch isSwitchSet
+ */
   public void stopNeo() {
     rotations = enc1_hanging.getPosition();
     m_pidController_hanging.setReference(rotations, ControlType.kPosition);
   }
 
-  // Limit Switch
+/**
+ * isSwitchSet
+ * Boolean that determines if the limit switch is set or not
+ */
   public static boolean isSwitchSet() {
     return !limitSwitch.get();
   }
 
-  // Piston
+ /**
+ * lockPiston
+ * extends the piston to lock the hang
+ */
   public void lockPiston() {
     dsl_hangSolenoid.set(Value.kForward);
   }
-
+  /**
+ * unlockPiston
+ * unlocks the piston so the hang can shoot up
+ */
   public void unlockPiston() {
     dsl_hangSolenoid.set(Value.kReverse);
   }

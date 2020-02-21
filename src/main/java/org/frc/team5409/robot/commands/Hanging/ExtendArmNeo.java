@@ -11,7 +11,10 @@ import org.frc.team5409.robot.Constants;
 import org.frc.team5409.robot.subsystems.Hanging;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-
+/**
+ * ExtendArmNeo Command
+ * Runs neo to move while hang extends
+ */
 public class ExtendArmNeo extends CommandBase {
   /**
    * Creates a new ExtendNeo.

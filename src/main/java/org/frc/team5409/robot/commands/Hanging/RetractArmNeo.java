@@ -12,6 +12,10 @@ import org.frc.team5409.robot.subsystems.Hanging;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
+/**
+ * RetractArmNeo Command
+ * Runs neo to move while hang retracts
+ */
 public class RetractArmNeo extends CommandBase {
   /**
    * Creates a new RetractNeo.

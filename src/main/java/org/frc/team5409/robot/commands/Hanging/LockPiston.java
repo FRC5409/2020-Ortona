@@ -10,7 +10,10 @@ package org.frc.team5409.robot.commands.Hanging;
 import org.frc.team5409.robot.subsystems.Hanging;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-
+/**
+ * LocksPiston Command
+ * Extends piston so that it locks hang in place after retraction
+ */
 public class LockPiston extends CommandBase {
   /**
    * Creates a new ExtendPiston.

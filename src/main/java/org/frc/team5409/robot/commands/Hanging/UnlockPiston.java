@@ -11,6 +11,10 @@ import org.frc.team5409.robot.subsystems.Hanging;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
+/**
+ * UnlockPiston Command
+ * RRetracts piston which allows the hang to shoot up
+ */
 public class UnlockPiston extends CommandBase {
   /**
    * Creates a new RetractPiston.
