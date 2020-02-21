@@ -10,13 +10,13 @@ public final class Constants {
     public static final class Vision {
 //========================================================
     // Target Constants
-        public static final double vision_outerport_height = 0;
+        public static final double vision_outerport_height = 89.75d/12.0d;
 
 //========================================================
     // Robot configuration Constants
-        public static final double vision_limelight_height = 0;
+        public static final double vision_limelight_height = 103.1d/12.0d;
 
-        public static final double vision_limelight_pitch = 0;
+        public static final double vision_limelight_pitch = 10;
     }
 
     public static final class TurretControl {
@@ -46,6 +46,7 @@ public final class Constants {
 //========================================================
     // Curve fitting Constants
         public static final SimpleEquation turret_distance_rpm_curve = d -> {
+            d += (10.d/12.0d);
             return 0.129*(d*d*d) + -7.94*(d*d) + 205*(d) + 1266;
         };
 
