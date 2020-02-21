@@ -200,10 +200,10 @@ public final class TurretRotation extends SubsystemBase {
     }
 
     /**
-     * Reorients the rotation to the specified
-     * active limit switch. 
+     * Resets the rotation to the specified
+     * active reset switch position. 
      * 
-     * @param type The limit switch type.
+     * @param type The active reset switch.
      */
     public void resetRotation(ResetSwitchType type) {
         m_rotation = m_rotation_range.clamp(type.angle);
