@@ -18,7 +18,7 @@ public class Limelight extends SubsystemBase {
      * The Led mode of the limelight.
      */
     public enum LedMode {
-        kModePipeline(0), kModeOff(1), kModeOn(2), kModeBlink(3);
+        kModePipeline(0), kModeOff(1), kModeBlink(2), kModeOn(3);
 
         LedMode(double value) {
             this.value = value;
