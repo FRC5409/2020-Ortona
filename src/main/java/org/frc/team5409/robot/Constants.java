@@ -1,6 +1,8 @@
 package org.frc.team5409.robot;
 
+import com.revrobotics.CANError;
 import com.revrobotics.CANSparkMax.IdleMode;
+
 
 import org.frc.team5409.robot.util.*;
 
@@ -140,8 +142,10 @@ public final class Constants {
     }
 
     public static class DriveTrain{
+
         public static final IdleMode idle = IdleMode.kBrake;
 
+        public static final double loopRampRate= 0.5;
         public static final int kLeftDriveFront = 13;
 
         public static final int kLeftDriveRear = 4;
@@ -172,7 +176,7 @@ public final class Constants {
 
         public static final int kEncoderCPR = 0;
 
-        public static final double kWheelDiameterMeters = 0.457;
+        public static final double kWheelDiameterMeters = 0;
 
         public static final double kEncoderDistancePerPulse =
                 // Assumes the encoders are directly mounted on the wheel shafts
@@ -189,8 +193,11 @@ public final class Constants {
 
         public static final boolean kGyroReversed = true;
 
+        public static final double gearRatio = 0;
 
         public static final double neo_encoder_position = 42.0;
+
+        public static final double distanceCalculate = (Math.PI*kWheelDiameterMeters) / gearRatio;
     }
     public static class Hanging{
 

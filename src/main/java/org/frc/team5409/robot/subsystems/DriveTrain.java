@@ -25,6 +25,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.kauailabs.navx.frc.AHRS;
 
 public class DriveTrain extends SubsystemBase {
+  private static final double rampRate = 0;
   private final AHRS m_navX;
   private final CANSparkMax mot_leftDriveFront_sparkmax_C13;
   private final CANSparkMax mot_rightDriveFront_sparkmax_C15;
@@ -47,6 +48,7 @@ public class DriveTrain extends SubsystemBase {
     mot_leftDriveFront_sparkmax_C13.setIdleMode(Constants.DriveTrain.idle);
     mot_leftDriveFront_sparkmax_C13.setSmartCurrentLimit(40);
     mot_leftDriveFront_sparkmax_C13.setInverted(true);
+    mot_leftDriveFront_sparkmax_C13.setOpenLoopRampRate(Constants.DriveTrain.loopRampRate);
     mot_leftDriveFront_sparkmax_C13.burnFlash();
 
     mot_leftDriveRear_sparkmax_C4 = new CANSparkMax(Constants.DriveTrain.kLeftDriveRear, MotorType.kBrushless);
@@ -54,18 +56,21 @@ public class DriveTrain extends SubsystemBase {
     mot_leftDriveRear_sparkmax_C4.setIdleMode(Constants.DriveTrain.idle);
     mot_leftDriveRear_sparkmax_C4.setSmartCurrentLimit(40);
     mot_leftDriveRear_sparkmax_C4.setInverted(true);
+    mot_leftDriveRear_sparkmax_C4.setOpenLoopRampRate(Constants.DriveTrain.loopRampRate);
     mot_leftDriveRear_sparkmax_C4.burnFlash();
 
     mot_rightDriveFront_sparkmax_C15 = new CANSparkMax(Constants.DriveTrain.kRightDriveFront, MotorType.kBrushless);
     mot_rightDriveFront_sparkmax_C15.restoreFactoryDefaults();
     mot_rightDriveFront_sparkmax_C15.setIdleMode(Constants.DriveTrain.idle);
     mot_rightDriveFront_sparkmax_C15.setSmartCurrentLimit(40);
+    mot_rightDriveFront_sparkmax_C15.setOpenLoopRampRate(Constants.DriveTrain.loopRampRate);
     mot_rightDriveFront_sparkmax_C15.burnFlash();
 
     mot_rightDriveRear_sparkmax_C6 = new CANSparkMax(Constants.DriveTrain.kRightDriveRear, MotorType.kBrushless);
     mot_rightDriveRear_sparkmax_C6.restoreFactoryDefaults();
     mot_rightDriveRear_sparkmax_C6.setIdleMode(Constants.DriveTrain.idle);
     mot_rightDriveRear_sparkmax_C6.setSmartCurrentLimit(40);
+    mot_rightDriveRear_sparkmax_C6.setOpenLoopRampRate(Constants.DriveTrain.loopRampRate);
     mot_rightDriveRear_sparkmax_C6.burnFlash();
 
     // Sets speed control group to the corisponding motor
