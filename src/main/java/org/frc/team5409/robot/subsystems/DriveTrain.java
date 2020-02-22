@@ -124,16 +124,16 @@ public class DriveTrain extends SubsystemBase {
   }
 
   /**
-   * Method to set AntiTip value to true
+   * Method to turn AntiTip on
    */
-  public void setAntiTipTrue() {
+  public void turnAntiTipOn() {
     m_antiTipToggle = true;
   }
 
   /**
-   * Method to set AntiTip value to false
+   * Method to turn AntiTip off
    */
-  public void setAntiTipFalse() {
+  public void turnAntiTipOff() {
     m_antiTipToggle = false;
   }
 

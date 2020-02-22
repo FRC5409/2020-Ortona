@@ -41,15 +41,11 @@ public class RobotContainer {
 	private final TurretRotation sys_turret_rotation;
 	private final Indexer sys_Indexer;
 	
-
-	
-	private final RunTurretFlywheel cmd_turret_run;
-	private final IndexActive cmd_IndexActive;
+	private IntakeIndexActive cmd_IntakeIndexActive;
 	public final Intake sys_intakeSubsystem;
-	public final IntakeActive m_intakeActive;
 	public final DriveTrain sys_driveTrain;
 	private final SequentialCommandGroup grp_configure_turret;
-	private final AntiTipToggle m_AntiTipToggle;
+	private AntiTipToggle cmd_AntiTipToggle;
 	private final XboxController joy_main, joy_secondary;
 	public final DriveCommand m_driveCommand;
 	private final JoystickButton but_main_A, but_main_B, but_main_X, but_main_Y, but_main_sck_left, but_main_sck_right,
@@ -71,6 +67,9 @@ public class RobotContainer {
 	 * The container for the robot. Contains subsystems, OI devices, and commands.
 	 */
 	public RobotContainer() {
+		joy_main = new XboxController(0);
+		joy_secondary = new XboxController(1);
+		sys_driveTrain = new DriveTrain(); 
 
 		//WuTang's stuff
 		m_hanging = new Hanging();
@@ -86,25 +85,12 @@ public class RobotContainer {
 		// Liz's stuff
 		sys_Indexer = new Indexer();
 
-		cmd_IndexActive = new IndexActive(sys_Indexer, sys_intakeSubsystem);
-
 		// Sanad's stuff
 		sys_intakeSubsystem = new Intake();
 		
-		m_AntiTipToggle= new AntiTipToggle(sys_driveTrain);
-		m_intakeActive = new IntakeActive(sys_intakeSubsystem);
-
 		// Keith's stuff
 		sys_turret_flywheel = new TurretFlywheel();
 		sys_turret_rotation = new TurretRotation();
-
-		//Karina's Stuff
-		sys_driveTrain = new DriveTrain(); 
-
-		joy_main = new XboxController(0);
-		joy_secondary = new XboxController(1);
-
-		cmd_turret_run = new RunTurretFlywheel(sys_turret_flywheel, sys_Indexer, joy_main, joy_secondary);
 
 		grp_configure_turret = new SequentialCommandGroup(new ConfigureTurret(sys_turret_rotation, sys_turret_flywheel),
 				new RotateTurret(sys_turret_rotation, 0));
@@ -113,8 +99,7 @@ public class RobotContainer {
 		but_main_B = new JoystickButton(joy_main, XboxController.Button.kB.value);
 		but_main_X = new JoystickButton(joy_main, XboxController.Button.kX.value);
 		but_main_Y = new JoystickButton(joy_main, XboxController.Button.kY.value);
-		// Run intake while held
-		but_main_Y.whileHeld(new IntakeActive(sys_intakeSubsystem));
+
 		but_main_sck_left = new JoystickButton(joy_main, XboxController.Button.kStickLeft.value);
 		but_main_sck_right = new JoystickButton(joy_main, XboxController.Button.kStickRight.value);
 		but_main_bmp_left = new JoystickButton(joy_main, XboxController.Button.kBumperLeft.value);
@@ -127,7 +112,6 @@ public class RobotContainer {
 		but_secondary_B = new JoystickButton(joy_secondary, XboxController.Button.kB.value);
 		but_secondary_X = new JoystickButton(joy_secondary, XboxController.Button.kX.value);
 		but_secondary_Y = new JoystickButton(joy_secondary, XboxController.Button.kY.value);
-		but_secondary_Y.whenPressed(new AntiTipToggle(sys_driveTrain));
 		but_secondary_sck_left = new JoystickButton(joy_secondary, XboxController.Button.kStickLeft.value);
 		but_secondary_sck_right = new JoystickButton(joy_secondary, XboxController.Button.kStickRight.value);
 		but_secondary_bmp_left = new JoystickButton(joy_secondary, XboxController.Button.kBumperLeft.value);
@@ -136,10 +120,15 @@ public class RobotContainer {
 		configureBindings();
 	}
 
+	
 	private void configureBindings() {
 		//but_main_A.whileActiveOnce(cmd_turret_run);
 		//but_main_A.cancelWhenPressed(cmd_IndexActive);
-		sys_turret_flywheel.setDefaultCommand(cmd_turret_run);
+
+	    // Run intake while held
+		but_main_Y.whileHeld(new IntakeIndexActive(sys_Indexer, sys_intakeSubsystem));
+		// Toggle AntiTip
+	    but_secondary_Y.whenPressed(new AntiTipToggle(sys_driveTrain));
 
 		//but_main_X.toggleWhenPressed(cmd_IndexActive);
 

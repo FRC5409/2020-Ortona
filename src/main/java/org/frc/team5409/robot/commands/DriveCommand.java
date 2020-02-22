@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import org.frc.team5409.robot.subsystems.DriveTrain;
 
 public class DriveCommand extends CommandBase {
-  private final DriveTrain m_driveSubsystem;
+  private final DriveTrain sys_driveSubsystem;
   public static boolean autoBalanceXMode = false;
   public static boolean autoBalanceYMode = false;
   public static double pitchAngleDegrees;
@@ -33,11 +33,11 @@ public class DriveCommand extends CommandBase {
    * Creates a new DriveCommand.
    */
   public DriveCommand(DriveTrain subsystem, XboxController joystick) {
-    m_driveSubsystem = subsystem;
+    sys_driveSubsystem = subsystem;
     m_joystick = joystick;
     // DriveTrain m_DriveTrainSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(m_driveSubsystem);
+    addRequirements(sys_driveSubsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -52,13 +52,13 @@ public class DriveCommand extends CommandBase {
     leftTrigger = m_joystick.getTriggerAxis(Hand.kRight);
     lxAxis = m_joystick.getX(Hand.kLeft);
     lyAxis = rightTrigger - leftTrigger;
-    pitchAngleDegrees = m_driveSubsystem.getPitchAngle();
-    rollAngleDegrees = m_driveSubsystem.getRollAngle();
+    pitchAngleDegrees = sys_driveSubsystem.getPitchAngle();
+    rollAngleDegrees = sys_driveSubsystem.getRollAngle();
 
 
 
     // Detect the toggle value
-    if (m_driveSubsystem.getAntiTip()) {
+    if (sys_driveSubsystem.getAntiTip()) {
       // Threshold detection to enable autoBalanceXMode
       if (!autoBalanceXMode && (Math.abs(pitchAngleDegrees) >= Math.abs(kOffBalanceAngleThresholdDegrees))) {
         autoBalanceXMode = true;
@@ -88,16 +88,13 @@ public class DriveCommand extends CommandBase {
         lyAxis = Math.sin(rollAngleRadians) * -1;
       }
       try {
-        m_driveSubsystem.arcadeDrive(lxAxis, lyAxis);
+        sys_driveSubsystem.arcadeDrive(lxAxis, lyAxis);
       } catch (RuntimeException ex) {
         String err_string = "Drive system error:  " + ex.getMessage();
         DriverStation.reportError(err_string, true);
       }
-
-      // Wait for motor update time
-      //WARNING!!! THIS MAY CAUSE ISSUES - Commented out//Timer.delay(0.005);
-    } else { //If autotip is disabled, default to manual drive
-        m_driveSubsystem.manualDrive(leftTrigger, rightTrigger, lxAxis);
+    } else { //If AntiTip is disabled, default to manual drive
+        sys_driveSubsystem.manualDrive(leftTrigger, rightTrigger, lxAxis);
     }
 
   }
