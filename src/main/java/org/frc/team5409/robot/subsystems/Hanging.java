@@ -84,8 +84,7 @@ public class Hanging extends SubsystemBase {
 
     //Time Of Flight
     TOF_Hang = new TimeOfFlight(Constants.Hanging.TOF_ID);     
-    TOF_Hang.setRangingMode(TimeOfFlight.RangingMode.Short, Constants.Hanging.TOF_SAMPLE_TIME);
-    range_Hang = TOF_Hang.getRange();
+    TOF_Hang.setRangingMode(TimeOfFlight.RangingMode.Short, Constants.Hanging.TOF_SAMPLE_TIME);    
 
     setPid();
 
@@ -116,6 +115,7 @@ public class Hanging extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     // adjustPid();
+    range_Hang = TOF_Hang.getRange();
   }
 
   public void adjustPid() {
@@ -177,8 +177,10 @@ public class Hanging extends SubsystemBase {
  * Stops the neo (sets the PID poisition to current position) once limit switch isSwitchSet
  */
   public void stopNeo() {
-    rotations = enc1_hanging.getPosition();
-    m_pidController_hanging.setReference(rotations, ControlType.kPosition);
+    // rotations = enc1_hanging.getPosition();
+    // m_pidController_hanging.setReference(rotations, ControlType.kPosition);
+    mot_hanging_neo_C3.stopMotor();
+    mot_hanging_neo_C5.stopMotor();
   }
 
 /**
