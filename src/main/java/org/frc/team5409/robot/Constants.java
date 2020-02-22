@@ -219,5 +219,10 @@ public final class Constants {
         //Piston
         public static final int FORWARD_CHANEL = 1;
         public static final int BACKWARD_CHANEL = 2;
+
+        //Time Of Flight
+        public static final int TOF_ID = 4;
+        public static final double TOF_RANGE = 10;
+        public static final double TOF_SAMPLE_TIME = 24;
     }
 }

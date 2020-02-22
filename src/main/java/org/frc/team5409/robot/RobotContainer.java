@@ -55,12 +55,12 @@ public class RobotContainer {
 			but_secondary_sck_left, but_secondary_sck_right, but_secondary_bmp_left, but_secondary_bmp_right;
 
 	public final Hanging m_hanging;
-	public final RetractArmNeo cmd_RetractArmNeo;
-	public final ExtendArmNeo cmd_ExtendArmNeo;
-	public final UnlockPiston cmd_UnlockPiston;
-	public final LockPiston cmd_LockPiston;
-	public final Retract cmd_Retract;
-	public final Extend cmd_Extend;
+	// public final RetractArmNeo cmd_RetractArmNeo;
+	// public final ExtendArmNeo cmd_ExtendArmNeo;
+	// public final UnlockPiston cmd_UnlockPiston;
+	// public final LockPiston cmd_LockPiston;
+	// public final Retract cmd_Retract;
+	// public final Extend cmd_Extend;
 	public final DriveStraightAuto cmd_DriveStraightAuto;
 
 	/**
@@ -75,12 +75,12 @@ public class RobotContainer {
 		m_hanging = new Hanging();
 		m_driveCommand = new DriveCommand(sys_driveTrain, joy_main);
 		cmd_DriveStraightAuto = new DriveStraightAuto(sys_driveTrain);
-		cmd_RetractArmNeo = new RetractArmNeo(m_hanging);
-		cmd_ExtendArmNeo = new ExtendArmNeo(m_hanging);
-		cmd_UnlockPiston = new UnlockPiston(m_hanging);
-		cmd_LockPiston = new LockPiston(m_hanging);
-		cmd_Retract = new Retract(m_hanging);
-		cmd_Extend = new Extend(m_hanging);
+		// cmd_RetractArmNeo = new RetractArmNeo(m_hanging);
+		// cmd_ExtendArmNeo = new ExtendArmNeo(m_hanging);
+		// cmd_UnlockPiston = new UnlockPiston(m_hanging);
+		// cmd_LockPiston = new LockPiston(m_hanging);
+		// cmd_Retract = new Retract(m_hanging);
+		// cmd_Extend = new Extend(m_hanging);
 
 		// Liz's stuff
 		sys_Indexer = new Indexer();

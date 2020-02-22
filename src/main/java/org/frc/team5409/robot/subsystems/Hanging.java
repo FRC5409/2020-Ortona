@@ -7,6 +7,7 @@
 
 package org.frc.team5409.robot.subsystems;
 
+import com.playingwithfusion.TimeOfFlight;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
@@ -34,7 +35,7 @@ public class Hanging extends SubsystemBase {
   private DoubleSolenoid dsl_hangSolenoid;
 
   //Limit Switch
-  private static DigitalInput limitSwitch;
+  // private static DigitalInput limitSwitch;
 
   //Neo
   private final CANSparkMax mot_hanging_neo_C3;
@@ -43,6 +44,10 @@ public class Hanging extends SubsystemBase {
   public CANEncoder enc2_hanging;
   private CANPIDController m_pidController_hanging;
   public double rotations;
+
+  //Time Of Flight
+  protected TimeOfFlight TOF_Hang;
+  public double range_Hang;
 
   public Hanging() {
     // Piston
@@ -76,12 +81,16 @@ public class Hanging extends SubsystemBase {
 
     mot_hanging_neo_C3.burnFlash();
     mot_hanging_neo_C5.burnFlash();
-       
+
+    //Time Of Flight
+    TOF_Hang = new TimeOfFlight(Constants.Hanging.TOF_ID);     
+    TOF_Hang.setRangingMode(TimeOfFlight.RangingMode.Short, Constants.Hanging.TOF_SAMPLE_TIME);
+    range_Hang = TOF_Hang.getRange();
 
     setPid();
 
     // Limit Switch
-    limitSwitch = new DigitalInput(1);
+    // limitSwitch = new DigitalInput(1);
   }
 
   public void setPid() {
@@ -176,9 +185,9 @@ public class Hanging extends SubsystemBase {
  * isSwitchSet
  * Boolean that determines if the limit switch is set or not
  */
-  public static boolean isSwitchSet() {
-    return !limitSwitch.get();
-  }
+  // public static boolean isSwitchSet() {
+  //   return !limitSwitch.get();
+  // }
 
  /**
  * lockPiston
