@@ -25,7 +25,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.kauailabs.navx.frc.AHRS;
 
 public class DriveTrain extends SubsystemBase {
-  private static final double rampRate = 0;
+  
   private final AHRS m_navX;
   private final CANSparkMax mot_leftDriveFront_sparkmax_C13;
   private final CANSparkMax mot_rightDriveFront_sparkmax_C15;
@@ -311,7 +311,7 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public void auto() {
-final double startingEncoderDistance= m_leftEncoder.getPosition()*Constants.DriveTrain.distanceCalculate;
+
 
     if (m_leftEncoder.getPosition()*Constants.DriveTrain.distanceCalculate <= (1)) {
       m_leftMotors.set(0.5);
