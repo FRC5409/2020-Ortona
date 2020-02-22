@@ -14,7 +14,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import org.frc.team5409.robot.Constants; 
+import org.frc.team5409.robot.Constants;
 
 /**
  * Add your docs here.
@@ -44,8 +44,8 @@ public class Indexer extends SubsystemBase {
   protected double getRangeExit;
   protected double getRangeBall1;
 
-  public enum getRange{
-    getRangeEnter, getRangeBall1, getRangeExit; 
+  public enum getRange {
+    getRangeEnter, getRangeBall1, getRangeExit;
 
   }
 
@@ -78,12 +78,6 @@ public class Indexer extends SubsystemBase {
     m_Indexer_neo550_C16.setIdleMode(IdleMode.kBrake);
     m_Indexer_neo550_C16.burnFlash();
 
-    if(Constants.Indexer.sampleTime < 24){
-      Constants.Indexer.sampleTime = 24; 
-    } else if (Constants.Indexer.sampleTime > 24){
-      Constants.Indexer.sampleTime = 24; 
-    }
-
     TOF_Enter.setRangingMode(TimeOfFlight.RangingMode.Short, Constants.Indexer.sampleTime);
     TOF_Exit.setRangingMode(TimeOfFlight.RangingMode.Short, Constants.Indexer.sampleTime);
     TOF_Ball1.setRangingMode(TimeOfFlight.RangingMode.Short, Constants.Indexer.sampleTime);
@@ -92,32 +86,31 @@ public class Indexer extends SubsystemBase {
 
   // the measured distance in mm
   // public double getRangeEnter() {
-  //   return TOF_Enter.getRange();
+  // return TOF_Enter.getRange();
   // }
 
   // public double getRangeExit() {
-  //   return TOF_Exit.getRange();
+  // return TOF_Exit.getRange();
   // }
 
   // public double getRangeBall1() {
-  //   return TOF_Ball1.getRange();
+  // return TOF_Ball1.getRange();
   // }
 
-    public void getRange(getRange type) {
-      if (type == getRange.getRangeEnter){
-        return TOF_Enter.getRange();
-      }
-
-      if (type == getRange.getRangeBall1){
-        return; 
-      }
-
-      if (type == getRange.getRangeExit){
-        return; 
-      }
-
+  public void getRange(getRange type) {
+    if (type == getRange.getRangeEnter) {
+      return;
     }
 
+    if (type == getRange.getRangeBall1) {
+      return;
+    }
+
+    if (type == getRange.getRangeExit) {
+      return;
+    }
+
+  }
 
   // ball detection functions
   public boolean ballDetectionEnter() {
@@ -126,7 +119,7 @@ public class Indexer extends SubsystemBase {
 
       if (range == 115) {
         getNumberOfPowerCellsEnter++;
-        //this could be a for loop
+        // this could be a for loop
       }
 
       return true;
@@ -134,10 +127,12 @@ public class Indexer extends SubsystemBase {
     return false;
   }
 
-  public int getNumberOfPowerCellsEnter(){
-	  return getNumberOfPowerCellsEnter; 
+  // function that returns how many power cells are in the indexer
+  public int getNumberOfPowerCellsEnter() {
+    return getNumberOfPowerCellsEnter;
   }
 
+  //detects whether or not power cells are in range of ball1 sensor
   public boolean ballDetectionBall1() {
     double range = TOF_Ball1.getRange();
     if (range < Constants.Indexer.rangeBall1_1 && range > Constants.Indexer.rangeBall1_2) {
@@ -146,6 +141,7 @@ public class Indexer extends SubsystemBase {
     return false;
   }
 
+  //detects whether or not power cells are in range of exit sensor
   public boolean ballDetectionExit() {
     double range = TOF_Exit.getRange();
     if (range < Constants.Indexer.rangeExit_1 && range > Constants.Indexer.rangeExit_2) {
@@ -159,26 +155,29 @@ public class Indexer extends SubsystemBase {
     return TOF_Enter.isRangeValid();
   }
 
+  // determines whether or not range is valid
   public boolean isRangeValidExit() {
     return TOF_Exit.isRangeValid();
   }
 
+  // determines whether or not range is valid
   public boolean isRangeValidBall1() {
     return TOF_Ball1.isRangeValid();
   }
 
   // set ranging mode (short)
   public void setRangingMode(TimeOfFlight.RangingMode rangeModeIn, double sampleTime) {
-    if (sampleTime == 24) { // Error Checking for sample time <24
+    if (sampleTime > 24) { // Error Checking for sample time <24
+      sampleTime = 24; 
       TOF_Enter.setRangingMode(rangeModeIn, sampleTime);
     } else if (sampleTime > 24) {
     }
   }
 
+  //sets up motor
   public void moveIndexerMotor(double output) {
     m_Indexer_neo550_C16.set(output);
   }
-  // make a stop indexer motor
 
   @Override
   public void periodic() {
