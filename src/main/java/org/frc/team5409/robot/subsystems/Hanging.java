@@ -18,7 +18,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import org.frc.team5409.robot.Constants;
 
-import edu.wpi.first.wpilibj.DigitalInput;
+//import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;

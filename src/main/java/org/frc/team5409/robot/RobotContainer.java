@@ -19,7 +19,6 @@ import org.frc.team5409.robot.commands.Hanging.RetractArmNeo;
 import org.frc.team5409.robot.commands.Hanging.UnlockPiston;
 import org.frc.team5409.robot.subsystems.*;
 import edu.wpi.first.wpilibj.*;
-import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.RamseteController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
@@ -67,6 +66,7 @@ public class RobotContainer {
 	 * The container for the robot. Contains subsystems, OI devices, and commands.
 	 */
 	public RobotContainer() {
+		//Joystick stuff
 		joy_main = new XboxController(0);
 		joy_secondary = new XboxController(1);
 		sys_driveTrain = new DriveTrain(); 
@@ -95,6 +95,7 @@ public class RobotContainer {
 		grp_configure_turret = new SequentialCommandGroup(new ConfigureTurret(sys_turret_rotation, sys_turret_flywheel),
 				new RotateTurret(sys_turret_rotation, 0));
 
+		//Buttons
 		but_main_A = new JoystickButton(joy_main, XboxController.Button.kA.value);
 		but_main_B = new JoystickButton(joy_main, XboxController.Button.kB.value);
 		but_main_X = new JoystickButton(joy_main, XboxController.Button.kX.value);
