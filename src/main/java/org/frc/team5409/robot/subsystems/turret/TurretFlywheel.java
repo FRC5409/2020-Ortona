@@ -1,12 +1,10 @@
 package org.frc.team5409.robot.subsystems.turret;
 
-//import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-//import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.*;
 
-import org.frc.team5409.robot.util.Range;
 import org.frc.team5409.robot.util.Watchdog;
+import org.frc.team5409.robot.util.Range;
 import org.frc.team5409.robot.Constants;
 
 /**

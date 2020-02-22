@@ -16,9 +16,9 @@ public final class Constants {
 
 //========================================================
     // Robot configuration Constants
-        public static final double vision_limelight_height = 103.1d/12.0d;
+        public static final double vision_limelight_height = 41.1d/12.0d;
 
-        public static final double vision_limelight_pitch = 10;
+        public static final double vision_limelight_pitch = 12.4;
     }
 
     public static final class TurretControl {
@@ -41,7 +41,7 @@ public final class Constants {
     // Range Configurations
         public static final Range turret_rotation_range = new Range(-270, 270);
 
-        public static final Range turret_velocity_range = new Range(0, 7000);
+        public static final Range turret_velocity_range = new Range(0, 4500);
 
         public static final Range turret_distance_range = new Range(15, 33);
 
@@ -50,8 +50,9 @@ public final class Constants {
         public static final SimpleEquation turret_distance_rpm_curve = d -> {
             d += (10.d/12.0d);
             //return 1.8*(d*d) - 26.8*(d) + 2929; //2nd POLY CURVE
-            return 1326*Math.log(d) - 784; // LOG CURVE
+            //return 1326*Math.log(d) - 784; // LOG CURVE
             //return 978*Math.pow(d, 0.393); // POWER SERIES CURVE
+            return 1506*Math.log(d) - 1492;
         };
 
 //========================================================
@@ -83,7 +84,7 @@ public final class Constants {
 
         public static final int TOF_Exit = 1; 
 
-        public static final int m_Indexer_neo550_C16 = 16; 
+        public static final int m_Indexer_neo550_C16 = 13; 
 
         public static final int currentLimit = 20; 
 
