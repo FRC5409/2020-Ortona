@@ -55,15 +55,19 @@ public final class Logger {
      * 
      * @param str The data string.
      * 
+     * @return    The logger instance.
+     * 
      * @throws RuntimeException Thrown when the program fails to write
      *                          to the logger file.
      */
-    public void write(String str) {
+    public Logger write(String str) {
         if (!m_saved) try {
             m_writer.write(str);
         } catch (IOException e) {
             throw new RuntimeException("Failed to write to log file at \'"+m_file.getPath()+"\'.");
         }
+
+        return this;
     }
 
     /**
@@ -72,11 +76,14 @@ public final class Logger {
      * @param format  The string format.
      * @param args    The string data.
      * 
-     * @throws RuntimeException Thrown when the program fails to write
-     *                          to the logger file.
+     * @return        The logger instance.
+     * 
+     * @throws RuntimeException 
+     *                Thrown when the program fails to write
+     *                to the logger file.
      */
-    public void write(String format, Object... args) {
-        write(String.format(format, args));
+    public Logger write(String format, Object... args) {
+        return write(String.format(format, args));
     }
 
     /**
@@ -84,12 +91,14 @@ public final class Logger {
      * on a newline.
      * 
      * @param str The data string.
+     *
+     * @return    The logger instance.
      * 
      * @throws RuntimeException Thrown when the program fails to write
      *                          to the logger file.
      */
-    public void writeln(String str) {
-        write(str + '\n');
+    public Logger writeln(String str) {
+        return write(str + '\n');
     }
 
     /**
@@ -99,11 +108,13 @@ public final class Logger {
      * @param format  The string format.
      * @param args    The string data.
      * 
+     * @return        The logger instance.
+     * 
      * @throws RuntimeException Thrown when the program fails to write
      *                          to the logger file.
      */
-    public void writeln(String format, Object... args) {
-        write(String.format(format, args) + '\n');
+    public Logger writeln(String format, Object... args) {
+        return write(String.format(format, args) + '\n');
     }
 
     /**
