@@ -80,6 +80,33 @@ public final class Logger {
     }
 
     /**
+     * Writes a string to the logger file
+     * on a newline.
+     * 
+     * @param str The data string.
+     * 
+     * @throws RuntimeException Thrown when the program fails to write
+     *                          to the logger file.
+     */
+    public void writeln(String str) {
+        write(str + '\n');
+    }
+
+    /**
+     * Writes a formatted string to the logger file
+     * on a newline.
+     * 
+     * @param format  The string format.
+     * @param args    The string data.
+     * 
+     * @throws RuntimeException Thrown when the program fails to write
+     *                          to the logger file.
+     */
+    public void writeln(String format, Object... args) {
+        write(String.format(format, args) + '\n');
+    }
+
+    /**
      * Saves the logger file to the roboRio
      * filesystem.
      * 
