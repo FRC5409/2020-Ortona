@@ -3,6 +3,8 @@ package org.frc.team5409.robot.util;
 /**
  * Outlines functionality for subsystems
  * that can be enabled and disabled.
+ * 
+ * @author Keith Davies
  */
 public abstract interface Toggleable {
     /**
