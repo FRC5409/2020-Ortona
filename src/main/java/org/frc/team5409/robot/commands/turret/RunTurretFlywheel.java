@@ -31,7 +31,7 @@ public final class RunTurretFlywheel extends CommandBase {
     private final Range          m_distance_range;
     private final SimpleEquation m_rpm_curve;
 
-    private       double         m_target, m_distance, m_timer;
+    private       double         m_target, m_distance, m_timer, m_predicted, m_scored;
 
     private       boolean        m_debounce1, m_debounce2, m_debounce3, m_debounce4;
 
@@ -44,6 +44,7 @@ public final class RunTurretFlywheel extends CommandBase {
         m_indexer = sys_indexer;
         m_limelight = sys_limelight;
 
+        m_predicted = 0;
         m_distance = 0;
         m_target = 0;
         m_timer = 0;
@@ -78,8 +79,18 @@ public final class RunTurretFlywheel extends CommandBase {
         m_log_scored = new Logger(logs_path+"/POWERCELL_SCORES.csv");
         m_log_events = new Logger(logs_path+"/TURRET_EVENTS.csv");
 
+        m_debounce1 = false;
+        m_debounce2 = false;
+        m_debounce3 = false;
+        m_debounce4 = false;
+
+        m_predicted = 0;
+        m_distance = 0;
+        m_target = 0;
+        m_timer = Timer.getFPGATimestamp();
+
         new Logger(logs_path+"/TURRET_CONSTANTS.csv")
-            .writeln("%f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f",
+            .write("%f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %s",
                 Constants.TurretControl.pid_turret_flywheel.P,
                 Constants.TurretControl.pid_turret_flywheel.I,
                 Constants.TurretControl.pid_turret_flywheel.D,
@@ -93,18 +104,14 @@ public final class RunTurretFlywheel extends CommandBase {
 
                 Constants.Vision.vision_limelight_height,
                 Constants.Vision.vision_outerport_height,
-                Constants.Vision.vision_limelight_pitch
-            )
+                Constants.Vision.vision_limelight_pitch,
+
+                Constants.TurretControl.turret_distance_rpm_curve_string)
             .save();
-
-        m_distance = 0;
-
-        m_debounce1 = false;
-        m_debounce2 = false;
-        m_debounce3 = false;
-        m_debounce4 = false;
-
-        m_timer = Timer.getFPGATimestamp();
+        
+        m_log_events.writeln("0, SESSION START, ");
+        m_log_velocity.writeln("0, 0");
+        m_log_current.writeln("0, 0");
     }
 
     @Override
@@ -115,14 +122,15 @@ public final class RunTurretFlywheel extends CommandBase {
         if (m_limelight.hasTarget() && m_limelight.getTargetType() == Limelight.TargetType.kOuterPort) {
             Vec2 target = m_limelight.getTarget();
 
-            m_distance = m_distance_range.clamp(m_target_height / Math.tan(Math.toRadians(target.y + Constants.Vision.vision_limelight_pitch)));
+            //m_distance = m_distance_range.clamp(m_target_height / Math.tan(Math.toRadians(target.y + Constants.Vision.vision_limelight_pitch)));
+            m_distance = m_target_height / Math.tan(Math.toRadians(target.y + Constants.Vision.vision_limelight_pitch));
+            m_predicted = m_rpm_curve.calculate(m_distance);
 
             if (!m_debounce1)
                 m_log_events.writeln("%f, TARGET AQUIRED [%f], %f", time, m_distance, m_distance);
 
             m_debounce1 = true;
         } else {
-
             if (m_debounce1)
                 m_log_events.writeln("%f, TARGET LOST [%f], %f", time, m_distance, m_distance);
             
@@ -136,7 +144,7 @@ public final class RunTurretFlywheel extends CommandBase {
 
             if (!m_debounce2) {
                 m_log_events.writeln("%f, TURRET AT SPEED [%f], %f", time, velocity, velocity);
-                m_log_events.writeln("%f, INDEXER STARTED [%f], %f", time, 0.8, 0.8);
+                m_log_events.writeln("%f, INDEXER STARTED [0.8], 0.8", time);
             }
             
             m_debounce2 = true;
@@ -144,19 +152,18 @@ public final class RunTurretFlywheel extends CommandBase {
             m_indexer.moveIndexerMotor(0);
 
             if (m_debounce2)
-                m_log_events.writeln(String.format("%f, INDEXER STOPPED [%f], %f", time, 0, 0));
+                m_log_events.writeln(String.format("%f, INDEXER STOPPED [0], 0", time));
 
             m_debounce2 = false;
         }
-        
-        m_log_velocity.writeln("%f, %f", time, velocity);
-        m_log_current.writeln("%f, %f", time, m_turret.getCurrent());
 
         if (m_trg_flywheel.get()) {
             if (!m_debounce3) {
                 m_target = SmartDashboard.getNumber("Target Velocity", 0);
                 m_turret.setVelocity(m_target);
                 m_turret.startFeeder();
+
+                m_scored = 0;
 
                 m_log_events.writeln("%f, TURRET STARTED [%f], %f", time, m_target, m_target);
             }
@@ -167,33 +174,54 @@ public final class RunTurretFlywheel extends CommandBase {
                 m_turret.setVelocity(0);
                 m_turret.stopFeeder();
 
-                m_log_events.writeln("%f, TURRET STOPPED [], ", time);
+                m_log_events.writeln("%f, TURRET STOPPED [0], 0", time);
             }
                 
             m_debounce3 = false;
         }
 
         if (m_trg_score.get()) {
-            if (!m_debounce4)
-                m_log_scored.writeln("%f, %f, %f, %f", time, m_distance, m_target, velocity);
+            if (!m_debounce4) {
+                m_log_events.writeln("%f, POWERCELL SCORED [%f], %f", time, m_distance, m_distance);
+                m_log_scored.writeln("%f, %f, %f, %f, %f", time, m_distance, m_target, m_predicted, velocity);
+
+                m_scored++;
+            }
 
             m_debounce4 = true;
         } else
             m_debounce4 = false;
 
+        m_log_velocity.writeln("%f, %f", time, velocity);
+        m_log_current.writeln("%f, %f", time, m_turret.getCurrent());
+
         SmartDashboard.putNumber(      "Real Velocity", velocity);
         SmartDashboard.putNumber(    "Target Velocity", m_target);
         SmartDashboard.putNumber(    "Actual Velocity", m_turret.getVelocity());     
-        SmartDashboard.putNumber( "Predicted Velocity", m_rpm_curve.calculate(m_distance));
+        SmartDashboard.putNumber( "Predicted Velocity", m_predicted);
         SmartDashboard.putNumber("Robot Distance (ft)", m_distance);
+        SmartDashboard.putNumber(  "Scored Powercells", m_scored);
     }
 
     @Override
     public void end(boolean interrupted) {
+        double time = Timer.getFPGATimestamp() - m_timer;
+
         m_limelight.disable();
         m_turret.disable();
 
         m_indexer.moveIndexerMotor(0);
+
+        if (m_debounce3)
+            m_log_events.writeln("%f, TURRET STOPPED [0], 0", time);
+
+        if (m_debounce2)
+            m_log_events.writeln(String.format("%f, INDEXER STOPPED [0], 0", time));
+
+        if (m_debounce1)
+            m_log_events.writeln("%f, TARGET LOST [%f], %f", time, m_distance, m_distance);
+
+        m_log_events.writeln("%f, SESSION END, ", time);
 
         m_log_velocity.save();
         m_log_current.save();
