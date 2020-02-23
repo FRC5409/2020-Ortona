@@ -7,10 +7,10 @@ import org.frc.team5409.robot.util.*;
 
 
 /**
- * Limelight subsystem.
- * 
  * Facilitates the control and access
  * of limelight hardware.
+ * 
+ * @author Keith Davies
  */
 public class Limelight extends SubsystemBase implements Toggleable {
     /**
@@ -64,7 +64,7 @@ public class Limelight extends SubsystemBase implements Toggleable {
     private boolean           m_enabled;
 
     /**
-     * Constructs Limelight subsystem.
+     * Constructs the Limelight subsystem.
      */
     public Limelight() {
         m_limelight_data         = NetworkTableInstance.getDefault().getTable("limelight");
