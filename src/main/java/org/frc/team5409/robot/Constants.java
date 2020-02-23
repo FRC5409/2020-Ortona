@@ -55,6 +55,8 @@ public final class Constants {
             return 1506*Math.log(d) - 1492;
         };
 
+        public static final String turret_distance_rpm_curve_string = "1506 * ln(d + 0.83) - 1492";
+
 //========================================================
     // Turret Rotation Constants
         public static final double turret_rotation_target_thresh = 0;
