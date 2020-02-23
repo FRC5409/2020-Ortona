@@ -78,9 +78,8 @@ public final class Logger {
      * 
      * @return        The logger instance.
      * 
-     * @throws RuntimeException 
-     *                Thrown when the program fails to write
-     *                to the logger file.
+     * @throws RuntimeException Thrown when the program fails to write
+     *                          to the logger file.
      */
     public Logger write(String format, Object... args) {
         return write(String.format(format, args));
