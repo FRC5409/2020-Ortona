@@ -1,7 +1,5 @@
 package org.frc.team5409.robot.commands.turret;
 
-
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import org.frc.team5409.robot.subsystems.turret.TurretFlywheel;
@@ -76,9 +74,6 @@ public final class RunTurretFlywheel extends CommandBase {
             m_turret.setVelocity(m_target);
         }
         
-        SmartDashboard.putNumber("Target Velocity", m_target);
-        SmartDashboard.putNumber("Actual Velocity", m_turret.getVelocity());
-        SmartDashboard.putNumber("Distance (ft)", m_distance);
         if (m_turret.getVelocity() > m_target*Constants.TurretControl.turret_flywheel_target_thresh)
             m_indexer.moveIndexerMotor(-0.8);
         else
