@@ -1,19 +1,19 @@
 package org.frc.team5409.robot.subsystems.turret;
 
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SendableRegistry;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.DigitalInput;
 import com.revrobotics.*;
+
 import org.frc.team5409.robot.Constants;
-import org.frc.team5409.robot.util.Range;
-import org.frc.team5409.robot.util.Watchdog;
+import org.frc.team5409.robot.util.*;
 
 /**
  * Controls Turret Rotation.
  * 
  * @author Keith Davies
  */
-public final class TurretRotation extends SubsystemBase {
+public final class TurretRotation extends SubsystemBase implements Toggleable {
     /**
      * Represents the reset (limit) switches along the turret 
      * rotation as well as their respective angles.

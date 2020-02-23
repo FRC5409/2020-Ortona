@@ -2,9 +2,8 @@ package org.frc.team5409.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.networktables.*;
-import org.frc.team5409.robot.util.Range;
-import org.frc.team5409.robot.util.Vec2;
-import org.frc.team5409.robot.util.Vec3;
+
+import org.frc.team5409.robot.util.*;
 
 
 /**
@@ -13,7 +12,7 @@ import org.frc.team5409.robot.util.Vec3;
  * Facilitates the control and access
  * of limelight hardware.
  */
-public class Limelight extends SubsystemBase {
+public class Limelight extends SubsystemBase implements Toggleable {
     /**
      * The Led mode of the limelight.
      */

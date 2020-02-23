@@ -3,16 +3,15 @@ package org.frc.team5409.robot.subsystems.turret;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.*;
 
-import org.frc.team5409.robot.util.Watchdog;
-import org.frc.team5409.robot.util.Range;
 import org.frc.team5409.robot.Constants;
+import org.frc.team5409.robot.util.*;
 
 /**
  * Controls the Turret Flywheel.
  * 
  * @author Keith Davies
  */
-public final class TurretFlywheel extends SubsystemBase {
+public final class TurretFlywheel extends SubsystemBase implements Toggleable {
     private CANSparkMax      mot_C00_turret_flywheel;
     private CANSparkMax      mot_C01_turret_flywheel;
     private CANSparkMax      mot_C02_turret_feeder;
