@@ -8,7 +8,7 @@ package org.frc.team5409.robot.util;
  * @author Keith Davies
  */
 public final class Range {
-    public double min, max;
+    public final double min, max, magnitude;
 
     /**
      * Constructs a range.
@@ -17,8 +17,10 @@ public final class Range {
      * @param max The maximum range
      */
     public Range(double min, double max) {
-        this.min = min;
-        this.max = max;
+        this.min = Math.min(min, max);
+        this.max = Math.max(min, max);
+
+        this.magnitude = this.max - this.min;
     }
 
     /**
