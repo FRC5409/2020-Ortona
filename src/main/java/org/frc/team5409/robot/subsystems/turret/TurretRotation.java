@@ -55,8 +55,10 @@ public final class TurretRotation extends SubsystemBase implements Toggleable {
      */
     public TurretRotation() {
         mot_C00_turret_rotation = new CANSparkMax(0, CANSparkMax.MotorType.kBrushless);
+        mot_C00_turret_rotation.restoreFactoryDefaults();
             mot_C00_turret_rotation.setIdleMode(CANSparkMax.IdleMode.kBrake);
             mot_C00_turret_rotation.setSmartCurrentLimit(Constants.TurretControl.turret_rotation_current_limit);
+        mot_C00_turret_rotation.burnFlash();
             
         SendableRegistry.addChild(this, mot_C00_turret_rotation);
 
@@ -91,12 +93,10 @@ public final class TurretRotation extends SubsystemBase implements Toggleable {
         m_rotation_range = Constants.TurretControl.turret_rotation_range;
 
         m_rotation = 0;
-
         m_enabled = false;
         m_safety_enabled = true;
-        m_watchdog = new Watchdog(Constants.TurretControl.turret_watchdog_expire_time);
 
-        mot_C00_turret_rotation.burnFlash();
+        m_watchdog = new Watchdog(Constants.TurretControl.turret_watchdog_expire_time);
     }
  
     /**
