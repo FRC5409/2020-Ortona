@@ -19,6 +19,10 @@ public final class Constants {
         public static final double vision_limelight_height = 41.1d/12.0d;
 
         public static final double vision_limelight_pitch = 12.4;
+
+//========================================================
+    // Timing Constants
+        public static final double vision_acquisition_delay = 0.5;
     }
 
     public static final class TurretControl {
@@ -69,6 +73,17 @@ public final class Constants {
 
         public static final double turret_sweep_speed = 0.5;
 
+//========================================================
+    // Smooth Sweep Constants (experimental)
+        public static final double turret_smooth_sweep_period = 2;
+
+        public static final SimpleEquation turret_smooth_sweep_func = t -> {
+            return Math.cos(2d*Math.PI*t/turret_smooth_sweep_period+1)/2d*turret_rotation_range.magnitude+turret_rotation_range.min;
+        };
+
+        public static final SimpleEquation turret_smooth_sweep_inverse = a -> {
+            return turret_smooth_sweep_period*Math.acos(2d*(a-turret_rotation_range.min)/turret_rotation_range.magnitude-2d)/(Math.PI*2d);
+        };
 //========================================================
     // Turret Flywheel Constants
         public static final double turret_flywheel_target_thresh = 0.93;
