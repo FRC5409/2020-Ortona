@@ -55,7 +55,7 @@ public final class TurretRotation extends SubsystemBase implements Toggleable {
      */
     public TurretRotation() {
         mot_C00_turret_rotation = new CANSparkMax(0, CANSparkMax.MotorType.kBrushless);
-            mot_C00_turret_rotation.setIdleMode(CANSparkMax.IdleMode.kCoast);
+            mot_C00_turret_rotation.setIdleMode(CANSparkMax.IdleMode.kBrake);
             mot_C00_turret_rotation.setSmartCurrentLimit(Constants.TurretControl.turret_rotation_current_limit);
             
         SendableRegistry.addChild(this, mot_C00_turret_rotation);
