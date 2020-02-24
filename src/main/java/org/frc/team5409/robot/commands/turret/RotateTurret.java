@@ -43,6 +43,6 @@ public final class RotateTurret extends CommandBase {
     
     @Override
     public boolean isFinished() {
-        return m_turret.isAt(m_target);
+        return m_turret.isTargetReached();
     }
 }
