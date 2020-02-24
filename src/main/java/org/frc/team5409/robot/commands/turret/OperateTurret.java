@@ -1,0 +1,186 @@
+package org.frc.team5409.robot.commands.turret;
+
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj2.command.CommandBase;
+
+import org.frc.team5409.robot.subsystems.turret.TurretFlywheel;
+import org.frc.team5409.robot.subsystems.turret.TurretRotation;
+import org.frc.team5409.robot.subsystems.*;
+import org.frc.team5409.robot.Constants;
+import org.frc.team5409.robot.util.*;
+
+/**
+ * This command runs the turret flywheel at a speed
+ * porportional to the distance of the turret from the
+ * shooting target and operates the indexer once the rpm
+ * reaches it's setpoint.
+ * 
+ * @author Keith Davies
+ */
+public final class OperateTurret extends CommandBase {
+    /**
+     * The state of the OperareTurret command
+     * during it's execution.
+     */
+    private enum CommandState {
+        kSearching, kSweeping, kShooting
+    }
+
+    private final TurretFlywheel m_turret_flywheel;
+    private final TurretRotation m_turret_rotation;
+    private final Limelight      m_limelight;
+    private final Indexer        m_indexer;
+
+    private final SimpleEquation m_rpm_curve;
+    private final SimpleEquation m_smooth_sweep, m_smooth_sweep_inverse;
+
+    private final double         m_port_height;
+    private final Range          m_distance_range;
+
+    private       CommandState   m_state;
+    private       double         m_timer;
+    private       double         m_smooth_sweep_toff;
+
+    public OperateTurret(TurretFlywheel sys_flywheel, TurretRotation sys_rotation, Limelight sys_limelight, Indexer sys_indexer) {
+        m_turret_flywheel = sys_flywheel;
+        m_turret_rotation = sys_rotation;
+        m_limelight = sys_limelight;
+        m_indexer = sys_indexer;
+
+        m_distance_range = Constants.TurretControl.turret_distance_range;
+        m_port_height = Math.abs(Constants.Vision.vision_outerport_height - Constants.Vision.vision_limelight_height);
+
+        m_smooth_sweep_inverse = Constants.TurretControl.turret_smooth_sweep_inverse;
+        m_smooth_sweep = Constants.TurretControl.turret_smooth_sweep_func;
+        m_rpm_curve = Constants.TurretControl.turret_distance_rpm_curve;
+    
+        addRequirements(sys_flywheel, sys_rotation, sys_limelight, sys_indexer);
+    }
+
+    @Override
+    public void initialize() {
+        m_limelight.enable();
+        m_limelight.setLedMode(Limelight.LedMode.kModeOn);
+        internal_switchState(CommandState.kSearching);
+    }
+
+    @Override
+    public void execute() {
+        double time = Timer.getFPGATimestamp() - m_timer;
+
+        switch (m_state) {
+            case kSearching:
+                internal_operateSearching(time);
+                break;
+            case kSweeping:
+                internal_operateSweeping(time);
+                break;
+            case kShooting:
+                internal_operateShooting(time);
+               break;
+        }
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        m_turret_flywheel.disable();
+        m_turret_rotation.disable();
+        m_limelight.disable();
+        
+        m_indexer.moveIndexerMotor(0);
+    }
+    
+    @Override
+    public boolean isFinished() {
+        return !m_turret_flywheel.isEnabled() || !m_turret_flywheel.isEnabled();
+    }
+
+    /**
+     * Switches the internal state of the command and
+     * initialize vairables and subsystems for certain
+     * states if necessary.
+     */
+    private void internal_switchState(CommandState state) {
+        m_timer = Timer.getFPGATimestamp();
+        m_state = state;
+
+        if (state == CommandState.kSweeping) {
+            m_turret_rotation.enable();
+            m_smooth_sweep_toff = m_smooth_sweep_inverse.calculate(m_turret_rotation.getRotation());
+        } else if (state == CommandState.kShooting) {
+            m_turret_flywheel.enable();
+            m_turret_flywheel.startFeeder();
+        }
+    }
+
+    /**
+     * <h3>Operates the turret in the "Searching" state.</h3>
+     * 
+     * <p> In this state, the turret waits for the limelight led's to
+     * turn on and checks to see if there are any targets. There's always
+     * a chance that the limelight may detect a target the first time it's
+     * led's turn since the robot should be generally facing it's target
+     * upon shooting, and this state checks for that possibility. If there
+     * is no target by the time the aqusition delay time runs, it switches
+     * over to the {@code kSweeping} state.</p>
+     * 
+     * @param time The time since the this state began execution.
+     */
+    private void internal_operateSearching(double time) {
+        if (m_limelight.hasTarget() && m_limelight.getTargetType() == Limelight.TargetType.kOuterPort) {
+            internal_switchState(CommandState.kShooting);
+        } else if (time > Constants.Vision.vision_acquisition_delay) {
+            internal_switchState(CommandState.kSweeping);
+        }
+    }
+
+    /**
+     * <h3>Operates the turret in the "Sweeping" state.</h>
+     * 
+     * <p>In this state, the turret sweeps about it's axis
+     * smoothly using a scaled cosine function. If at any point the
+     * limelight detects a target, it switches over to the {@code kShooting}
+     * state. If there is no target after "x" amount of sweeps, (See Constants)
+     * the command cancels itself. The reason for this is due to the fact
+     * that the limelight's led's may not be on for prolonged periods of time.</p>
+     * 
+     * @param time The time since the this state began execution.
+     */
+    private void internal_operateSweeping(double time) {
+        if (m_limelight.hasTarget() && m_limelight.getTargetType() == Limelight.TargetType.kOuterPort) {
+            internal_switchState(CommandState.kShooting);
+        } else if (time / Constants.TurretControl.turret_smooth_sweep_period > Constants.TurretControl.turret_smooth_sweep_max_sweeps) {
+            this.cancel();
+        } else {
+            m_turret_rotation.setRotation(m_smooth_sweep.calculate(time+m_smooth_sweep_toff));
+        }
+    }
+
+    /**
+     * <h3>Operates the turret in the "Shooting" state.</h>
+     * 
+     * <p>In this state, the turret runs it's flywheel at a speed 
+     * porportional to the distance of the turret from the outer port
+     * and aligns the turret's rotation axis to the target.
+     * Once both systems have reached their respective targets,
+     * the indexer triggers, feeding powercells into the turret.</p>
+     * 
+     * @param time The time since the this state began execution.
+     */
+    private void internal_operateShooting(double time) {
+        if (m_limelight.hasTarget() && m_limelight.getTargetType() == Limelight.TargetType.kOuterPort) {
+            Vec2 target = m_limelight.getTarget();
+    
+            double distance = m_port_height / Math.tan(Math.toRadians(target.y + Constants.Vision.vision_limelight_pitch));
+    
+            m_turret_flywheel.setVelocity(m_rpm_curve.calculate(m_distance_range.clamp(distance)));
+            m_turret_rotation.setRotation(m_turret_rotation.getRotation()+target.x);
+        }
+    
+        if (m_turret_rotation.isTargetReached() && m_turret_flywheel.isTargetReached()) {
+            m_indexer.moveIndexerMotor(-0.8);
+        } else {
+            m_indexer.moveIndexerMotor(0);
+        }
+    }
+}
