@@ -232,9 +232,8 @@ public final class TurretRotation extends SubsystemBase implements Toggleable {
     public void periodic() {
         if (m_enabled && m_safety_enabled) {
             m_watchdog.update();
-            if (m_watchdog.isExpired()) {
+            if (m_watchdog.isExpired())
                 disable();
-            }
         }
     }
 }
