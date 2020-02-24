@@ -32,29 +32,29 @@ public class IntakeIndexActive extends CommandBase {
 
 	int powerCellsInIndexer;
 
-	private final Intake sys_intakeSubsystem;
-	private final Indexer sys_indexerSubsystem;
+	private final Intake subsys_Intake;
+	private final Indexer subsys_indexer;
 
 	/**
 	 * Creates a new IntakeIndexActive
 	 */
 	public IntakeIndexActive(Indexer indexerSubsystem, Intake intakeSubsystem) {
-		sys_indexerSubsystem = indexerSubsystem;
-		sys_intakeSubsystem = intakeSubsystem;
+		subsys_indexer = indexerSubsystem;
+		subsys_Intake = intakeSubsystem;
 		addRequirements(indexerSubsystem, intakeSubsystem);
 
-		TOF_Enter = sys_indexerSubsystem.ballDetectionEnter();
-		TOF_Ball1 = sys_indexerSubsystem.ballDetectionBall1();
-		TOF_Exit = sys_indexerSubsystem.ballDetectionExit();
+		TOF_Enter = subsys_indexer.ballDetectionEnter();
+		TOF_Ball1 = subsys_indexer.ballDetectionBall1();
+		TOF_Exit = subsys_indexer.ballDetectionExit();
 
-		powerCellsInIndexer = sys_indexerSubsystem.getNumberOfPowerCellsEnter();
+		powerCellsInIndexer = subsys_indexer.getNumberOfPowerCellsEnter();
 
 	}
 
 	// Called when the command is initially scheduled.
 	@Override
 	public void initialize() {
-		sys_intakeSubsystem.extend();
+		subsys_Intake.extend();
 		indexerRun = false;
 		ballAtPosition1 = false;
 	}
@@ -63,9 +63,9 @@ public class IntakeIndexActive extends CommandBase {
 	@Override
 	public void execute() {
 
-		TOF_Enter = sys_indexerSubsystem.ballDetectionEnter();
-		TOF_Ball1 = sys_indexerSubsystem.ballDetectionBall1();
-		TOF_Exit = sys_indexerSubsystem.ballDetectionExit();
+		TOF_Enter = subsys_indexer.ballDetectionEnter();
+		TOF_Ball1 = subsys_indexer.ballDetectionBall1();
+		TOF_Exit = subsys_indexer.ballDetectionExit();
 
 		SmartDashboard.putBoolean("Ball at Position 1", ballAtPosition1);
 		SmartDashboard.putBoolean("TOF_Enter", TOF_Enter);
@@ -101,14 +101,14 @@ public class IntakeIndexActive extends CommandBase {
 
 		// if statements to run the indexer motor
 		if (indexerRun == true) {
-			sys_indexerSubsystem.moveIndexerMotor(0.8);
+			subsys_indexer.moveIndexerMotor(0.8);
 		} else {
-			sys_indexerSubsystem.moveIndexerMotor(0);
+			subsys_indexer.moveIndexerMotor(0);
 		}
 
 		if (powerCellsInIndexer == 5) {
 			// Retracts intake
-			sys_intakeSubsystem.retract();
+			subsys_Intake.retract();
 			IndexerFull = true;
 			SmartDashboard.putBoolean("Indexer Full", IndexerFull);
 			powerCellsInIndexer = 0;
@@ -119,7 +119,7 @@ public class IntakeIndexActive extends CommandBase {
 	// Called once the command ends or is interrupted.
 	@Override
 	public void end(boolean interrupted) {
-		sys_intakeSubsystem.extend();
+		subsys_Intake.extend();
 	}
 
 	// Returns true when the command should end.

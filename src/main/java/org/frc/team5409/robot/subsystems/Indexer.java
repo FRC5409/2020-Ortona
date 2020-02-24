@@ -98,6 +98,7 @@ public class Indexer extends SubsystemBase {
   // }
 
   public void getRange(getRange type) {
+
     if (type == getRange.getRangeEnter) {
       return;
     }
@@ -132,7 +133,7 @@ public class Indexer extends SubsystemBase {
     return getNumberOfPowerCellsEnter;
   }
 
-  //detects whether or not power cells are in range of ball1 sensor
+  // detects whether or not power cells are in range of ball1 sensor
   public boolean ballDetectionBall1() {
     double range = TOF_Ball1.getRange();
     if (range < Constants.Indexer.rangeBall1_1 && range > Constants.Indexer.rangeBall1_2) {
@@ -141,7 +142,7 @@ public class Indexer extends SubsystemBase {
     return false;
   }
 
-  //detects whether or not power cells are in range of exit sensor
+  // detects whether or not power cells are in range of exit sensor
   public boolean ballDetectionExit() {
     double range = TOF_Exit.getRange();
     if (range < Constants.Indexer.rangeExit_1 && range > Constants.Indexer.rangeExit_2) {
@@ -168,13 +169,13 @@ public class Indexer extends SubsystemBase {
   // set ranging mode (short)
   public void setRangingMode(TimeOfFlight.RangingMode rangeModeIn, double sampleTime) {
     if (sampleTime > 24) { // Error Checking for sample time <24
-      sampleTime = 24; 
+      sampleTime = 24;
       TOF_Enter.setRangingMode(rangeModeIn, sampleTime);
     } else if (sampleTime > 24) {
     }
   }
 
-  //sets up motor
+  // sets up motor
   public void moveIndexerMotor(double output) {
     m_Indexer_neo550_C16.set(output);
   }
