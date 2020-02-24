@@ -44,7 +44,7 @@ public final class TurretRotation extends SubsystemBase implements Toggleable {
     private final double     m_target_reached_thresh;
     private final Range      m_rotation_range;
 
-    private double           m_rotation;
+    private double           m_target;
 
     private boolean          m_enabled;
     private boolean          m_safety_enabled;
@@ -92,7 +92,7 @@ public final class TurretRotation extends SubsystemBase implements Toggleable {
         m_target_reached_thresh = Constants.TurretControl.turret_rotation_target_thresh;
         m_rotation_range = Constants.TurretControl.turret_rotation_range;
 
-        m_rotation = 0;
+        m_target = 0;
         m_enabled = false;
         m_safety_enabled = true;
 
@@ -140,7 +140,7 @@ public final class TurretRotation extends SubsystemBase implements Toggleable {
         if (!m_enabled)
             return;
 
-        m_rotation = m_rotation_range.clamp(target);
+        m_target = m_rotation_range.clamp(target);
         pid_C00_turret_rotation.setReference(target, ControlType.kPosition);
 
         m_watchdog.feed();
@@ -158,17 +158,15 @@ public final class TurretRotation extends SubsystemBase implements Toggleable {
     }
 
     /**
-     * Checks if the turret's rotation is within
-     * the {@code target} angle range.
+     * Checks if the turret's rotation is it's
+     * rotation setpoint.
      * 
-     * @param target The target rotation
-     * 
-     * @return If the turret is within the target range.
+     * @return If the turret rotation is at it's setpoint
      */
-    public boolean isAt(double target) {
+    public boolean isTargetReached() {
         m_watchdog.feed();
 
-        return (Math.abs(getRotation()-target) < m_target_reached_thresh);
+        return (Math.abs(getRotation()-m_target) < m_target_reached_thresh);
     }
 
     /**
@@ -206,8 +204,8 @@ public final class TurretRotation extends SubsystemBase implements Toggleable {
      * @param type The active reset switch.
      */
     public void resetRotation(ResetSwitchType type) {
-        m_rotation = m_rotation_range.clamp(type.angle);
-        enc_C01_turret_rotation.setPosition(m_rotation);
+        m_target = m_rotation_range.clamp(type.angle);
+        enc_C01_turret_rotation.setPosition(m_target);
     }
 
     /**
