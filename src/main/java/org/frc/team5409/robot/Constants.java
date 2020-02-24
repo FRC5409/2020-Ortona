@@ -75,7 +75,7 @@ public final class Constants {
 
 //========================================================
     // Smooth Sweep Constants (experimental)
-        public static final double turret_smooth_sweep_period = 2;
+        public static final double turret_smooth_sweep_period = 1.5;
 
         public static final SimpleEquation turret_smooth_sweep_func = t -> {
             return Math.cos(2d*Math.PI*t/turret_smooth_sweep_period+1)/2d*turret_rotation_range.magnitude+turret_rotation_range.min;
@@ -84,6 +84,8 @@ public final class Constants {
         public static final SimpleEquation turret_smooth_sweep_inverse = a -> {
             return turret_smooth_sweep_period*Math.acos(2d*(a-turret_rotation_range.min)/turret_rotation_range.magnitude-2d)/(Math.PI*2d);
         };
+
+        public static final double turret_smooth_sweep_max_sweeps = 2;
 //========================================================
     // Turret Flywheel Constants
         public static final double turret_flywheel_target_thresh = 0.93;
