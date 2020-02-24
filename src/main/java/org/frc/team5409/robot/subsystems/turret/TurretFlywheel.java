@@ -132,16 +132,14 @@ public final class TurretFlywheel extends SubsystemBase implements Toggleable {
 
     /**
      * Checks if the turret flywheel velocity
-     * setpoint has reached {@code target}.
-     * 
-     * @param target The target velocity.
+     * has reached it's target setpoint.
      * 
      * @return      If the velocity is within the target range.
      */
-    public boolean isAt(double target) {
+    public boolean isAt() {
         m_watchdog.feed();
 
-        return (getVelocity() > target * Constants.TurretControl.turret_flywheel_target_thresh);
+        return (getVelocity() > m_target * Constants.TurretControl.turret_flywheel_target_thresh);
     }
 
     /**
