@@ -31,11 +31,11 @@ public final class RunShooterFlywheel extends CommandBase {
     private final Range           m_distance_range;
     private final SimpleEquation  m_rpm_curve;
 
-    private       double          m_target, m_distance, m_timer, m_predicted, m_scored;
+    private       double          m_target, m_distance, m_timer, m_predicted, m_scored, m_missed;
 
     private       boolean         m_debounce1, m_debounce2, m_debounce3, m_debounce4;
 
-    private       JoystickButton  m_trg_flywheel, m_trg_score;
+    private       JoystickButton  m_trg_flywheel, m_trg_score, m_trg_miss;
 
     private       Logger          m_log_current, m_log_velocity, m_log_events, m_log_scored;
 
@@ -51,6 +51,7 @@ public final class RunShooterFlywheel extends CommandBase {
 
         m_trg_flywheel = new JoystickButton(joy_main, 1);
         m_trg_score = new JoystickButton(joy_sec, 1);
+        m_trg_miss = new JoystickButton(joy_sec, 2);
 
         m_target_height = Math.abs(Constants.Vision.vision_outerport_height - Constants.Vision.vision_limelight_height);
         m_distance_range = Constants.ShooterControl.shooter_distance_range;
@@ -88,6 +89,9 @@ public final class RunShooterFlywheel extends CommandBase {
         m_distance = 0;
         m_target = 0;
         m_timer = Timer.getFPGATimestamp();
+        
+        m_scored = 0;
+        m_missed = 0;
 
         new Logger(logs_path+"/TURRET_CONSTANTS.csv")
             .write("%f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %s",
@@ -180,12 +184,19 @@ public final class RunShooterFlywheel extends CommandBase {
             m_debounce3 = false;
         }
 
-        if (m_trg_score.get()) {
+        if (m_trg_score.get() || m_trg_miss.get()) {
             if (!m_debounce4) {
-                m_log_events.writeln("%f, POWERCELL SCORED [%f], %f", time, m_distance, m_distance);
-                m_log_scored.writeln("%f, %f, %f, %f, %f", time, m_distance, m_target, m_predicted, velocity);
+                if (m_trg_score.get()) {
+                    m_log_events.writeln("%f, POWERCELL SCORED [%f], %f", time, m_distance, m_distance);
+                    m_log_scored.writeln("1, %f, %f, %f, %f, %f", time, m_distance, m_target, m_predicted, velocity);
 
-                m_scored++;
+                    m_scored++;
+                } else if (m_trg_miss.get()) {
+                    m_log_events.writeln("%f, POWERCELL MISSED [%f], %f", time, m_distance, m_distance);
+                    m_log_scored.writeln("0, %f, %f, %f, %f, %f", time, m_distance, m_target, m_predicted, velocity);
+
+                    m_missed++;
+                }
             }
 
             m_debounce4 = true;
