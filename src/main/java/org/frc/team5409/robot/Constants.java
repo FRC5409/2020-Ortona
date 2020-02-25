@@ -10,23 +10,23 @@ import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 
 public final class Constants {
     public static final class Vision {
-//========================================================
+
     // Target Constants
         public static final double vision_outerport_height = 89.75d/12.0d;
 
-//========================================================
+
     // Robot configuration Constants
         public static final double vision_limelight_height = 41.1d/12.0d;
 
         public static final double vision_limelight_pitch = 12.4;
 
-//========================================================
+
     // Timing Constants
         public static final double vision_acquisition_delay = 0.5;
     }
 
     public static final class TurretControl {
-//========================================================
+
     // General Configurations
         public static final double turret_watchdog_expire_time = 0.8;
 
@@ -35,13 +35,13 @@ public final class Constants {
         public static final int turret_flywheel_current_limit = 40;
 
         public static final int turret_feeder_current_limit = 25;
-//========================================================
+
     // PID Configurations
         public static final PIDFConfig pid_turret_rotation = new PIDFConfig(0, 0, 0, 0);
 
         public static final PIDFConfig pid_turret_flywheel = new PIDFConfig(6e-5, 0, 0, 0.000015);
 
-//========================================================
+
     // Range Configurations
         public static final Range turret_rotation_range = new Range(-270, 270);
 
@@ -49,7 +49,7 @@ public final class Constants {
 
         public static final Range turret_distance_range = new Range(15, 33);
 
-//========================================================
+
     // Curve fitting Constants
         public static final SimpleEquation turret_distance_rpm_curve = d -> {
             d += (10.d/12.0d);
@@ -61,7 +61,7 @@ public final class Constants {
 
         public static final String turret_distance_rpm_curve_string = "1506 * ln(d + 0.83) - 1492";
 
-//========================================================
+
     // Turret Rotation Constants
         public static final double turret_rotation_target_thresh = 0;
 
@@ -73,7 +73,7 @@ public final class Constants {
 
         public static final double turret_sweep_speed = 0.5;
 
-//========================================================
+
     // Smooth Sweep Constants (experimental)
         public static final double turret_smooth_sweep_period = 1.5;
 
@@ -86,7 +86,7 @@ public final class Constants {
         };
 
         public static final double turret_smooth_sweep_max_sweeps = 2;
-//========================================================
+
     // Turret Flywheel Constants
         public static final double turret_flywheel_target_thresh = 0.93;
 
@@ -166,6 +166,7 @@ public final class Constants {
         public static final IdleMode idle = IdleMode.kBrake;
 
         public static final double loopRampRate= 0.5;
+
         public static final int kLeftDriveFront = 13;
 
         public static final int kLeftDriveRear = 4;
@@ -191,6 +192,7 @@ public final class Constants {
         public static final double kaVoltSecondsSquaredPerMeter = 0;
 
         public static final double kTrackwidthMeters = 0;
+
         public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(
             kTrackwidthMeters);
 
@@ -223,26 +225,38 @@ public final class Constants {
 
         //PID Variables
         public static final double kP = 0.1;
+
         public static final double kI = 1e-4;
+
         public static final double kD = 1;
+
         public static final double kIz = 0;
+
         public static final double kFF = 0;
+
         public static final double kMaxOutput = 0.1;
+
         public static final double kMinOutput = -0.1;
 
         //Neo Variables
         public static final int NEO1_ID = 3;
+
         public static final int NEO2_ID = 5;
+
         public static final double EXTEND_NEO_POS = 10;
+
         public static final double RETRACT_NEO_POS = 0;
 
         //Piston
         public static final int FORWARD_CHANEL = 1;
+
         public static final int BACKWARD_CHANEL = 2;
 
         //Time Of Flight
         public static final int TOF_ID = 4;
+
         public static final double TOF_RANGE = 10;
+        
         public static final double TOF_SAMPLE_TIME = 24;
     }
 }
