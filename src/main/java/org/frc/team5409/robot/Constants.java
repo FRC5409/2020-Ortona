@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 
 public final class Constants {
     public static final class Vision {
-
     // Target Constants
         public static final double vision_outerport_height = 89.75d/12.0d;
 
@@ -25,33 +24,33 @@ public final class Constants {
         public static final double vision_acquisition_delay = 0.5;
     }
 
-    public static final class TurretControl {
-
+    public static final class ShooterControl {
     // General Configurations
-        public static final double turret_watchdog_expire_time = 0.8;
+        public static final double shooter_watchdog_expire_time = 0.8;
 
-        public static final int turret_rotation_current_limit = 25;
+        public static final int shooter_turret_current_limit = 25;
 
-        public static final int turret_flywheel_current_limit = 40;
+        public static final int shooter_flywheel_current_limit = 40;
 
-        public static final int turret_feeder_current_limit = 25;
+        public static final int shooter_feeder_current_limit = 25;
+
 
     // PID Configurations
-        public static final PIDFConfig pid_turret_rotation = new PIDFConfig(0, 0, 0, 0);
+        public static final PIDFConfig shooter_pid_turret = new PIDFConfig(0, 0, 0, 0);
 
-        public static final PIDFConfig pid_turret_flywheel = new PIDFConfig(6e-5, 0, 0, 0.000015);
+        public static final PIDFConfig shooter_pid_flywheel = new PIDFConfig(6e-5, 0, 0, 0.000015);
 
 
     // Range Configurations
-        public static final Range turret_rotation_range = new Range(-270, 270);
+        public static final Range shooter_turret_range = new Range(-270, 270);
 
-        public static final Range turret_velocity_range = new Range(0, 4500);
+        public static final Range shooter_velocity_range = new Range(0, 4500);
 
-        public static final Range turret_distance_range = new Range(15, 33);
+        public static final Range shooter_distance_range = new Range(15, 33);
 
-
+        
     // Curve fitting Constants
-        public static final SimpleEquation turret_distance_rpm_curve = d -> {
+        public static final SimpleEquation shooter_distance_rpm_curve = d -> {
             d += (10.d/12.0d);
             //return 1.8*(d*d) - 26.8*(d) + 2929; //2nd POLY CURVE
             //return 1326*Math.log(d) - 784; // LOG CURVE
@@ -59,38 +58,39 @@ public final class Constants {
             return 1506*Math.log(d) - 1492;
         };
 
-        public static final String turret_distance_rpm_curve_string = "1506 * ln(d + 0.83) - 1492";
+        public static final String shooter_distance_rpm_curve_string = "1506 * ln(d + 0.83) - 1492";
 
 
-    // Turret Rotation Constants
-        public static final double turret_rotation_target_thresh = 0;
+    // Shooter Turret Constants
+        public static final double shooter_turret_target_thresh = 0;
 
-        public static final double turret_rotation_limit_left_angle = -270;
+        public static final double shooter_turret_limit_left_angle = -270;
 
-        public static final double turret_rotation_limit_center_angle = 0.5;
+        public static final double shooter_turret_limit_center_angle = 0.5;
 
-        public static final double turret_rotation_limit_right_angle = 270;
+        public static final double shooter_turret_limit_right_angle = 270;
 
-        public static final double turret_sweep_speed = 0.5;
+        public static final double shooter_calibrate_speed = 0.5;
 
 
     // Smooth Sweep Constants (experimental)
-        public static final double turret_smooth_sweep_period = 1.5;
+        public static final double shooter_smooth_sweep_period = 1.5;
 
-        public static final SimpleEquation turret_smooth_sweep_func = t -> {
-            return Math.cos(2d*Math.PI*t/turret_smooth_sweep_period+1)/2d*turret_rotation_range.magnitude+turret_rotation_range.min;
+        public static final SimpleEquation shooter_smooth_sweep_func = t -> {
+            return Math.cos(2d*Math.PI*t/shooter_smooth_sweep_period+1)/2d*shooter_turret_range.magnitude+shooter_turret_range.min;
         };
 
-        public static final SimpleEquation turret_smooth_sweep_inverse = a -> {
-            return turret_smooth_sweep_period*Math.acos(2d*(a-turret_rotation_range.min)/turret_rotation_range.magnitude-2d)/(Math.PI*2d);
+        public static final SimpleEquation shooter_smooth_sweep_inverse = a -> {
+            return shooter_smooth_sweep_period*Math.acos(2d*(a-shooter_turret_range.min)/shooter_turret_range.magnitude-2d)/(Math.PI*2d);
         };
 
-        public static final double turret_smooth_sweep_max_sweeps = 2;
+        public static final double shooter_smooth_sweep_max_sweeps = 2;
 
-    // Turret Flywheel Constants
-        public static final double turret_flywheel_target_thresh = 0.93;
 
-        public static final double turret_flywheel_rpm_scale = 4.25;
+    // Shooter Flywheel Constants
+        public static final double shooter_flywheel_target_thresh = 0.93;
+
+        public static final double shooter_flywheel_rpm_scale = 4.25;
     }
 
     public static final class Indexer {

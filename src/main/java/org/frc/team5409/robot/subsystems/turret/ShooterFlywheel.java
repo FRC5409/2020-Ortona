@@ -7,17 +7,17 @@ import org.frc.team5409.robot.Constants;
 import org.frc.team5409.robot.util.*;
 
 /**
- * Controls the Turret Flywheel.
+ * Controls and operators the Shooter Flywheel.
  * 
  * @author Keith Davies
  */
-public final class TurretFlywheel extends SubsystemBase implements Toggleable {
-    private       CANSparkMax      mot_C00_turret_flywheel;
-    private       CANSparkMax      mot_C01_turret_flywheel;
-    private       CANSparkMax      mot_C02_turret_feeder;
+public final class ShooterFlywheel extends SubsystemBase implements Toggleable {
+    private       CANSparkMax      mot_C00_shooter_flywheel;
+    private       CANSparkMax      mot_C01_shooter_flywheel;
+    private       CANSparkMax      mot_C02_shooter_feeder;
 
-    private       CANEncoder       enc_C00_turret_flywheel;
-    private       CANPIDController pid_C00_turret_flywheel;
+    private       CANEncoder       enc_C00_shooter_flywheel;
+    private       CANPIDController pid_C00_shooter_flywheel;
 
     private final Range            m_velocity_range;
 
@@ -28,42 +28,42 @@ public final class TurretFlywheel extends SubsystemBase implements Toggleable {
     /**
      * Constructs a Turret Flywheel subsystem.
      */
-    public TurretFlywheel() {
-        mot_C00_turret_flywheel = new CANSparkMax(2, CANSparkMax.MotorType.kBrushless);
-            mot_C00_turret_flywheel.restoreFactoryDefaults(true);
-                mot_C00_turret_flywheel.setIdleMode(CANSparkMax.IdleMode.kCoast);
-                mot_C00_turret_flywheel.setInverted(true);
-                mot_C00_turret_flywheel.setSmartCurrentLimit(Constants.TurretControl.turret_flywheel_current_limit);
-            mot_C00_turret_flywheel.burnFlash();
+    public ShooterFlywheel() {
+        mot_C00_shooter_flywheel = new CANSparkMax(2, CANSparkMax.MotorType.kBrushless);
+            mot_C00_shooter_flywheel.restoreFactoryDefaults(true);
+                mot_C00_shooter_flywheel.setIdleMode(CANSparkMax.IdleMode.kCoast);
+                mot_C00_shooter_flywheel.setInverted(true);
+                mot_C00_shooter_flywheel.setSmartCurrentLimit(Constants.ShooterControl.shooter_flywheel_current_limit);
+            mot_C00_shooter_flywheel.burnFlash();
  
-        mot_C01_turret_flywheel = new CANSparkMax(10, CANSparkMax.MotorType.kBrushless);
-            mot_C01_turret_flywheel.restoreFactoryDefaults(true);
-                mot_C01_turret_flywheel.setIdleMode(CANSparkMax.IdleMode.kCoast);
-                mot_C01_turret_flywheel.follow(mot_C00_turret_flywheel, true);
-            mot_C01_turret_flywheel.burnFlash();
+        mot_C01_shooter_flywheel = new CANSparkMax(10, CANSparkMax.MotorType.kBrushless);
+            mot_C01_shooter_flywheel.restoreFactoryDefaults(true);
+                mot_C01_shooter_flywheel.setIdleMode(CANSparkMax.IdleMode.kCoast);
+                mot_C01_shooter_flywheel.follow(mot_C00_shooter_flywheel, true);
+            mot_C01_shooter_flywheel.burnFlash();
 
-        mot_C02_turret_feeder = new CANSparkMax(12, CANSparkMax.MotorType.kBrushless);
-            mot_C02_turret_feeder.restoreFactoryDefaults(true);
-                mot_C02_turret_feeder.setIdleMode(CANSparkMax.IdleMode.kCoast);
-                mot_C02_turret_feeder.setSmartCurrentLimit(Constants.TurretControl.turret_feeder_current_limit);
-            mot_C02_turret_feeder.burnFlash();
+        mot_C02_shooter_feeder = new CANSparkMax(12, CANSparkMax.MotorType.kBrushless);
+            mot_C02_shooter_feeder.restoreFactoryDefaults(true);
+                mot_C02_shooter_feeder.setIdleMode(CANSparkMax.IdleMode.kCoast);
+                mot_C02_shooter_feeder.setSmartCurrentLimit(Constants.ShooterControl.shooter_feeder_current_limit);
+            mot_C02_shooter_feeder.burnFlash();
     
-        enc_C00_turret_flywheel = mot_C00_turret_flywheel.getEncoder();
-            enc_C00_turret_flywheel.setVelocityConversionFactor(Constants.TurretControl.turret_flywheel_rpm_scale);
+        enc_C00_shooter_flywheel = mot_C00_shooter_flywheel.getEncoder();
+            enc_C00_shooter_flywheel.setVelocityConversionFactor(Constants.ShooterControl.shooter_flywheel_rpm_scale);
 
-        pid_C00_turret_flywheel = mot_C00_turret_flywheel.getPIDController();
-            pid_C00_turret_flywheel.setFeedbackDevice(enc_C00_turret_flywheel);
-            pid_C00_turret_flywheel.setOutputRange(0, 1);
-            pid_C00_turret_flywheel.setP(Constants.TurretControl.pid_turret_flywheel.P);
-            pid_C00_turret_flywheel.setI(Constants.TurretControl.pid_turret_flywheel.I);
-            pid_C00_turret_flywheel.setD(Constants.TurretControl.pid_turret_flywheel.D);
+        pid_C00_shooter_flywheel = mot_C00_shooter_flywheel.getPIDController();
+            pid_C00_shooter_flywheel.setFeedbackDevice(enc_C00_shooter_flywheel);
+            pid_C00_shooter_flywheel.setOutputRange(0, 1);
+            pid_C00_shooter_flywheel.setP(Constants.ShooterControl.shooter_pid_flywheel.P);
+            pid_C00_shooter_flywheel.setI(Constants.ShooterControl.shooter_pid_flywheel.I);
+            pid_C00_shooter_flywheel.setD(Constants.ShooterControl.shooter_pid_flywheel.D);
 
-        m_velocity_range = Constants.TurretControl.turret_velocity_range;
+        m_velocity_range = Constants.ShooterControl.shooter_velocity_range;
         
         m_enabled = false;
         m_safety_enabled = true;
 
-        m_watchdog = new Watchdog(Constants.TurretControl.turret_watchdog_expire_time);
+        m_watchdog = new Watchdog(Constants.ShooterControl.shooter_watchdog_expire_time);
     }
     
     /**
@@ -84,8 +84,8 @@ public final class TurretFlywheel extends SubsystemBase implements Toggleable {
         if (!m_enabled)
             return;
         
-        mot_C00_turret_flywheel.disable();
-        mot_C02_turret_feeder.disable();
+        mot_C00_shooter_flywheel.disable();
+        mot_C02_shooter_feeder.disable();
 
         m_enabled = false;
     }
@@ -111,8 +111,8 @@ public final class TurretFlywheel extends SubsystemBase implements Toggleable {
         
         m_target = m_velocity_range.clamp(target);
 
-        pid_C00_turret_flywheel.setReference(
-            m_target * Constants.TurretControl.turret_flywheel_rpm_scale,
+        pid_C00_shooter_flywheel.setReference(
+            m_target * Constants.ShooterControl.shooter_flywheel_rpm_scale,
             ControlType.kVelocity
         );
        
@@ -127,7 +127,7 @@ public final class TurretFlywheel extends SubsystemBase implements Toggleable {
     public double getVelocity() {
         m_watchdog.feed();
 
-        return enc_C00_turret_flywheel.getVelocity();
+        return enc_C00_shooter_flywheel.getVelocity();
     }
 
     /**
@@ -139,14 +139,14 @@ public final class TurretFlywheel extends SubsystemBase implements Toggleable {
     public boolean isTargetReached() {
         m_watchdog.feed();
 
-        return (getVelocity() > m_target * Constants.TurretControl.turret_flywheel_target_thresh);
+        return (getVelocity() > m_target * Constants.ShooterControl.shooter_flywheel_target_thresh);
     }
 
     /**
      * Get's the current draw of the turret flywheel.
      */
     public double getCurrent() {
-        return mot_C00_turret_flywheel.getOutputCurrent();
+        return mot_C00_shooter_flywheel.getOutputCurrent();
     }
 
     /**
@@ -159,7 +159,7 @@ public final class TurretFlywheel extends SubsystemBase implements Toggleable {
         if (!m_enabled)
             return;
 
-        mot_C00_turret_flywheel.set(Range.scalar(target));
+        mot_C00_shooter_flywheel.set(Range.scalar(target));
         
         m_watchdog.feed();
     }
@@ -173,7 +173,7 @@ public final class TurretFlywheel extends SubsystemBase implements Toggleable {
         if (!m_enabled)
             return;
 
-        mot_C02_turret_feeder.set(Range.scalar(speed));
+        mot_C02_shooter_feeder.set(Range.scalar(speed));
         
         m_watchdog.feed();
     }

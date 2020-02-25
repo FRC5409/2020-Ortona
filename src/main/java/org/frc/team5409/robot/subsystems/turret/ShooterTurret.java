@@ -9,19 +9,19 @@ import org.frc.team5409.robot.Constants;
 import org.frc.team5409.robot.util.*;
 
 /**
- * Controls Turret Rotation.
+ * Controls and operates the Shooter Turret.
  * 
  * @author Keith Davies
  */
-public final class TurretRotation extends SubsystemBase implements Toggleable {
+public final class ShooterTurret extends SubsystemBase implements Toggleable {
     /**
-     * Represents the reset (limit) switches along the turret 
-     * rotation as well as their respective angles.
+     * Represents the reset (limit) switches along the shooter 
+     * turrets rotation as well as their respective angles.
      */
     public enum ResetSwitchType {
-        kLeft(Constants.TurretControl.turret_rotation_limit_left_angle),
-        kCenter(Constants.TurretControl.turret_rotation_limit_center_angle),
-        kRight(Constants.TurretControl.turret_rotation_limit_right_angle),
+        kLeft(Constants.ShooterControl.shooter_turret_limit_left_angle),
+        kCenter(Constants.ShooterControl.shooter_turret_limit_center_angle),
+        kRight(Constants.ShooterControl.shooter_turret_limit_right_angle),
         kNone(-1);
 
         ResetSwitchType(double angle) {
@@ -31,18 +31,18 @@ public final class TurretRotation extends SubsystemBase implements Toggleable {
         public final double angle;
     }
 
-    private CANSparkMax      mot_C00_turret_rotation;
+    private CANSparkMax      mot_C00_shooter_rotation;
     
-    private CANDigitalInput  dio_C00_turret_limit_left,
-                             dio_C00_turret_limit_right;
+    private CANDigitalInput  dio_C00_shooter_limit_left,
+                             dio_C00_shooter_limit_right;
     
-    private DigitalInput     dio_i00_turret_limit_center;
+    private DigitalInput     dio_i00_shooter_limit_center;
 
-    private CANEncoder       enc_C01_turret_rotation;
-    private CANPIDController pid_C00_turret_rotation;
+    private CANEncoder       enc_C01_shooter_rotation;
+    private CANPIDController pid_C00_shooter_rotation;
                              
     private final double     m_target_reached_thresh;
-    private final Range      m_rotation_range;
+    private final Range      m_turret_range;
 
     private double           m_target;
 
@@ -53,50 +53,50 @@ public final class TurretRotation extends SubsystemBase implements Toggleable {
     /**
      * Constructs a Turret Rotation subsystem.
      */
-    public TurretRotation() {
-        mot_C00_turret_rotation = new CANSparkMax(0, CANSparkMax.MotorType.kBrushless);
-        mot_C00_turret_rotation.restoreFactoryDefaults();
-            mot_C00_turret_rotation.setIdleMode(CANSparkMax.IdleMode.kBrake);
-            mot_C00_turret_rotation.setSmartCurrentLimit(Constants.TurretControl.turret_rotation_current_limit);
-        mot_C00_turret_rotation.burnFlash();
+    public ShooterTurret() {
+        mot_C00_shooter_rotation = new CANSparkMax(0, CANSparkMax.MotorType.kBrushless);
+        mot_C00_shooter_rotation.restoreFactoryDefaults();
+            mot_C00_shooter_rotation.setIdleMode(CANSparkMax.IdleMode.kBrake);
+            mot_C00_shooter_rotation.setSmartCurrentLimit(Constants.ShooterControl.shooter_turret_current_limit);
+        mot_C00_shooter_rotation.burnFlash();
             
-        SendableRegistry.addChild(this, mot_C00_turret_rotation);
+        SendableRegistry.addChild(this, mot_C00_shooter_rotation);
 
         // TODO determine limit switch polarity and orientation.
-        dio_C00_turret_limit_left = mot_C00_turret_rotation.getForwardLimitSwitch(CANDigitalInput.LimitSwitchPolarity.kNormallyClosed);
-            dio_C00_turret_limit_left.enableLimitSwitch(true);
+        dio_C00_shooter_limit_left = mot_C00_shooter_rotation.getForwardLimitSwitch(CANDigitalInput.LimitSwitchPolarity.kNormallyClosed);
+            dio_C00_shooter_limit_left.enableLimitSwitch(true);
             
-        SendableRegistry.addChild(this, dio_C00_turret_limit_left);
+        SendableRegistry.addChild(this, dio_C00_shooter_limit_left);
             
-        dio_C00_turret_limit_right = mot_C00_turret_rotation.getReverseLimitSwitch(CANDigitalInput.LimitSwitchPolarity.kNormallyClosed);
-            dio_C00_turret_limit_right.enableLimitSwitch(true);
+        dio_C00_shooter_limit_right = mot_C00_shooter_rotation.getReverseLimitSwitch(CANDigitalInput.LimitSwitchPolarity.kNormallyClosed);
+            dio_C00_shooter_limit_right.enableLimitSwitch(true);
             
-        SendableRegistry.addChild(this, dio_C00_turret_limit_right);
+        SendableRegistry.addChild(this, dio_C00_shooter_limit_right);
 
-        dio_i00_turret_limit_center = new DigitalInput(0);
+        dio_i00_shooter_limit_center = new DigitalInput(0);
             
-        SendableRegistry.addChild(this, dio_i00_turret_limit_center);
+        SendableRegistry.addChild(this, dio_i00_shooter_limit_center);
 
-        enc_C01_turret_rotation = mot_C00_turret_rotation.getEncoder();
-            enc_C01_turret_rotation.setPositionConversionFactor(360 / enc_C01_turret_rotation.getCountsPerRevolution());
+        enc_C01_shooter_rotation = mot_C00_shooter_rotation.getEncoder();
+            enc_C01_shooter_rotation.setPositionConversionFactor(360 / enc_C01_shooter_rotation.getCountsPerRevolution());
 
-        pid_C00_turret_rotation = mot_C00_turret_rotation.getPIDController();
-            pid_C00_turret_rotation.setFeedbackDevice(enc_C01_turret_rotation);
-            pid_C00_turret_rotation.setOutputRange(-1, 1);
-            pid_C00_turret_rotation.setP(Constants.TurretControl.pid_turret_rotation.P);
-            pid_C00_turret_rotation.setI(Constants.TurretControl.pid_turret_rotation.I);
-            pid_C00_turret_rotation.setD(Constants.TurretControl.pid_turret_rotation.D);
+        pid_C00_shooter_rotation = mot_C00_shooter_rotation.getPIDController();
+            pid_C00_shooter_rotation.setFeedbackDevice(enc_C01_shooter_rotation);
+            pid_C00_shooter_rotation.setOutputRange(-1, 1);
+            pid_C00_shooter_rotation.setP(Constants.ShooterControl.shooter_pid_turret.P);
+            pid_C00_shooter_rotation.setI(Constants.ShooterControl.shooter_pid_turret.I);
+            pid_C00_shooter_rotation.setD(Constants.ShooterControl.shooter_pid_turret.D);
 
-        SendableRegistry.addChild(this, pid_C00_turret_rotation);
+        SendableRegistry.addChild(this, pid_C00_shooter_rotation);
 
-        m_target_reached_thresh = Constants.TurretControl.turret_rotation_target_thresh;
-        m_rotation_range = Constants.TurretControl.turret_rotation_range;
+        m_target_reached_thresh = Constants.ShooterControl.shooter_turret_target_thresh;
+        m_turret_range = Constants.ShooterControl.shooter_turret_range;
 
         m_target = 0;
         m_enabled = false;
         m_safety_enabled = true;
 
-        m_watchdog = new Watchdog(Constants.TurretControl.turret_watchdog_expire_time);
+        m_watchdog = new Watchdog(Constants.ShooterControl.shooter_watchdog_expire_time);
     }
  
     /**
@@ -117,7 +117,7 @@ public final class TurretRotation extends SubsystemBase implements Toggleable {
         if (!m_enabled)
             return;
 
-        mot_C00_turret_rotation.disable();
+        mot_C00_shooter_rotation.disable();
         m_enabled = false;
     }
 
@@ -140,8 +140,8 @@ public final class TurretRotation extends SubsystemBase implements Toggleable {
         if (!m_enabled)
             return;
 
-        m_target = m_rotation_range.clamp(target);
-        pid_C00_turret_rotation.setReference(target, ControlType.kPosition);
+        m_target = m_turret_range.clamp(target);
+        pid_C00_shooter_rotation.setReference(target, ControlType.kPosition);
 
         m_watchdog.feed();
     }
@@ -154,7 +154,7 @@ public final class TurretRotation extends SubsystemBase implements Toggleable {
     public double getRotation() {
         m_watchdog.feed();
 
-        return enc_C01_turret_rotation.getPosition();
+        return enc_C01_shooter_rotation.getPosition();
     }
 
     /**
@@ -179,7 +179,7 @@ public final class TurretRotation extends SubsystemBase implements Toggleable {
         if (!m_enabled)
             return;
 
-        mot_C00_turret_rotation.set(Range.normalize(target));
+        mot_C00_shooter_rotation.set(Range.normalize(target));
 
         m_watchdog.feed();
     }
@@ -204,8 +204,8 @@ public final class TurretRotation extends SubsystemBase implements Toggleable {
      * @param type The active reset switch.
      */
     public void resetRotation(ResetSwitchType type) {
-        m_target = m_rotation_range.clamp(type.angle);
-        enc_C01_turret_rotation.setPosition(m_target);
+        m_target = m_turret_range.clamp(type.angle);
+        enc_C01_shooter_rotation.setPosition(m_target);
     }
 
     /**
@@ -214,13 +214,13 @@ public final class TurretRotation extends SubsystemBase implements Toggleable {
      * @return The active reset switch.
      */
     public ResetSwitchType getActiveResetSwitch() {
-        if (dio_C00_turret_limit_left.isLimitSwitchEnabled())
+        if (dio_C00_shooter_limit_left.isLimitSwitchEnabled())
             return ResetSwitchType.kLeft;
 
-        if (dio_i00_turret_limit_center.get())
+        if (dio_i00_shooter_limit_center.get())
             return ResetSwitchType.kCenter;
         
-        if (dio_C00_turret_limit_right.isLimitSwitchEnabled())
+        if (dio_C00_shooter_limit_right.isLimitSwitchEnabled())
             return ResetSwitchType.kRight;
         
         return ResetSwitchType.kNone;

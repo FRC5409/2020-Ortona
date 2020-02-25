@@ -3,8 +3,8 @@ package org.frc.team5409.robot.commands.turret;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-import org.frc.team5409.robot.subsystems.turret.TurretFlywheel;
-import org.frc.team5409.robot.subsystems.turret.TurretRotation;
+import org.frc.team5409.robot.subsystems.turret.ShooterFlywheel;
+import org.frc.team5409.robot.subsystems.turret.ShooterTurret;
 import org.frc.team5409.robot.subsystems.*;
 import org.frc.team5409.robot.Constants;
 import org.frc.team5409.robot.util.*;
@@ -17,7 +17,7 @@ import org.frc.team5409.robot.util.*;
  * 
  * @author Keith Davies
  */
-public final class OperateTurret extends CommandBase {
+public final class OperateShooter extends CommandBase {
     /**
      * The state of the OperareTurret command
      * during it's execution.
@@ -26,33 +26,33 @@ public final class OperateTurret extends CommandBase {
         kSearching, kSweeping, kShooting
     }
 
-    private final TurretFlywheel m_turret_flywheel;
-    private final TurretRotation m_turret_rotation;
-    private final Limelight      m_limelight;
-    private final Indexer        m_indexer;
+    private final ShooterFlywheel m_shooter_flywheel;
+    private final ShooterTurret   m_shooter_turret;
+    private final Limelight       m_limelight;
+    private final Indexer         m_indexer;
 
-    private final SimpleEquation m_rpm_curve;
-    private final SimpleEquation m_smooth_sweep, m_smooth_sweep_inverse;
+    private final SimpleEquation  m_rpm_curve;
+    private final SimpleEquation  m_smooth_sweep, m_smooth_sweep_inverse;
 
-    private final double         m_port_height;
-    private final Range          m_distance_range;
+    private final double          m_port_height;
+    private final Range           m_distance_range;
 
-    private       CommandState   m_state;
-    private       double         m_timer;
-    private       double         m_smooth_sweep_toff;
+    private       CommandState    m_state;
+    private       double          m_timer;
+    private       double          m_smooth_sweep_toff;
 
-    public OperateTurret(TurretFlywheel sys_flywheel, TurretRotation sys_rotation, Limelight sys_limelight, Indexer sys_indexer) {
-        m_turret_flywheel = sys_flywheel;
-        m_turret_rotation = sys_rotation;
+    public OperateShooter(ShooterFlywheel sys_flywheel, ShooterTurret sys_rotation, Limelight sys_limelight, Indexer sys_indexer) {
+        m_shooter_flywheel = sys_flywheel;
+        m_shooter_turret = sys_rotation;
         m_limelight = sys_limelight;
         m_indexer = sys_indexer;
 
-        m_distance_range = Constants.TurretControl.turret_distance_range;
+        m_distance_range = Constants.ShooterControl.shooter_distance_range;
         m_port_height = Math.abs(Constants.Vision.vision_outerport_height - Constants.Vision.vision_limelight_height);
 
-        m_smooth_sweep_inverse = Constants.TurretControl.turret_smooth_sweep_inverse;
-        m_smooth_sweep = Constants.TurretControl.turret_smooth_sweep_func;
-        m_rpm_curve = Constants.TurretControl.turret_distance_rpm_curve;
+        m_smooth_sweep_inverse = Constants.ShooterControl.shooter_smooth_sweep_inverse;
+        m_smooth_sweep = Constants.ShooterControl.shooter_smooth_sweep_func;
+        m_rpm_curve = Constants.ShooterControl.shooter_distance_rpm_curve;
     
         addRequirements(sys_flywheel, sys_rotation, sys_limelight, sys_indexer);
     }
@@ -67,7 +67,6 @@ public final class OperateTurret extends CommandBase {
     @Override
     public void execute() {
         double time = Timer.getFPGATimestamp() - m_timer;
-
         switch (m_state) {
             case kSearching:
                 internal_operateSearching(time);
@@ -83,8 +82,8 @@ public final class OperateTurret extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        m_turret_flywheel.disable();
-        m_turret_rotation.disable();
+        m_shooter_flywheel.disable();
+        m_shooter_turret.disable();
         m_limelight.disable();
         
         m_indexer.moveIndexerMotor(0);
@@ -92,7 +91,7 @@ public final class OperateTurret extends CommandBase {
     
     @Override
     public boolean isFinished() {
-        return !m_turret_flywheel.isEnabled() || !m_turret_flywheel.isEnabled();
+        return !m_shooter_flywheel.isEnabled() || !m_shooter_flywheel.isEnabled();
     }
 
     /**
@@ -105,11 +104,11 @@ public final class OperateTurret extends CommandBase {
         m_state = state;
 
         if (state == CommandState.kSweeping) {
-            m_turret_rotation.enable();
-            m_smooth_sweep_toff = m_smooth_sweep_inverse.calculate(m_turret_rotation.getRotation());
+            m_shooter_turret.enable();
+            m_smooth_sweep_toff = m_smooth_sweep_inverse.calculate(m_shooter_turret.getRotation());
         } else if (state == CommandState.kShooting) {
-            m_turret_flywheel.enable();
-            m_turret_flywheel.startFeeder();
+            m_shooter_flywheel.enable();
+            m_shooter_flywheel.startFeeder();
         }
     }
 
@@ -149,10 +148,10 @@ public final class OperateTurret extends CommandBase {
     private void internal_operateSweeping(double time) {
         if (m_limelight.hasTarget() && m_limelight.getTargetType() == Limelight.TargetType.kOuterPort) {
             internal_switchState(CommandState.kShooting);
-        } else if (time / Constants.TurretControl.turret_smooth_sweep_period > Constants.TurretControl.turret_smooth_sweep_max_sweeps) {
+        } else if (time / Constants.ShooterControl.shooter_smooth_sweep_period > Constants.ShooterControl.shooter_smooth_sweep_max_sweeps) {
             this.cancel();
         } else {
-            m_turret_rotation.setRotation(m_smooth_sweep.calculate(time+m_smooth_sweep_toff));
+            m_shooter_turret.setRotation(m_smooth_sweep.calculate(time+m_smooth_sweep_toff));
         }
     }
 
@@ -173,11 +172,11 @@ public final class OperateTurret extends CommandBase {
     
             double distance = m_port_height / Math.tan(Math.toRadians(target.y + Constants.Vision.vision_limelight_pitch));
     
-            m_turret_flywheel.setVelocity(m_rpm_curve.calculate(m_distance_range.clamp(distance)));
-            m_turret_rotation.setRotation(m_turret_rotation.getRotation()+target.x);
+            m_shooter_flywheel.setVelocity(m_rpm_curve.calculate(m_distance_range.clamp(distance)));
+            m_shooter_turret.setRotation(m_shooter_turret.getRotation()+target.x);
         }
     
-        if (m_turret_rotation.isTargetReached() && m_turret_flywheel.isTargetReached()) {
+        if (m_shooter_turret.isTargetReached() && m_shooter_flywheel.isTargetReached()) {
             m_indexer.moveIndexerMotor(-0.8);
         } else {
             m_indexer.moveIndexerMotor(0);

@@ -8,41 +8,41 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.Timer;
 
-import org.frc.team5409.robot.subsystems.turret.TurretFlywheel;
+import org.frc.team5409.robot.subsystems.turret.ShooterFlywheel;
 import org.frc.team5409.robot.subsystems.*;
 import org.frc.team5409.robot.Constants;
 import org.frc.team5409.robot.util.*;
 
 /**
- * This command runs the turret flywheel at a speed
+ * This command runs the shooter flywheel at a speed
  * porportional to the distance of the turret from the
  * shooting target and operates the indexer once the rpm
  * reaches it's setpoint.
  * 
  * @author Keith Davies
  */
-public final class RunTurretFlywheel extends CommandBase {
-    private final TurretFlywheel m_turret;
-    private final Limelight      m_limelight;
-    private final Indexer        m_indexer;
+public final class RunShooterFlywheel extends CommandBase {
+    private final ShooterFlywheel m_flywheel;
+    private final Limelight       m_limelight;
+    private final Indexer         m_indexer;
     
-    private final double         m_target_height;
+    private final double          m_target_height;
 
-    private final Range          m_distance_range;
-    private final SimpleEquation m_rpm_curve;
+    private final Range           m_distance_range;
+    private final SimpleEquation  m_rpm_curve;
 
-    private       double         m_target, m_distance, m_timer, m_predicted, m_scored;
+    private       double          m_target, m_distance, m_timer, m_predicted, m_scored;
 
-    private       boolean        m_debounce1, m_debounce2, m_debounce3, m_debounce4;
+    private       boolean         m_debounce1, m_debounce2, m_debounce3, m_debounce4;
 
-    private       JoystickButton m_trg_flywheel, m_trg_score;
+    private       JoystickButton  m_trg_flywheel, m_trg_score;
 
-    private       Logger         m_log_current, m_log_velocity, m_log_events, m_log_scored;
+    private       Logger          m_log_current, m_log_velocity, m_log_events, m_log_scored;
 
-    public RunTurretFlywheel(TurretFlywheel sys_flywheel, Indexer sys_indexer, Limelight sys_limelight, XboxController joy_main, XboxController joy_sec) {
-        m_turret = sys_flywheel;
-        m_indexer = sys_indexer;
+    public RunShooterFlywheel(ShooterFlywheel sys_flywheel, Indexer sys_indexer, Limelight sys_limelight, XboxController joy_main, XboxController joy_sec) {
         m_limelight = sys_limelight;
+        m_flywheel = sys_flywheel;
+        m_indexer = sys_indexer;
 
         m_predicted = 0;
         m_distance = 0;
@@ -53,19 +53,19 @@ public final class RunTurretFlywheel extends CommandBase {
         m_trg_score = new JoystickButton(joy_sec, 1);
 
         m_target_height = Math.abs(Constants.Vision.vision_outerport_height - Constants.Vision.vision_limelight_height);
-        m_distance_range = Constants.TurretControl.turret_distance_range;
-        m_rpm_curve = Constants.TurretControl.turret_distance_rpm_curve;
+        m_distance_range = Constants.ShooterControl.shooter_distance_range;
+        m_rpm_curve = Constants.ShooterControl.shooter_distance_rpm_curve;
 
         SmartDashboard.setDefaultNumber("Target Velocity", 0);
         SmartDashboard.setDefaultNumber("Target Indexer", 0.8);
         SmartDashboard.setDefaultNumber("Feeder Threshold", 0.9);
 
-        addRequirements(m_turret, m_indexer, m_limelight);
+        addRequirements(m_flywheel, m_indexer, m_limelight);
     }
 
     @Override
     public void initialize() {
-        m_turret.enable();
+        m_flywheel.enable();
         
         if (!m_limelight.isEnabled()) {
             m_limelight.enable();
@@ -91,22 +91,22 @@ public final class RunTurretFlywheel extends CommandBase {
 
         new Logger(logs_path+"/TURRET_CONSTANTS.csv")
             .write("%f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %s",
-                Constants.TurretControl.pid_turret_flywheel.P,
-                Constants.TurretControl.pid_turret_flywheel.I,
-                Constants.TurretControl.pid_turret_flywheel.D,
-                Constants.TurretControl.pid_turret_flywheel.F,
+                Constants.ShooterControl.shooter_pid_flywheel.P,
+                Constants.ShooterControl.shooter_pid_flywheel.I,
+                Constants.ShooterControl.shooter_pid_flywheel.D,
+                Constants.ShooterControl.shooter_pid_flywheel.F,
 
-                Constants.TurretControl.turret_flywheel_current_limit,
-                Constants.TurretControl.turret_feeder_current_limit,
+                Constants.ShooterControl.shooter_flywheel_current_limit,
+                Constants.ShooterControl.shooter_feeder_current_limit,
 
-                Constants.TurretControl.turret_flywheel_rpm_scale,
-                Constants.TurretControl.turret_flywheel_target_thresh,
+                Constants.ShooterControl.shooter_flywheel_rpm_scale,
+                Constants.ShooterControl.shooter_flywheel_target_thresh,
 
                 Constants.Vision.vision_limelight_height,
                 Constants.Vision.vision_outerport_height,
                 Constants.Vision.vision_limelight_pitch,
 
-                Constants.TurretControl.turret_distance_rpm_curve_string)
+                Constants.ShooterControl.shooter_distance_rpm_curve_string)
             .save();
         
         m_log_events.writeln("0, SESSION START, ");
@@ -116,7 +116,7 @@ public final class RunTurretFlywheel extends CommandBase {
 
     @Override
     public void execute() {
-        double velocity = m_turret.getVelocity();
+        double velocity = m_flywheel.getVelocity();
         double time = Timer.getFPGATimestamp() - m_timer;
 
         if (m_limelight.hasTarget() && m_limelight.getTargetType() == Limelight.TargetType.kOuterPort) {
@@ -139,7 +139,7 @@ public final class RunTurretFlywheel extends CommandBase {
             m_debounce1 = false;
         }
 
-        if (velocity > m_target*Constants.TurretControl.turret_flywheel_target_thresh) {
+        if (velocity > m_target*Constants.ShooterControl.shooter_flywheel_target_thresh) {
             m_indexer.moveIndexerMotor(-0.8);
 
             if (!m_debounce2) {
@@ -160,8 +160,8 @@ public final class RunTurretFlywheel extends CommandBase {
         if (m_trg_flywheel.get()) {
             if (!m_debounce3) {
                 m_target = SmartDashboard.getNumber("Target Velocity", 0);
-                m_turret.setVelocity(m_target);
-                m_turret.startFeeder();
+                m_flywheel.setVelocity(m_target);
+                m_flywheel.startFeeder();
 
                 m_scored = 0;
 
@@ -171,8 +171,8 @@ public final class RunTurretFlywheel extends CommandBase {
             m_debounce3 = true;
         } else {
             if (m_debounce3) {
-                m_turret.setVelocity(0);
-                m_turret.stopFeeder();
+                m_flywheel.setVelocity(0);
+                m_flywheel.stopFeeder();
 
                 m_log_events.writeln("%f, TURRET STOPPED [0], 0", time);
             }
@@ -193,11 +193,11 @@ public final class RunTurretFlywheel extends CommandBase {
             m_debounce4 = false;
 
         m_log_velocity.writeln("%f, %f", time, velocity);
-        m_log_current.writeln("%f, %f", time, m_turret.getCurrent());
+        m_log_current.writeln("%f, %f", time, m_flywheel.getCurrent());
 
         SmartDashboard.putNumber(      "Real Velocity", velocity);
         SmartDashboard.putNumber(    "Target Velocity", m_target);
-        SmartDashboard.putNumber(    "Actual Velocity", m_turret.getVelocity());     
+        SmartDashboard.putNumber(    "Actual Velocity", m_flywheel.getVelocity());     
         SmartDashboard.putNumber( "Predicted Velocity", m_predicted);
         SmartDashboard.putNumber("Robot Distance (ft)", m_distance);
         SmartDashboard.putNumber(  "Scored Powercells", m_scored);
@@ -208,7 +208,7 @@ public final class RunTurretFlywheel extends CommandBase {
         double time = Timer.getFPGATimestamp() - m_timer;
 
         m_limelight.disable();
-        m_turret.disable();
+        m_flywheel.disable();
 
         m_indexer.moveIndexerMotor(0);
 

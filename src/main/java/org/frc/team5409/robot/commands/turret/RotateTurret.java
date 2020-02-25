@@ -1,7 +1,7 @@
 package org.frc.team5409.robot.commands.turret;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import org.frc.team5409.robot.subsystems.turret.TurretRotation;
+import org.frc.team5409.robot.subsystems.turret.ShooterTurret;
 
 /**
  * Turns turret to {@code target} angle.
@@ -9,7 +9,7 @@ import org.frc.team5409.robot.subsystems.turret.TurretRotation;
  * @author Keith Davies
  */
 public final class RotateTurret extends CommandBase {
-    private final TurretRotation m_turret;
+    private final ShooterTurret m_turret;
 
     private final double         m_target;
 
@@ -19,7 +19,7 @@ public final class RotateTurret extends CommandBase {
      * @param subsystem The turret rotation subsystem.
      * @param target    The target angle.
      */
-    public RotateTurret(TurretRotation subsystem, double target) {
+    public RotateTurret(ShooterTurret subsystem, double target) {
         m_turret = subsystem;
         m_target = target;
 
