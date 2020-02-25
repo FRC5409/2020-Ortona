@@ -36,31 +36,39 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 public class RobotContainer {
 
-	private final TurretFlywheel sys_turret_flywheel;
-	private final TurretRotation sys_turret_rotation;
-	private final Indexer sys_Indexer;
+	//subsystems
+	private final TurretFlywheel subsys_turret_flywheel;
+	private final TurretRotation subsys_turret_rotation;
+	private final Indexer subsys_indexer;
+	public final Intake subsys_intake;
+	public final DriveTrain subsys_driveTrain;
+	public final Hanging subsys_climb;
 	
+	//commands
 	private IntakeIndexActive cmd_IntakeIndexActive;
-	public final Intake sys_intakeSubsystem;
-	public final DriveTrain sys_driveTrain;
 	private final SequentialCommandGroup grp_configure_turret;
 	private AntiTipToggle cmd_AntiTipToggle;
-	private final XboxController joy_main, joy_secondary;
-	public final DriveCommand m_driveCommand;
-	private final JoystickButton but_main_A, but_main_B, but_main_X, but_main_Y, but_main_sck_left, but_main_sck_right,
-			but_main_bmp_left, but_main_bmp_right,but_main_start,but_main_back;
+	public final DriveCommand cmd_drive;
+	public final DriveStraightAuto cmd_DriveStraightAuto;
 
-	private final JoystickButton but_secondary_A, but_secondary_B, but_secondary_X, but_secondary_Y,
-			but_secondary_sck_left, but_secondary_sck_right, but_secondary_bmp_left, but_secondary_bmp_right;
-
-	public final Hanging m_hanging;
 	// public final RetractArmNeo cmd_RetractArmNeo;
 	// public final ExtendArmNeo cmd_ExtendArmNeo;
 	// public final UnlockPiston cmd_UnlockPiston;
 	// public final LockPiston cmd_LockPiston;
 	// public final Retract cmd_Retract;
 	// public final Extend cmd_Extend;
-	public final DriveStraightAuto cmd_DriveStraightAuto;
+
+	//joystick controllers
+	private final XboxController joy_main, joy_secondary;
+
+	//buttons
+	private final JoystickButton but_main_A, but_main_B, but_main_X, but_main_Y, but_main_sck_left, but_main_sck_right,
+			but_main_bmp_left, but_main_bmp_right,but_main_start,but_main_back;
+
+	private final JoystickButton but_secondary_A, but_secondary_B, but_secondary_X, but_secondary_Y,
+			but_secondary_sck_left, but_secondary_sck_right, but_secondary_bmp_left, but_secondary_bmp_right;
+
+	
 
 	/**
 	 * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -69,31 +77,31 @@ public class RobotContainer {
 		//Joystick stuff
 		joy_main = new XboxController(0);
 		joy_secondary = new XboxController(1);
-		sys_driveTrain = new DriveTrain(); 
+		subsys_driveTrain = new DriveTrain(); 
 
 		//WuTang's stuff
-		m_hanging = new Hanging();
-		m_driveCommand = new DriveCommand(sys_driveTrain, joy_main);
-		cmd_DriveStraightAuto = new DriveStraightAuto(sys_driveTrain);
-		// cmd_RetractArmNeo = new RetractArmNeo(m_hanging);
-		// cmd_ExtendArmNeo = new ExtendArmNeo(m_hanging);
-		// cmd_UnlockPiston = new UnlockPiston(m_hanging);
-		// cmd_LockPiston = new LockPiston(m_hanging);
-		// cmd_Retract = new Retract(m_hanging);
-		// cmd_Extend = new Extend(m_hanging);
+		subsys_climb = new Hanging();
+		cmd_drive = new DriveCommand(subsys_driveTrain, joy_main);
+		cmd_DriveStraightAuto = new DriveStraightAuto(subsys_driveTrain);
+		// cmd_RetractArmNeo = new RetractArmNeo(subsys_climb);
+		// cmd_ExtendArmNeo = new ExtendArmNeo(subsys_climb);
+		// cmd_UnlockPiston = new UnlockPiston(subsys_climb);
+		// cmd_LockPiston = new LockPiston(subsys_climb);
+		// cmd_Retract = new Retract(subsys_climb);
+		// cmd_Extend = new Extend(subsys_climb);
 
 		// Liz's stuff
-		sys_Indexer = new Indexer();
+		subsys_indexer = new Indexer();
 
 		// Sanad's stuff
-		sys_intakeSubsystem = new Intake();
+		subsys_intake = new Intake();
 		
 		// Keith's stuff
-		sys_turret_flywheel = new TurretFlywheel();
-		sys_turret_rotation = new TurretRotation();
+		subsys_turret_flywheel = new TurretFlywheel();
+		subsys_turret_rotation = new TurretRotation();
 
-		grp_configure_turret = new SequentialCommandGroup(new ConfigureTurret(sys_turret_rotation, sys_turret_flywheel),
-				new RotateTurret(sys_turret_rotation, 0));
+		grp_configure_turret = new SequentialCommandGroup(new ConfigureTurret(subsys_turret_rotation, subsys_turret_flywheel),
+				new RotateTurret(subsys_turret_rotation, 0));
 
 		//Buttons
 		but_main_A = new JoystickButton(joy_main, XboxController.Button.kA.value);
@@ -127,15 +135,15 @@ public class RobotContainer {
 		//but_main_A.cancelWhenPressed(cmd_IndexActive);
 
 	    // Run intake while held
-		but_main_Y.whileHeld(new IntakeIndexActive(sys_Indexer, sys_intakeSubsystem));
+		but_main_Y.whileHeld(new IntakeIndexActive(subsys_indexer, subsys_intake));
 		// Toggle AntiTip
-	    but_secondary_Y.whenPressed(new AntiTipToggle(sys_driveTrain));
+	    but_secondary_Y.whenPressed(new AntiTipToggle(subsys_driveTrain));
 
 		//but_main_X.toggleWhenPressed(cmd_IndexActive);
 
 		//WuTang's Stuff
-		but_main_start.whenPressed(new Extend(m_hanging));
-		but_main_back.whenPressed(new Retract(m_hanging));
+		but_main_start.whenPressed(new Extend(subsys_climb));
+		but_main_back.whenPressed(new Retract(subsys_climb));
 	}
 
 	  /**
@@ -178,21 +186,21 @@ public class RobotContainer {
 
 //     final RamseteCommand ramseteCommand = new RamseteCommand( 
 
-//         trajectory, sys_driveTrain::getPose, new RamseteController(Constants.Trajectory.kRamseteB, Constants.Trajectory.kRamseteZeta),
+//         trajectory, subsys_driveTrain::getPose, new RamseteController(Constants.Trajectory.kRamseteB, Constants.Trajectory.kRamseteZeta),
 
 //         new SimpleMotorFeedforward(Constants.Trajectory.ksVolts, Constants.Trajectory.kvVoltSecondsPerMeter,
 
 //             Constants.Trajectory.kaVoltSecondsSquaredPerMeter),
 
-//         Constants.Trajectory.kDriveKinematics, sys_driveTrain::getWheelSpeeds, new PIDController(Constants.Trajectory.kPDriveVel, 0, 0),
+//         Constants.Trajectory.kDriveKinematics, subsys_driveTrain::getWheelSpeeds, new PIDController(Constants.Trajectory.kPDriveVel, 0, 0),
 
 //         new PIDController(Constants.Trajectory.kPDriveVel, 0, 0),
 
 //         // RamseteCommand passes volts to the callback
-//         sys_driveTrain::tankDriveVolts, sys_driveTrain);
+//         subsys_driveTrain::tankDriveVolts, subsys_driveTrain);
 
 //     // Run path following command, then stop at the end.
-//     return ramseteCommand.andThen(() -> sys_driveTrain.tankDriveVolts(0, 0));
+//     return ramseteCommand.andThen(() -> subsys_driveTrain.tankDriveVolts(0, 0));
 //   }
 
 	public Command getAutonomousCommand() {
