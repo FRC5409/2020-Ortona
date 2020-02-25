@@ -15,16 +15,16 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Intake extends SubsystemBase {
   private CANSparkMax mot_intake_sparkMax_C10;
-  private DoubleSolenoid d_rightIntakeSolenoid;
-  private DoubleSolenoid d_leftIntakeSolenoid;
+  private DoubleSolenoid dsl_rightIntakeSolenoid;
+  private DoubleSolenoid dsl_leftIntakeSolenoid;
 
   /**
    * Creates a new Intake.
    */
   public Intake() {
     //mot_intake_sparkMax_C10 = new CANSparkMax(Constants.Intake.kIntakeMotor, MotorType.kBrushless);
-    //d_rightIntakeSolenoid = new DoubleSolenoid(Constants.Intake.kRightIntakeSolenoid1, Constants.Intake.kRightIntakeSolenoid2);
-    //d_leftIntakeSolenoid = new DoubleSolenoid(Constants.Intake.kLeftIntakeSolenoid1, Constants.Intake.kLeftIntakeSolenoid2);
+    //dsl_rightIntakeSolenoid = new DoubleSolenoid(Constants.Intake.kRightIntakeSolenoid1, Constants.Intake.kRightIntakeSolenoid2);
+    //dsl_leftIntakeSolenoid = new DoubleSolenoid(Constants.Intake.kLeftIntakeSolenoid1, Constants.Intake.kLeftIntakeSolenoid2);
 
   }
 
@@ -37,8 +37,8 @@ public class Intake extends SubsystemBase {
    * Method to extend intake
    */
   public void extend() {
-    d_rightIntakeSolenoid.set(DoubleSolenoid.Value.kForward);
-    d_leftIntakeSolenoid.set(DoubleSolenoid.Value.kForward);
+    dsl_rightIntakeSolenoid.set(DoubleSolenoid.Value.kForward);
+    dsl_leftIntakeSolenoid.set(DoubleSolenoid.Value.kForward);
     mot_intake_sparkMax_C10.set(0.5);
   }
 
@@ -46,8 +46,8 @@ public class Intake extends SubsystemBase {
    * Method to retract intake
    */
   public void retract() {
-    d_rightIntakeSolenoid.set(DoubleSolenoid.Value.kReverse);
-    d_leftIntakeSolenoid.set(DoubleSolenoid.Value.kReverse);
+    dsl_rightIntakeSolenoid.set(DoubleSolenoid.Value.kReverse);
+    dsl_leftIntakeSolenoid.set(DoubleSolenoid.Value.kReverse);
     mot_intake_sparkMax_C10.set(0);
   }
   

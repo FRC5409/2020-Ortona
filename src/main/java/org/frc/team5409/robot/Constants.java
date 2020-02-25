@@ -258,5 +258,10 @@ public final class Constants {
         public static final double TOF_RANGE = 10;
         
         public static final double TOF_SAMPLE_TIME = 24;
+
+        // Gear Shift
+
+        public static final double shiftThreshF = 0; // Encoder pulse rate threshold for fast shift
+        public static final double shiftThreshS = 0; // Encoder pulse raet threshold for slow shift
     }
 }

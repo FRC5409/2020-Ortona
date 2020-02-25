@@ -48,6 +48,7 @@ public class RobotContainer {
 	private IntakeIndexActive cmd_IntakeIndexActive;
 	private final SequentialCommandGroup grp_configure_turret;
 	private AntiTipToggle cmd_AntiTipToggle;
+	private ManualGearShift cmd_ManualGearShift;
 	public final DriveCommand cmd_drive;
 	public final DriveStraightAuto cmd_DriveStraightAuto;
 
@@ -138,7 +139,9 @@ public class RobotContainer {
 		but_main_Y.whileHeld(new IntakeIndexActive(subsys_indexer, subsys_intake));
 		// Toggle AntiTip
 	    but_secondary_Y.whenPressed(new AntiTipToggle(subsys_driveTrain));
-
+		
+		// Toggle gear shift 
+		but_main_bmp_right.whenPressed(new ManualGearShift(subsys_driveTrain));
 		//but_main_X.toggleWhenPressed(cmd_IndexActive);
 
 		//WuTang's Stuff

@@ -7,8 +7,10 @@
 
 package org.frc.team5409.robot.subsystems;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
@@ -25,7 +27,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.kauailabs.navx.frc.AHRS;
 
 public class DriveTrain extends SubsystemBase {
-  
+
   private final AHRS m_navX;
   private final CANSparkMax mot_leftDriveFront_sparkmax_C13;
   private final CANSparkMax mot_rightDriveFront_sparkmax_C15;
@@ -37,7 +39,9 @@ public class DriveTrain extends SubsystemBase {
   private final CANEncoder m_leftEncoder;
   private final CANEncoder m_rightEncoder;
   private boolean m_antiTipToggle;
+  private boolean m_fastShift;
   private final DifferentialDriveOdometry m_odometry;
+  private static DoubleSolenoid dsl_gearSolenoid;
 
   /**
    * Creates a new DriveTrain.
@@ -81,7 +85,6 @@ public class DriveTrain extends SubsystemBase {
 
     m_leftEncoder = mot_leftDriveFront_sparkmax_C13.getEncoder();
     m_rightEncoder = mot_rightDriveFront_sparkmax_C15.getEncoder();
-    
 
     // Sets the distance per pulse for the encoders
     // https://www.chiefdelphi.com/t/encoder-distance-per-pulse/156742
@@ -93,6 +96,8 @@ public class DriveTrain extends SubsystemBase {
 
     resetEncoders();
     m_odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
+
+    dsl_gearSolenoid = new DoubleSolenoid(6, 7);
 
     // Calibrate the gyro
     m_navX = new AHRS(SPI.Port.kMXP);
@@ -153,6 +158,31 @@ public class DriveTrain extends SubsystemBase {
    */
   public double getPitchAngle() {
     return m_navX.getPitch();
+  }
+
+  /**
+   * Method to shift to fast gear
+   */
+  public void fastShift() {
+    dsl_gearSolenoid.set(Value.kForward);
+    m_fastShift = true;
+  }
+
+  /**
+   * Method to shift to slow gear
+   */
+  public void slowShift() {
+    dsl_gearSolenoid.set(Value.kReverse);
+    m_fastShift = false;
+  }
+
+  /**
+   * Method to return shift value
+   * 
+   * @return Current fast shift value
+   */
+  public boolean getShiftValue() {
+    return m_fastShift;
   }
 
   public void arcadeDrive(double fwd, double rot) {
@@ -306,14 +336,14 @@ public class DriveTrain extends SubsystemBase {
   public void setLeftMotors(double speed) {
     m_leftMotors.set(speed);
   }
+
   public void setRightMotors(double speed) {
     m_rightMotors.set(speed);
   }
 
   public void auto() {
 
-
-    if (m_leftEncoder.getPosition()*Constants.DriveTrain.distanceCalculate <= (1)) {
+    if (m_leftEncoder.getPosition() * Constants.DriveTrain.distanceCalculate <= (1)) {
       m_leftMotors.set(0.5);
       m_rightMotors.set(0.5);
 
