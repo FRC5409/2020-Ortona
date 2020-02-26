@@ -97,23 +97,23 @@ public final class Constants {
 
         public static final int sampleTime = 24;
 
-        public static final int TOF_Enter = 2; 
+        public static final int TOF_Enter = 1; 
 
-        public static final int TOF_Ball1 = 3; 
+        public static final int TOF_Ball1 = 2; 
 
-        public static final int TOF_Exit = 1; 
+        public static final int TOF_Exit = 3; 
 
         public static final int m_Indexer_neo550_C16 = 13; 
 
         public static final int currentLimit = 20; 
 
-        public static final int rangeEnter_1 = 125; 
+        public static final int rangeEnter_1 = 50; 
         
-        public static final int rangeEnter_2 = 50; 
+        public static final int rangeEnter_2 = 150; 
 
-        public static final int rangeBall1_1 = 130; 
+        public static final int rangeBall1_1 = 140; 
 
-        public static final int rangeBall1_2 = 100; 
+        public static final int rangeBall1_2 = 130; 
 
         public static final int rangeExit_1 = 150; 
 
