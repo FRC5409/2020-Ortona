@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 public final class Constants {
     public static final class Vision {
     // Target Constants
-        public static final double vision_outerport_height = 89.75d/12.0d;
+        public static final double vision_outerport_height = 90.75d/12.0d;
 
 
     // Robot configuration Constants
