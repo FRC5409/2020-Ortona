@@ -128,6 +128,9 @@ public class RobotContainer {
 		but_secondary_bmp_right = new JoystickButton(joy_secondary, XboxController.Button.kBumperRight.value);
 
 		configureBindings();
+
+
+		sys_driveTrain.setDefaultCommand(new DriveCommand(sys_driveTrain, joy_main));
 	}
 
 	

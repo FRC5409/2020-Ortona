@@ -29,7 +29,7 @@ import com.kauailabs.navx.frc.AHRS;
 public class DriveTrain extends SubsystemBase {
 
   private final AHRS m_navX;
-  private final CANSparkMax mot_leftDriveFront_sparkmax_C13;
+  private final CANSparkMax mot_leftDriveFront_sparkmax_C14;
   private final CANSparkMax mot_rightDriveFront_sparkmax_C15;
   private final CANSparkMax mot_leftDriveRear_sparkmax_C4;
   private final CANSparkMax mot_rightDriveRear_sparkmax_C6;
@@ -47,19 +47,20 @@ public class DriveTrain extends SubsystemBase {
    * Creates a new DriveTrain.
    */
   public DriveTrain() {
-    mot_leftDriveFront_sparkmax_C13 = new CANSparkMax(Constants.DriveTrain.kLeftDriveFront, MotorType.kBrushless);
-    mot_leftDriveFront_sparkmax_C13.restoreFactoryDefaults();
-    mot_leftDriveFront_sparkmax_C13.setIdleMode(Constants.DriveTrain.idle);
-    mot_leftDriveFront_sparkmax_C13.setSmartCurrentLimit(40);
-    mot_leftDriveFront_sparkmax_C13.setInverted(true);
-    mot_leftDriveFront_sparkmax_C13.setOpenLoopRampRate(Constants.DriveTrain.loopRampRate);
-    mot_leftDriveFront_sparkmax_C13.burnFlash();
+    mot_leftDriveFront_sparkmax_C14 = new CANSparkMax(Constants.DriveTrain.kLeftDriveFront, MotorType.kBrushless);
+    mot_leftDriveFront_sparkmax_C14.restoreFactoryDefaults();
+    mot_leftDriveFront_sparkmax_C14.setIdleMode(Constants.DriveTrain.idle);
+    mot_leftDriveFront_sparkmax_C14.setSmartCurrentLimit(40);
+    mot_leftDriveFront_sparkmax_C14.setInverted(true);
+    mot_leftDriveFront_sparkmax_C14.setOpenLoopRampRate(Constants.DriveTrain.loopRampRate);
+    mot_leftDriveFront_sparkmax_C14.burnFlash();
 
     mot_leftDriveRear_sparkmax_C4 = new CANSparkMax(Constants.DriveTrain.kLeftDriveRear, MotorType.kBrushless);
     mot_leftDriveRear_sparkmax_C4.restoreFactoryDefaults();
     mot_leftDriveRear_sparkmax_C4.setIdleMode(Constants.DriveTrain.idle);
     mot_leftDriveRear_sparkmax_C4.setSmartCurrentLimit(40);
     mot_leftDriveRear_sparkmax_C4.setInverted(true);
+    mot_leftDriveRear_sparkmax_C4.follow(mot_leftDriveFront_sparkmax_C14);
     mot_leftDriveRear_sparkmax_C4.setOpenLoopRampRate(Constants.DriveTrain.loopRampRate);
     mot_leftDriveRear_sparkmax_C4.burnFlash();
 
@@ -74,16 +75,16 @@ public class DriveTrain extends SubsystemBase {
     mot_rightDriveRear_sparkmax_C6.restoreFactoryDefaults();
     mot_rightDriveRear_sparkmax_C6.setIdleMode(Constants.DriveTrain.idle);
     mot_rightDriveRear_sparkmax_C6.setSmartCurrentLimit(40);
+    mot_rightDriveRear_sparkmax_C6.follow(mot_rightDriveFront_sparkmax_C15);
     mot_rightDriveRear_sparkmax_C6.setOpenLoopRampRate(Constants.DriveTrain.loopRampRate);
     mot_rightDriveRear_sparkmax_C6.burnFlash();
 
     // Sets speed control group to the corisponding motor
-    m_leftMotors = new SpeedControllerGroup(mot_leftDriveRear_sparkmax_C4, mot_leftDriveFront_sparkmax_C13);
-    m_rightMotors = new SpeedControllerGroup(mot_rightDriveRear_sparkmax_C6, mot_rightDriveFront_sparkmax_C15);
+    
 
-    m_drive = new DifferentialDrive(m_leftMotors, m_rightMotors);
+    m_drive = new DifferentialDrive(mot_leftDriveFront_sparkmax_C14, mot_rightDriveFront_sparkmax_C15);
 
-    m_leftEncoder = mot_leftDriveFront_sparkmax_C13.getEncoder();
+    m_leftEncoder = mot_leftDriveFront_sparkmax_C14.getEncoder();
     m_rightEncoder = mot_rightDriveFront_sparkmax_C15.getEncoder();
 
     // Sets the distance per pulse for the encoders
@@ -328,7 +329,7 @@ public class DriveTrain extends SubsystemBase {
   private void setMotorIdleMode(IdleMode idlemode) {
     mot_rightDriveRear_sparkmax_C6.setIdleMode(idlemode);
     mot_rightDriveFront_sparkmax_C15.setIdleMode(idlemode);
-    mot_leftDriveFront_sparkmax_C13.setIdleMode(idlemode);
+    mot_leftDriveFront_sparkmax_C14.setIdleMode(idlemode);
     mot_leftDriveRear_sparkmax_C4.setIdleMode(idlemode);
   }
 
