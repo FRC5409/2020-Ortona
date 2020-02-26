@@ -213,6 +213,7 @@ public final class RunShooterFlywheel extends CommandBase {
         SmartDashboard.putNumber( "Predicted Velocity", m_predicted);
         SmartDashboard.putNumber("Robot Distance (ft)", m_distance);
         SmartDashboard.putNumber(  "Scored Powercells", m_scored);
+        SmartDashboard.putNumber(  "Missed Powercells", m_missed);
     }
 
     @Override
