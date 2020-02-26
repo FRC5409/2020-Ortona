@@ -9,15 +9,19 @@ package org.frc.team5409.robot.commands;
 
 import org.frc.team5409.robot.Constants.Indexer;
 import org.frc.team5409.robot.subsystems.Limelight;
-import org.frc.team5409.robot.subsystems.turret.TurretFlywheel;
+import org.frc.team5409.robot.subsystems.turret.ShooterFlywheel;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class ShootAuto extends CommandBase {
+  private ShooterFlywheel m_turret;
+  private Indexer m_indexer;
+  private Limelight m_limelight;
+
   /**
    * Creates a new ShootAuto.
    */
-  public ShootAuto(TurretFlywheel sys_flywheel, Indexer sys_indexer, Limelight sys_limelight) {
+  public ShootAuto(ShooterFlywheel sys_flywheel, Indexer sys_indexer, Limelight sys_limelight) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_turret = sys_flywheel;
     m_indexer = sys_indexer;

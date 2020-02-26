@@ -37,8 +37,8 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 public class RobotContainer {
 
 	//subsystems
-	private final TurretFlywheel subsys_turret_flywheel;
-	private final TurretRotation subsys_turret_rotation;
+	private final ShooterFlywheel subsys_shooter_flywheel;
+	private final ShooterTurret subsys_shooter_turret;
 	private final Indexer subsys_indexer;
 	public final Intake subsys_intake;
 	public final DriveTrain subsys_driveTrain;
@@ -98,11 +98,11 @@ public class RobotContainer {
 		subsys_intake = new Intake();
 		
 		// Keith's stuff
-		subsys_turret_flywheel = new TurretFlywheel();
-		subsys_turret_rotation = new TurretRotation();
+		subsys_shooter_flywheel = new ShooterFlywheel();
+		subsys_shooter_turret = new ShooterTurret();
 
-		grp_configure_turret = new SequentialCommandGroup(new ConfigureTurret(subsys_turret_rotation, subsys_turret_flywheel),
-				new RotateTurret(subsys_turret_rotation, 0));
+		grp_configure_turret = new SequentialCommandGroup(new CalibrateShooter(subsys_shooter_turret, subsys_shooter_flywheel),
+				new RotateTurret(subsys_shooter_turret, 0));
 
 		//Buttons
 		but_main_A = new JoystickButton(joy_main, XboxController.Button.kA.value);
@@ -130,7 +130,7 @@ public class RobotContainer {
 		configureBindings();
 
 
-		sys_driveTrain.setDefaultCommand(new DriveCommand(sys_driveTrain, joy_main));
+		subsys_driveTrain.setDefaultCommand(new DriveCommand(subsys_driveTrain, joy_main));
 	}
 
 	
