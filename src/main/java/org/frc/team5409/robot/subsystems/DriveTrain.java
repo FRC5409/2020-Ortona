@@ -22,6 +22,7 @@ import org.frc.team5409.robot.Constants;
 
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.ExternalFollower;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.kauailabs.navx.frc.AHRS;
@@ -48,6 +49,7 @@ public class DriveTrain extends SubsystemBase {
    */
   public DriveTrain() {
     mot_leftDriveFront_sparkmax_C14 = new CANSparkMax(Constants.DriveTrain.kLeftDriveFront, MotorType.kBrushless);
+    
     mot_leftDriveFront_sparkmax_C14.restoreFactoryDefaults();
     mot_leftDriveFront_sparkmax_C14.setIdleMode(Constants.DriveTrain.idle);
     mot_leftDriveFront_sparkmax_C14.setSmartCurrentLimit(40);
@@ -60,6 +62,9 @@ public class DriveTrain extends SubsystemBase {
     mot_leftDriveRear_sparkmax_C4.setIdleMode(Constants.DriveTrain.idle);
     mot_leftDriveRear_sparkmax_C4.setSmartCurrentLimit(40);
     mot_leftDriveRear_sparkmax_C4.setInverted(true);
+    //follower fix
+    mot_leftDriveFront_sparkmax_C14.follow(ExternalFollower.kFollowerDisabled, 0);
+
     mot_leftDriveRear_sparkmax_C4.follow(mot_leftDriveFront_sparkmax_C14);
     mot_leftDriveRear_sparkmax_C4.setOpenLoopRampRate(Constants.DriveTrain.loopRampRate);
     mot_leftDriveRear_sparkmax_C4.burnFlash();
@@ -75,6 +80,9 @@ public class DriveTrain extends SubsystemBase {
     mot_rightDriveRear_sparkmax_C6.restoreFactoryDefaults();
     mot_rightDriveRear_sparkmax_C6.setIdleMode(Constants.DriveTrain.idle);
     mot_rightDriveRear_sparkmax_C6.setSmartCurrentLimit(40);
+    //follower fix
+    mot_rightDriveFront_sparkmax_C15.follow(ExternalFollower.kFollowerDisabled, 0);
+
     mot_rightDriveRear_sparkmax_C6.follow(mot_rightDriveFront_sparkmax_C15);
     mot_rightDriveRear_sparkmax_C6.setOpenLoopRampRate(Constants.DriveTrain.loopRampRate);
     mot_rightDriveRear_sparkmax_C6.burnFlash();

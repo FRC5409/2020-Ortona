@@ -44,11 +44,6 @@ public class Indexer extends SubsystemBase {
   protected double getRangeExit;
   protected double getRangeBall1;
 
-  public enum getRange {
-    getRangeEnter, getRangeBall1, getRangeExit;
-
-  }
-
   // number of power cells going through each sensor
   public int getNumberOfPowerCellsEnter;
 
@@ -84,34 +79,20 @@ public class Indexer extends SubsystemBase {
 
   }
 
-  // the measured distance in mm
-  // public double getRangeEnter() {
-  // return TOF_Enter.getRange();
-  // }
-
-  // public double getRangeExit() {
-  // return TOF_Exit.getRange();
-  // }
-
-  // public double getRangeBall1() {
-  // return TOF_Ball1.getRange();
-  // }
-
-  public void getRange(getRange type) {
-
-    if (type == getRange.getRangeEnter) {
-      return;
-    }
-
-    if (type == getRange.getRangeBall1) {
-      return;
-    }
-
-    if (type == getRange.getRangeExit) {
-      return;
-    }
-
+  //the measured distance in mm
+  public double getRangeEnter() {
+  return TOF_Enter.getRange();
   }
+
+  public double getRangeExit() {
+  return TOF_Exit.getRange();
+  }
+
+  public double getRangeBall1() {
+  return TOF_Ball1.getRange();
+  }
+
+  
 
   // ball detection functions
   public boolean ballDetectionEnter() {
