@@ -175,15 +175,9 @@ public final class Constants {
         
         public static final int kRightDriveRear = 6;
         
-        public static final int kIntakeMotor = 0;
+        public static final int kShiftSolenoid1 = 6;
         
-        public static final int kRightIntakeSolenoid1 = 0;
-        
-        public static final int kRightIntakeSolenoid2 = 0;
-        
-        public static final int kLeftIntakeSolenoid1 = 0;
-        
-        public static final int kLeftIntakeSolenoid2 = 0;
+        public static final int kShiftSolenoid2 = 7;
 
         public static final double ksVolts = 0;
         

@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class ManualGearShift extends CommandBase {
   private final DriveTrain sys_driveSubsystem;
-  boolean fastShifted = false; // Used for checking if currently fast shifted=
 
   /**
    * Creates a new ManualGearShift.

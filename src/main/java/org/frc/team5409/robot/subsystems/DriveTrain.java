@@ -106,7 +106,7 @@ public class DriveTrain extends SubsystemBase {
     resetEncoders();
     m_odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
     
-    dsl_gearSolenoid = new DoubleSolenoid(6, 7);
+    dsl_gearSolenoid = new DoubleSolenoid(Constants.DriveTrain.kShiftSolenoid1, Constants.DriveTrain.kShiftSolenoid2);
     
     // Set intial shift value to slow
     m_fastShift = false;
@@ -115,8 +115,8 @@ public class DriveTrain extends SubsystemBase {
     m_navX = new AHRS(SPI.Port.kMXP);
     // Add NAVX calibration here
 
-    // Set intial toggle value to true
-    m_antiTipToggle = true;
+    // Set intial toggle value to false
+    m_antiTipToggle = false;
   }
 
   @Override
@@ -191,7 +191,7 @@ public class DriveTrain extends SubsystemBase {
   /**
    * Method to return shift value
    * 
-   * @return Current fast shift value
+   * @return Current fast shift value, true means fast gear, false means slow gear
    */
   public boolean getShiftValue() {
     return m_fastShift;
