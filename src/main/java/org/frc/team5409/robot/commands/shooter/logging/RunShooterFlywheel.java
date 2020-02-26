@@ -37,7 +37,7 @@ public final class RunShooterFlywheel extends CommandBase {
 
     private       JoystickButton  m_trg_flywheel, m_trg_score, m_trg_miss;
 
-    private       Logger          m_log_current, m_log_velocity, m_log_events, m_log_powercells;
+    private       Logger          m_log_flywheel, m_log_events, m_log_powercells;
 
     public RunShooterFlywheel(ShooterFlywheel sys_flywheel, Indexer sys_indexer, Limelight sys_limelight, XboxController joy_main, XboxController joy_sec) {
         m_limelight = sys_limelight;
@@ -71,8 +71,7 @@ public final class RunShooterFlywheel extends CommandBase {
 
         String logs_path = "flywheel/"+Long.toString(Instant.now().getEpochSecond());
 
-        m_log_velocity = new Logger(logs_path+"/FLYWHEEL_VELOCITY.csv");
-        m_log_current = new Logger(logs_path+"/FLYWHEEL_CURRENT.csv");
+        m_log_flywheel = new Logger(logs_path+"/FLYWHEEL_DATA.csv");
         m_log_powercells = new Logger(logs_path+"/POWERCELL_EVENTS.csv");
         m_log_events = new Logger(logs_path+"/TURRET_EVENTS.csv");
 
@@ -110,8 +109,7 @@ public final class RunShooterFlywheel extends CommandBase {
             .save();
         
         m_log_events.writeln("0, SESSION START, ");
-        m_log_velocity.writeln("0, 0");
-        m_log_current.writeln("0, 0");
+        m_log_flywheel.writeln("0, 0, 0, 0");
     }
 
     @Override
@@ -200,8 +198,11 @@ public final class RunShooterFlywheel extends CommandBase {
         } else
             m_debounce4 = false;
 
-        m_log_velocity.writeln("%f, %f", time, velocity);
-        m_log_current.writeln("%f, %f", time, m_flywheel.getCurrent());
+        m_log_flywheel.writeln("%f, %f, %f, %f", time, 
+                                                 velocity,
+                                                 m_flywheel.getData(ShooterFlywheel.ShooterData.kFlywheelCurrent),
+                                                 m_flywheel.getData(ShooterFlywheel.ShooterData.kFeederCurrent)
+                              );
 
         SmartDashboard.putNumber(      "Real Velocity", velocity);
         SmartDashboard.putNumber(    "Target Velocity", m_target);
@@ -232,8 +233,7 @@ public final class RunShooterFlywheel extends CommandBase {
 
         m_log_events.writeln("%f, SESSION END, ", time);
 
-        m_log_velocity.save();
-        m_log_current.save();
+        m_log_flywheel.save();
         m_log_powercells.save();
         m_log_events.save();
     }
