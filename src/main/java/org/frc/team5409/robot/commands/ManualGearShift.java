@@ -18,7 +18,8 @@ public class ManualGearShift extends CommandBase {
    * Creates a new ManualGearShift.
    */
   public ManualGearShift(DriveTrain subsystem) {
-    sys_driveSubsystem = subsystem;
+    sys_driveSubsystem = subsystem; 
+    addRequirements(sys_driveSubsystem);
   }
 
   // Called when the command is initially scheduled.
