@@ -10,13 +10,13 @@ package org.frc.team5409.robot.commands;
 import org.frc.team5409.robot.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-public class ManualGearShift extends CommandBase {
+public class FastGearShift extends CommandBase {
   private final DriveTrain sys_driveSubsystem;
 
   /**
-   * Creates a new ManualGearShift.
+   * Creates a new FastGearShift.
    */
-  public ManualGearShift(DriveTrain subsystem) {
+  public FastGearShift(DriveTrain subsystem) {
     sys_driveSubsystem = subsystem; 
     addRequirements(sys_driveSubsystem);
   }
@@ -24,12 +24,8 @@ public class ManualGearShift extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if(sys_driveSubsystem.getShiftValue()){
-      sys_driveSubsystem.slowShift();
-    }
-    else {
-      sys_driveSubsystem.fastShift();
-    }
+    // Shifts to fast gear
+    sys_driveSubsystem.fastShift();
   }
 
   // Called every time the scheduler runs while the command is scheduled.

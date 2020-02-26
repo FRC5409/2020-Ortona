@@ -40,7 +40,6 @@ public class DriveTrain extends SubsystemBase {
   private final CANEncoder m_leftEncoder;
   private final CANEncoder m_rightEncoder;
   private boolean m_antiTipToggle;
-  private boolean m_fastShift;
   private final DifferentialDriveOdometry m_odometry;
   private static DoubleSolenoid dsl_gearSolenoid;
 
@@ -107,9 +106,6 @@ public class DriveTrain extends SubsystemBase {
     m_odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
     
     dsl_gearSolenoid = new DoubleSolenoid(Constants.DriveTrain.kShiftSolenoid1, Constants.DriveTrain.kShiftSolenoid2);
-    
-    // Set intial shift value to slow
-    m_fastShift = false;
 
     // Calibrate the gyro
     m_navX = new AHRS(SPI.Port.kMXP);
@@ -177,7 +173,6 @@ public class DriveTrain extends SubsystemBase {
    */
   public void fastShift() {
     dsl_gearSolenoid.set(Value.kForward);
-    m_fastShift = true;
   }
 
   /**
@@ -185,16 +180,6 @@ public class DriveTrain extends SubsystemBase {
    */
   public void slowShift() {
     dsl_gearSolenoid.set(Value.kReverse);
-    m_fastShift = false;
-  }
-
-  /**
-   * Method to return shift value
-   * 
-   * @return Current fast shift value, true means fast gear, false means slow gear
-   */
-  public boolean getShiftValue() {
-    return m_fastShift;
   }
 
   public void arcadeDrive(double fwd, double rot) {
