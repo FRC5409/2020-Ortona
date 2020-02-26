@@ -148,8 +148,8 @@ public class RobotContainer {
 		//but_main_X.toggleWhenPressed(cmd_IndexActive);
 
 		//WuTang's Stuff
-		but_main_start.whenPressed(new Extend(subsys_climb));
-		but_main_back.whenPressed(new Retract(subsys_climb));
+		but_main_start.whenPressed(new ExtendArmNeo(subsys_climb));
+		but_main_back.whenPressed(new RetractArmNeo(subsys_climb));
 	}
 
 	  /**
