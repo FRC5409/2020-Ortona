@@ -57,10 +57,6 @@ public final class RunShooterFlywheel extends CommandBase {
         m_distance_range = Constants.ShooterControl.shooter_distance_range;
         m_rpm_curve = Constants.ShooterControl.shooter_distance_rpm_curve;
 
-        SmartDashboard.setDefaultNumber("Target Velocity", 0);
-        SmartDashboard.setDefaultNumber("Target Indexer", 0.8);
-        SmartDashboard.setDefaultNumber("Feeder Threshold", 0.9);
-
         addRequirements(m_flywheel, m_indexer, m_limelight);
     }
 
