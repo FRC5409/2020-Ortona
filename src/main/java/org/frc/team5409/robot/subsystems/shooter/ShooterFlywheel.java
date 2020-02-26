@@ -1,4 +1,4 @@
-package org.frc.team5409.robot.subsystems.turret;
+package org.frc.team5409.robot.subsystems.shooter;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.*;

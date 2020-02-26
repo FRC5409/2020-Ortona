@@ -1,9 +1,9 @@
-package org.frc.team5409.robot.commands.turret;
+package org.frc.team5409.robot.commands.shooter;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import org.frc.team5409.robot.Constants;
-import org.frc.team5409.robot.subsystems.turret.*;
-import org.frc.team5409.robot.subsystems.turret.ShooterTurret.ResetSwitchType;
+import org.frc.team5409.robot.subsystems.shooter.*;
+import org.frc.team5409.robot.subsystems.shooter.ShooterTurret.ResetSwitchType;
 
 public final class CalibrateShooter extends CommandBase {
     private final ShooterTurret m_turret;
