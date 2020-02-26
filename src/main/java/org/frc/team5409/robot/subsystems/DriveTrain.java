@@ -40,7 +40,7 @@ public class DriveTrain extends SubsystemBase {
   private final CANEncoder m_leftEncoder;
   private final CANEncoder m_rightEncoder;
   private boolean m_antiTipToggle;
-  private final DifferentialDriveOdometry m_odometry;
+  private DifferentialDriveOdometry m_odometry;
   private static DoubleSolenoid dsl_gearSolenoid;
 
   /**
@@ -103,9 +103,9 @@ public class DriveTrain extends SubsystemBase {
         (Constants.DriveTrain.neo_encoder_position) * Constants.DriveTrain.kEncoderDistancePerPulse);
 
     resetEncoders();
-    m_odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
+    //m_odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
     
-    dsl_gearSolenoid = new DoubleSolenoid(Constants.DriveTrain.kShiftSolenoid1, Constants.DriveTrain.kShiftSolenoid2);
+    //dsl_gearSolenoid = new DoubleSolenoid(Constants.DriveTrain.kShiftSolenoid1, Constants.DriveTrain.kShiftSolenoid2);
 
     // Calibrate the gyro
     m_navX = new AHRS(SPI.Port.kMXP);
@@ -120,7 +120,7 @@ public class DriveTrain extends SubsystemBase {
     // This method will be called once per scheduler run
 
     // Update the odometry in the periodic block
-    m_odometry.update(Rotation2d.fromDegrees(getHeading()), m_leftEncoder.getPosition(), m_rightEncoder.getPosition());
+    //m_odometry.update(Rotation2d.fromDegrees(getHeading()), m_leftEncoder.getPosition(), m_rightEncoder.getPosition());
 
     // Get the encoder positions and display in smart dashboard
     SmartDashboard.putNumber("kleftencoder value", m_leftEncoder.getPosition());

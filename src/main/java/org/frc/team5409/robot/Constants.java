@@ -103,11 +103,12 @@ public final class Constants {
 
         public static final int TOF_Exit = 3; 
 
-        public static final int m_Indexer_neo550_C16 = 13; 
+        public static final int m_Indexer_neo550_C16 = 16; 
 
         public static final int currentLimit = 20; 
 
-        public static final int rangeEnter_1 = 50; 
+        public static final int rangeEnter_1 = 
+        50; 
         
         public static final int rangeEnter_2 = 150; 
 
@@ -167,7 +168,7 @@ public final class Constants {
 
         public static final double loopRampRate= 0.5;
 
-        public static final int kLeftDriveFront = 13;
+        public static final int kLeftDriveFront = 14;
 
         public static final int kLeftDriveRear = 4;
         
