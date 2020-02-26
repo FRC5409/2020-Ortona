@@ -147,7 +147,7 @@ public final class RunShooterFlywheel extends CommandBase {
             m_indexer.moveIndexerMotor(-0.8);
 
             if (!m_debounce2) {
-                m_log_events.writeln("%f, TURRET AT SPEED [%f], %f", time, velocity, velocity);
+                m_log_events.writeln("%f, FLYWHEEL AT SPEED [%f], %f", time, velocity, velocity);
                 m_log_events.writeln("%f, INDEXER STARTED [0.8], 0.8", time);
             }
             
@@ -170,7 +170,7 @@ public final class RunShooterFlywheel extends CommandBase {
                 m_scored = 0;
                 m_missed = 0;
 
-                m_log_events.writeln("%f, TURRET STARTED [%f], %f", time, m_target, m_target);
+                m_log_events.writeln("%f, FLYWHEEL STARTED [%f], %f", time, m_target, m_target);
             }
 
             m_debounce3 = true;
@@ -179,7 +179,7 @@ public final class RunShooterFlywheel extends CommandBase {
                 m_flywheel.setVelocity(0);
                 m_flywheel.stopFeeder();
 
-                m_log_events.writeln("%f, TURRET STOPPED [0], 0", time);
+                m_log_events.writeln("%f, FLYWHEEL STOPPED [0], 0", time);
             }
                 
             m_debounce3 = false;
@@ -225,7 +225,7 @@ public final class RunShooterFlywheel extends CommandBase {
         m_indexer.moveIndexerMotor(0);
 
         if (m_debounce3)
-            m_log_events.writeln("%f, TURRET STOPPED [0], 0", time);
+            m_log_events.writeln("%f, FLYWHEEL STOPPED [0], 0", time);
 
         if (m_debounce2)
             m_log_events.writeln(String.format("%f, INDEXER STOPPED [0], 0", time));
