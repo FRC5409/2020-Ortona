@@ -35,7 +35,6 @@ public class DriveCommand extends CommandBase {
   public DriveCommand(DriveTrain subsystem, XboxController joystick) {
     sys_driveSubsystem = subsystem;
     m_joystick = joystick;
-    // DriveTrain m_DriveTrainSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(sys_driveSubsystem);
   }
