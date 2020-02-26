@@ -239,9 +239,9 @@ public final class Constants {
         public static final double kMinOutput = -0.1;
 
         //Neo Variables
-        public static final int NEO1_ID = 3;
+        public static final int NEO_SLAVE_ID = 3;
 
-        public static final int NEO2_ID = 5;
+        public static final int NEO_MASTER_ID = 5;
 
         public static final double EXTEND_NEO_POS = 10;
 

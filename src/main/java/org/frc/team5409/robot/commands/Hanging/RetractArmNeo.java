@@ -50,12 +50,12 @@ public class RetractArmNeo extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if ((m_hanging.enc1_hanging.getPosition() + m_hanging.enc2_hanging.getPosition())/2 <= Constants.Hanging.RETRACT_NEO_POS) {
-      finished = true;
-    }
-    if (m_hanging.range_Hang <= Constants.Hanging.TOF_RANGE){
-      finished = true;
-    }
+    // if ((m_hanging.enc1_hanging.getPosition() + m_hanging.enc2_hanging.getPosition())/2 <= Constants.Hanging.RETRACT_NEO_POS) {
+    //   finished = true;
+    // }
+    // if (m_hanging.range_Hang <= Constants.Hanging.TOF_RANGE){
+    //   finished = true;
+    // }
     // if (m_hanging.isSwitchSet()) {
     //   finished = true;
     // }

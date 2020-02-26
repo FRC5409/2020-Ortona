@@ -38,9 +38,9 @@ public class Hanging extends SubsystemBase {
   // private static DigitalInput limitSwitch;
 
   //Neo
-  private final CANSparkMax mot_hanging_neo_C3;
+  private final CANSparkMax mot_hanging_neo_Slave;
   public CANEncoder enc1_hanging;
-  private final CANSparkMax mot_hanging_neo_C5;
+  private final CANSparkMax mot_hanging_neo_Master;
   public CANEncoder enc2_hanging;
   private CANPIDController m_pidController_hanging;
   public double rotations;
@@ -54,33 +54,33 @@ public class Hanging extends SubsystemBase {
     dsl_hangSolenoid = new DoubleSolenoid(Constants.Hanging.FORWARD_CHANEL, Constants.Hanging.BACKWARD_CHANEL);
 
     // Neo
-    mot_hanging_neo_C3 = new CANSparkMax(Constants.Hanging.NEO1_ID, MotorType.kBrushless);
-    mot_hanging_neo_C5 = new CANSparkMax(Constants.Hanging.NEO2_ID, MotorType.kBrushless);
+    mot_hanging_neo_Slave = new CANSparkMax(Constants.Hanging.NEO_SLAVE_ID, MotorType.kBrushless);
+    mot_hanging_neo_Master = new CANSparkMax(Constants.Hanging.NEO_MASTER_ID, MotorType.kBrushless);
 
-    mot_hanging_neo_C3.restoreFactoryDefaults();
-    mot_hanging_neo_C5.restoreFactoryDefaults();
+    mot_hanging_neo_Slave.restoreFactoryDefaults();
+    mot_hanging_neo_Master.restoreFactoryDefaults();
 
-    mot_hanging_neo_C3.setSmartCurrentLimit(40);    
-    mot_hanging_neo_C5.setSmartCurrentLimit(40);
+    mot_hanging_neo_Slave.setSmartCurrentLimit(40);    
+    mot_hanging_neo_Master.setSmartCurrentLimit(40);
 
-    mot_hanging_neo_C3.getForwardLimitSwitch(LimitSwitchPolarity.kNormallyOpen).enableLimitSwitch(false);
-    mot_hanging_neo_C3.getReverseLimitSwitch(LimitSwitchPolarity.kNormallyOpen).enableLimitSwitch(false);
-    mot_hanging_neo_C5.getForwardLimitSwitch(LimitSwitchPolarity.kNormallyOpen).enableLimitSwitch(false);
-    mot_hanging_neo_C5.getReverseLimitSwitch(LimitSwitchPolarity.kNormallyOpen).enableLimitSwitch(false);
+    // mot_hanging_neo_Slave.getForwardLimitSwitch(LimitSwitchPolarity.kNormallyOpen).enableLimitSwitch(false);
+    // mot_hanging_neo_Slave.getReverseLimitSwitch(LimitSwitchPolarity.kNormallyOpen).enableLimitSwitch(false);
+    // mot_hanging_neo_Master.getForwardLimitSwitch(LimitSwitchPolarity.kNormallyOpen).enableLimitSwitch(false);
+    // mot_hanging_neo_Master.getReverseLimitSwitch(LimitSwitchPolarity.kNormallyOpen).enableLimitSwitch(false);
 
-    mot_hanging_neo_C3.setIdleMode(IdleMode.kBrake);
-    mot_hanging_neo_C5.setIdleMode(IdleMode.kBrake);
+    mot_hanging_neo_Slave.setIdleMode(IdleMode.kBrake);
+    mot_hanging_neo_Master.setIdleMode(IdleMode.kBrake);
 
-    enc1_hanging = mot_hanging_neo_C3.getEncoder();
-    enc2_hanging = mot_hanging_neo_C5.getEncoder();
+    enc1_hanging = mot_hanging_neo_Slave.getEncoder();
+    enc2_hanging = mot_hanging_neo_Master.getEncoder();
 
     enc1_hanging.setPosition(0);
     enc2_hanging.setPosition(0); 
 
-    mot_hanging_neo_C5.follow(mot_hanging_neo_C3, true);
+    mot_hanging_neo_Slave.follow(mot_hanging_neo_Master, true);
 
-    mot_hanging_neo_C3.burnFlash();
-    mot_hanging_neo_C5.burnFlash();
+    mot_hanging_neo_Slave.burnFlash();
+    mot_hanging_neo_Master.burnFlash();
 
     //Time Of Flight
     TOF_Hang = new TimeOfFlight(Constants.Hanging.TOF_ID);     
@@ -94,7 +94,7 @@ public class Hanging extends SubsystemBase {
 
   public void setPid() {
     // Sets pid and displays on smart dashboard
-    m_pidController_hanging = mot_hanging_neo_C3.getPIDController();
+    m_pidController_hanging = mot_hanging_neo_Master.getPIDController();
     m_pidController_hanging.setP(Constants.Hanging.kP);
     m_pidController_hanging.setI(Constants.Hanging.kI);
     m_pidController_hanging.setD(Constants.Hanging.kD);
@@ -161,16 +161,18 @@ public class Hanging extends SubsystemBase {
  * Runs neo to move while hang retracts
  */
   public void retractArmNeo() {
-    rotations = Constants.Hanging.RETRACT_NEO_POS;
-    m_pidController_hanging.setReference(rotations, ControlType.kPosition);
+    // rotations = Constants.Hanging.RETRACT_NEO_POS;
+    // m_pidController_hanging.setReference(rotations, ControlType.kPosition);
+    mot_hanging_neo_Master.set(-0.6);
   }
 /**
  * ExtendArmNeo 
  * Runs neo to move while hang extends
  */
   public void extendArmNeo() {
-    rotations = Constants.Hanging.EXTEND_NEO_POS;
-    m_pidController_hanging.setReference(rotations, ControlType.kPosition);
+    // rotations = Constants.Hanging.EXTEND_NEO_POS;
+    // m_pidController_hanging.setReference(rotations, ControlType.kPosition);
+    mot_hanging_neo_Master.set(0.6);
   }
 /**
  * stopNeo
@@ -179,8 +181,8 @@ public class Hanging extends SubsystemBase {
   public void stopNeo() {
     // rotations = enc1_hanging.getPosition();
     // m_pidController_hanging.setReference(rotations, ControlType.kPosition);
-    mot_hanging_neo_C3.stopMotor();
-    mot_hanging_neo_C5.stopMotor();
+    // mot_hanging_neo_Slave.stopMotor();
+    mot_hanging_neo_Master.stopMotor();
   }
 
 /**
