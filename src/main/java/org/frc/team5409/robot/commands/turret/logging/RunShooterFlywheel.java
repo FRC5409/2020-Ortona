@@ -168,6 +168,7 @@ public final class RunShooterFlywheel extends CommandBase {
                 m_flywheel.startFeeder();
 
                 m_scored = 0;
+                m_missed = 0;
 
                 m_log_events.writeln("%f, TURRET STARTED [%f], %f", time, m_target, m_target);
             }
