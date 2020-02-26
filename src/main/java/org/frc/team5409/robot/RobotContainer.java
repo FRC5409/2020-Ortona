@@ -93,7 +93,7 @@ public class RobotContainer {
 		// cmd_Extend = new Extend(subsys_climb);
 
 		// Liz's stuff
-		subsys_indexer = new Indexer();
+		subsys_indexer = new Indexer(); 
 
 		// Sanad's stuff
 		subsys_intake = new Intake();
@@ -101,6 +101,8 @@ public class RobotContainer {
 		// Keith's stuff
 		subsys_shooter_flywheel = new ShooterFlywheel();
 		subsys_shooter_turret = new ShooterTurret();
+
+		cmd_IntakeIndexActive = new IntakeIndexActive(subsys_indexer, subsys_intake);
 
 		grp_configure_turret = new SequentialCommandGroup(new CalibrateShooter(subsys_shooter_turret, subsys_shooter_flywheel),
 				new RotateTurret(subsys_shooter_turret, 0));
@@ -132,6 +134,9 @@ public class RobotContainer {
 
 
 		subsys_driveTrain.setDefaultCommand(new DriveCommand(subsys_driveTrain, joy_main));
+
+		subsys_indexer.setDefaultCommand(new IntakeIndexActive(subsys_indexer, subsys_intake));
+
 	}
 
 	
