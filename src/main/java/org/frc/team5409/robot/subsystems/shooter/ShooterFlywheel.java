@@ -12,6 +12,10 @@ import org.frc.team5409.robot.util.*;
  * @author Keith Davies
  */
 public final class ShooterFlywheel extends SubsystemBase implements Toggleable {
+    public enum ShooterData {
+        kFlywheelVelocity, kFlywheelCurrent, kFeederCurrent, kFlywheelTarget
+    }
+
     private       CANSparkMax      mot_C00_shooter_flywheel;
     private       CANSparkMax      mot_C01_shooter_flywheel;
     private       CANSparkMax      mot_C02_shooter_feeder;
@@ -125,9 +129,7 @@ public final class ShooterFlywheel extends SubsystemBase implements Toggleable {
      * @return The flywheel velocity.
      */
     public double getVelocity() {
-        m_watchdog.feed();
-
-        return enc_C00_shooter_flywheel.getVelocity();
+        return getData(ShooterData.kFlywheelVelocity);
     }
 
     /**
@@ -137,16 +139,7 @@ public final class ShooterFlywheel extends SubsystemBase implements Toggleable {
      * @return If the flywheel velocity is at it's setpoint.
      */
     public boolean isTargetReached() {
-        m_watchdog.feed();
-
-        return (getVelocity() > m_target * Constants.ShooterControl.shooter_flywheel_target_thresh);
-    }
-
-    /**
-     * Get's the current draw of the turret flywheel.
-     */
-    public double getCurrent() {
-        return mot_C00_shooter_flywheel.getOutputCurrent();
+        return (getData(ShooterData.kFlywheelVelocity) > m_target * Constants.ShooterControl.shooter_flywheel_target_thresh);
     }
 
     /**
@@ -203,6 +196,26 @@ public final class ShooterFlywheel extends SubsystemBase implements Toggleable {
             m_watchdog.feed();
 
         m_safety_enabled = state;
+    }
+
+    /**
+     * Get's various types of data from the shooter
+     * flywheel subsystem.
+     * 
+     * @param type The type of Shooter data.
+     * 
+     * @return     The requested type of data.
+     */
+    public double getData(ShooterData type) {
+        m_watchdog.feed();
+
+        switch (type) {
+            case kFlywheelVelocity: return enc_C00_shooter_flywheel.getVelocity();
+            case kFlywheelCurrent:  return mot_C00_shooter_flywheel.getOutputCurrent();
+            case kFeederCurrent:    return mot_C00_shooter_flywheel.getOutputCurrent();
+            case kFlywheelTarget:   return m_target;
+        }
+        return -1;
     }
     
     @Override
