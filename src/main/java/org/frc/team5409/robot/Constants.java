@@ -36,9 +36,9 @@ public final class Constants {
 
 
     // PID Configurations
-        public static final PIDFConfig shooter_pid_turret = new PIDFConfig(0, 0, 0, 0);
+        public static final PIDFConfig shooter_turret_pid = new PIDFConfig(0, 0, 0, 0);
 
-        public static final PIDFConfig shooter_pid_flywheel = new PIDFConfig(6e-5, 0, 0, 0.000015);
+        public static final PIDFConfig shooter_flywheel_pid = new PIDFConfig(6e-5, 0, 0, 0.000015);
 
 
     // Range Configurations

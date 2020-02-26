@@ -91,10 +91,10 @@ public final class RunShooterFlywheel extends CommandBase {
 
         new Logger(logs_path+"/TURRET_CONSTANTS.csv")
             .write("%f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %s",
-                Constants.ShooterControl.shooter_pid_flywheel.P,
-                Constants.ShooterControl.shooter_pid_flywheel.I,
-                Constants.ShooterControl.shooter_pid_flywheel.D,
-                Constants.ShooterControl.shooter_pid_flywheel.F,
+                Constants.ShooterControl.shooter_flywheel_pid.P,
+                Constants.ShooterControl.shooter_flywheel_pid.I,
+                Constants.ShooterControl.shooter_flywheel_pid.D,
+                Constants.ShooterControl.shooter_flywheel_pid.F,
 
                 Constants.ShooterControl.shooter_flywheel_current_limit,
                 Constants.ShooterControl.shooter_feeder_current_limit,

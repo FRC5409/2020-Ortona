@@ -74,9 +74,9 @@ public final class ShooterTurret extends SubsystemBase implements Toggleable {
         pid_C00_shooter_turret = mot_C00_shooter_turret.getPIDController();
             pid_C00_shooter_turret.setFeedbackDevice(enc_C01_shooter_turret);
             pid_C00_shooter_turret.setOutputRange(-1, 1);
-            pid_C00_shooter_turret.setP(Constants.ShooterControl.shooter_pid_turret.P);
-            pid_C00_shooter_turret.setI(Constants.ShooterControl.shooter_pid_turret.I);
-            pid_C00_shooter_turret.setD(Constants.ShooterControl.shooter_pid_turret.D);
+            pid_C00_shooter_turret.setP(Constants.ShooterControl.shooter_turret_pid.P);
+            pid_C00_shooter_turret.setI(Constants.ShooterControl.shooter_turret_pid.I);
+            pid_C00_shooter_turret.setD(Constants.ShooterControl.shooter_turret_pid.D);
 
         m_target_reached_thresh = Constants.ShooterControl.shooter_turret_target_thresh;
         m_turret_range = Constants.ShooterControl.shooter_turret_range;

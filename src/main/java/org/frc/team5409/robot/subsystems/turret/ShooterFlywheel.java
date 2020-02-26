@@ -54,9 +54,9 @@ public final class ShooterFlywheel extends SubsystemBase implements Toggleable {
         pid_C00_shooter_flywheel = mot_C00_shooter_flywheel.getPIDController();
             pid_C00_shooter_flywheel.setFeedbackDevice(enc_C00_shooter_flywheel);
             pid_C00_shooter_flywheel.setOutputRange(0, 1);
-            pid_C00_shooter_flywheel.setP(Constants.ShooterControl.shooter_pid_flywheel.P);
-            pid_C00_shooter_flywheel.setI(Constants.ShooterControl.shooter_pid_flywheel.I);
-            pid_C00_shooter_flywheel.setD(Constants.ShooterControl.shooter_pid_flywheel.D);
+            pid_C00_shooter_flywheel.setP(Constants.ShooterControl.shooter_flywheel_pid.P);
+            pid_C00_shooter_flywheel.setI(Constants.ShooterControl.shooter_flywheel_pid.I);
+            pid_C00_shooter_flywheel.setD(Constants.ShooterControl.shooter_flywheel_pid.D);
 
         m_velocity_range = Constants.ShooterControl.shooter_velocity_range;
         
