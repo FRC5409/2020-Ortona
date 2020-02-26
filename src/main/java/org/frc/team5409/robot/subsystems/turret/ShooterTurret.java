@@ -1,6 +1,5 @@
 package org.frc.team5409.robot.subsystems.turret;
 
-import edu.wpi.first.wpilibj.smartdashboard.SendableRegistry;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.DigitalInput;
 import com.revrobotics.*;
@@ -59,23 +58,15 @@ public final class ShooterTurret extends SubsystemBase implements Toggleable {
             mot_C00_shooter_rotation.setIdleMode(CANSparkMax.IdleMode.kBrake);
             mot_C00_shooter_rotation.setSmartCurrentLimit(Constants.ShooterControl.shooter_turret_current_limit);
         mot_C00_shooter_rotation.burnFlash();
-            
-        SendableRegistry.addChild(this, mot_C00_shooter_rotation);
 
         // TODO determine limit switch polarity and orientation.
         dio_C00_shooter_limit_left = mot_C00_shooter_rotation.getForwardLimitSwitch(CANDigitalInput.LimitSwitchPolarity.kNormallyClosed);
             dio_C00_shooter_limit_left.enableLimitSwitch(true);
             
-        SendableRegistry.addChild(this, dio_C00_shooter_limit_left);
-            
         dio_C00_shooter_limit_right = mot_C00_shooter_rotation.getReverseLimitSwitch(CANDigitalInput.LimitSwitchPolarity.kNormallyClosed);
             dio_C00_shooter_limit_right.enableLimitSwitch(true);
-            
-        SendableRegistry.addChild(this, dio_C00_shooter_limit_right);
 
         dio_i00_shooter_limit_center = new DigitalInput(0);
-            
-        SendableRegistry.addChild(this, dio_i00_shooter_limit_center);
 
         enc_C01_shooter_rotation = mot_C00_shooter_rotation.getEncoder();
             enc_C01_shooter_rotation.setPositionConversionFactor(360 / enc_C01_shooter_rotation.getCountsPerRevolution());
@@ -86,8 +77,6 @@ public final class ShooterTurret extends SubsystemBase implements Toggleable {
             pid_C00_shooter_rotation.setP(Constants.ShooterControl.shooter_pid_turret.P);
             pid_C00_shooter_rotation.setI(Constants.ShooterControl.shooter_pid_turret.I);
             pid_C00_shooter_rotation.setD(Constants.ShooterControl.shooter_pid_turret.D);
-
-        SendableRegistry.addChild(this, pid_C00_shooter_rotation);
 
         m_target_reached_thresh = Constants.ShooterControl.shooter_turret_target_thresh;
         m_turret_range = Constants.ShooterControl.shooter_turret_range;
