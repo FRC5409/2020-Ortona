@@ -74,7 +74,7 @@ public final class Constants {
 
 
     // Smooth Sweep Constants (experimental)
-        public static final double shooter_smooth_sweep_period = 1.5;
+        public static final double shooter_smooth_sweep_period = 3;
 
         public static final SimpleEquation shooter_smooth_sweep_func = t -> {
             return Math.cos(2d*Math.PI*t/shooter_smooth_sweep_period+1)/2d*shooter_turret_range.magnitude+shooter_turret_range.min;
