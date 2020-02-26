@@ -22,7 +22,7 @@ public class IntakeIndexActive extends CommandBase {
 
 	// Makes Indexer Motor run
 	boolean indexerRun;
-	boolean intakeRun;
+//	boolean intakeRun;
 
 	// Whether or not ball is at position 1
 	boolean ballAtPosition1;
@@ -32,16 +32,16 @@ public class IntakeIndexActive extends CommandBase {
 
 	int powerCellsInIndexer;
 
-	private final Intake subsys_Intake;
+	//private final Intake subsys_Intake;
 	private final Indexer subsys_indexer;
 
 	/**
 	 * Creates a new IntakeIndexActive
 	 */
-	public IntakeIndexActive(Indexer indexerSubsystem, Intake intakeSubsystem) {
+	public IntakeIndexActive(Indexer indexerSubsystem){// Intake intakeSubsystem) {
 		subsys_indexer = indexerSubsystem;
-		subsys_Intake = intakeSubsystem;
-		addRequirements(indexerSubsystem, intakeSubsystem);
+		//subsys_Intake = intakeSubsystem;
+		addRequirements(indexerSubsystem); //intakeSubsystem);
 
 		TOF_Enter = subsys_indexer.ballDetectionEnter();
 		TOF_Ball1 = subsys_indexer.ballDetectionBall1();
@@ -54,7 +54,7 @@ public class IntakeIndexActive extends CommandBase {
 	// Called when the command is initially scheduled.
 	@Override
 	public void initialize() {
-		subsys_Intake.extend();
+		//subsys_Intake.extend();
 		indexerRun = false;
 		ballAtPosition1 = false;
 	}
@@ -101,25 +101,25 @@ public class IntakeIndexActive extends CommandBase {
 
 		// if statements to run the indexer motor
 		if (indexerRun == true) {
-			subsys_indexer.moveIndexerMotor(0.8);
+			subsys_indexer.moveIndexerMotor(0.75);
 		} else {
 			subsys_indexer.moveIndexerMotor(0);
 		}
 
-		if (powerCellsInIndexer == 5) {
-			// Retracts intake
-			subsys_Intake.retract();
-			IndexerFull = true;
-			SmartDashboard.putBoolean("Indexer Full", IndexerFull);
-			powerCellsInIndexer = 0;
-		}
+		// if (powerCellsInIndexer == 5) {
+		// 	// Retracts intake
+		// 	subsys_Intake.retract();
+		// 	IndexerFull = true;
+		// 	SmartDashboard.putBoolean("Indexer Full", IndexerFull);
+		// 	powerCellsInIndexer = 0;
+		// }
 
 	}
 
 	// Called once the command ends or is interrupted.
 	@Override
 	public void end(boolean interrupted) {
-		subsys_Intake.extend();
+		//subsys_Intake.extend();
 	}
 
 	// Returns true when the command should end.

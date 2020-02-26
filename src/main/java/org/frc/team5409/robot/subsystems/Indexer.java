@@ -97,7 +97,7 @@ public class Indexer extends SubsystemBase {
   // ball detection functions
   public boolean ballDetectionEnter() {
     double range = TOF_Enter.getRange();
-    if (range < Constants.Indexer.rangeEnter_1 && range > Constants.Indexer.rangeEnter_2) {
+    if (range > Constants.Indexer.rangeEnter_1 && range < Constants.Indexer.rangeEnter_2) {
 
       if (range == 115) {
         getNumberOfPowerCellsEnter++;
