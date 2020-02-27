@@ -15,8 +15,6 @@ import org.frc.team5409.robot.subsystems.Indexer;
 
 public class IntakeIndexActive extends CommandBase {
 
-	boolean intake;
-
 	// Time of Flight sensors
 	boolean TOF_Enter;
 	boolean TOF_Exit;
@@ -107,12 +105,6 @@ public class IntakeIndexActive extends CommandBase {
 			subsys_indexer.moveIndexerMotor(0.75);
 		} else {
 			subsys_indexer.moveIndexerMotor(0);
-		}
-
-		if (intake == true) {
-			intake = true;
-		} else {
-			intake = false;
 		}
 
 		if (powerCellsInIndexer == 5) {
