@@ -11,13 +11,12 @@ import java.util.List;
 
 
 import org.frc.team5409.robot.commands.*;
-import org.frc.team5409.robot.commands.Hanging.Extend;
-import org.frc.team5409.robot.commands.Hanging.ExtendArmNeo;
-import org.frc.team5409.robot.commands.Hanging.LockPiston;
-import org.frc.team5409.robot.commands.Hanging.Retract;
-import org.frc.team5409.robot.commands.Hanging.RetractArmNeo;
-import org.frc.team5409.robot.commands.Hanging.UnlockPiston;
+import org.frc.team5409.robot.commands.Hanging.*;
+import org.frc.team5409.robot.commands.shooter.*;
+import org.frc.team5409.robot.commands.shooter.RotateTurret;
 import org.frc.team5409.robot.subsystems.*;
+import org.frc.team5409.robot.subsystems.shooter.*;
+
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.controller.RamseteController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
@@ -29,16 +28,14 @@ import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
 
-import org.frc.team5409.robot.commands.turret.*;
-import org.frc.team5409.robot.subsystems.turret.*;
 import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 public class RobotContainer {
 
 	//subsystems
-	private final ShooterFlywheel subsys_shooter_flywheel;
-	private final ShooterTurret subsys_shooter_turret;
+	//private final ShooterFlywheel subsys_shooter_flywheel;
+	//private final ShooterTurret subsys_shooter_turret;
 	private final Indexer subsys_indexer;
 	public final Intake subsys_intake;
 	public final DriveTrain subsys_driveTrain;
@@ -46,7 +43,6 @@ public class RobotContainer {
 	
 	//commands
 	private IntakeIndexActive cmd_IntakeIndexActive;
-	private final SequentialCommandGroup grp_configure_turret;
 	private AntiTipToggle cmd_AntiTipToggle;
 	private FastGearShift cmd_FastGearShift;
 	private SlowGearShift cmd_SlowGearShift;
@@ -62,6 +58,11 @@ public class RobotContainer {
 
 	//joystick controllers
 	private final XboxController joy_main, joy_secondary;
+
+	private final ShooterTurret sys_shooter_turret;
+	private final ShooterFlywheel sys_shooter_flywheel;
+
+	private final Limelight sys_limelight;
 
 	//buttons
 	private final JoystickButton but_main_A, but_main_B, but_main_X, but_main_Y, but_main_sck_left, but_main_sck_right,
@@ -92,6 +93,11 @@ public class RobotContainer {
 		// cmd_Retract = new Retract(subsys_climb);
 		// cmd_Extend = new Extend(subsys_climb);
 
+		sys_shooter_turret = new ShooterTurret();
+		sys_shooter_flywheel = new ShooterFlywheel();
+
+		sys_limelight = new Limelight();
+
 		// Liz's stuff
 		subsys_indexer = new Indexer(); 
 
@@ -99,13 +105,13 @@ public class RobotContainer {
 		subsys_intake = new Intake();
 		
 		// Keith's stuff
-		subsys_shooter_flywheel = new ShooterFlywheel();
-		subsys_shooter_turret = new ShooterTurret();
+		//subsys_shooter_flywheel = new ShooterFlywheel();
+		//subsys_shooter_turret = new ShooterTurret();
 
-		cmd_IntakeIndexActive = new IntakeIndexActive(subsys_indexer, subsys_intake);
+		//cmd_IntakeIndexActive = new IntakeIndexActive(subsys_indexer, subsys_intake);
 
-		grp_configure_turret = new SequentialCommandGroup(new CalibrateShooter(subsys_shooter_turret, subsys_shooter_flywheel),
-				new RotateTurret(subsys_shooter_turret, 0));
+		//grp_configure_turret = new SequentialCommandGroup(new CalibrateShooter(subsys_shooter_turret, subsys_shooter_flywheel),
+		//		new RotateTurret(subsys_shooter_turret, 0));
 
 		//Buttons
 		but_main_A = new JoystickButton(joy_main, XboxController.Button.kA.value);
@@ -130,13 +136,23 @@ public class RobotContainer {
 		but_secondary_bmp_left = new JoystickButton(joy_secondary, XboxController.Button.kBumperLeft.value);
 		but_secondary_bmp_right = new JoystickButton(joy_secondary, XboxController.Button.kBumperRight.value);
 
-		configureBindings();
+		//configureBindings();
 
 
-		subsys_driveTrain.setDefaultCommand(new DriveCommand(subsys_driveTrain, joy_main));
+		//subsys_driveTrain.setDefaultCommand(new DriveCommand(subsys_driveTrain, joy_main));
 
-		subsys_indexer.setDefaultCommand(new IntakeIndexActive(subsys_indexer, subsys_intake));
+		//subsys_indexer.setDefaultCommand(new IntakeIndexActive(subsys_indexer, subsys_intake));
+		but_main_A.whenPressed(
+			new SequentialCommandGroup(
+				new CalibrateShooter(sys_shooter_turret, sys_shooter_flywheel),
+				new RotateTurret(sys_shooter_turret, 0)
+			)		
+		);
 
+		//but_main_Y.whileActiveOnce(new SmoothSweep(sys_shooter_turret, sys_shooter_flywheel));
+		but_main_Y.whileActiveOnce(new OperateShooter(sys_shooter_flywheel, sys_shooter_turret, sys_limelight, subsys_indexer));
+
+		//subsys_indexer.setDefaultCommand(new IntakeIndexActive(subsys_indexer));
 	}
 
 	
@@ -145,7 +161,7 @@ public class RobotContainer {
 		//but_main_A.cancelWhenPressed(cmd_IndexActive);
 
 	    // Run intake while held
-		but_main_Y.whileHeld(new IntakeIndexActive(subsys_indexer, subsys_intake));
+		//but_main_Y.whileHeld(new IntakeIndexActive(subsys_indexer, subsys_intake));
 		// Toggle AntiTip
 	    but_secondary_Y.whenPressed(new AntiTipToggle(subsys_driveTrain));
 		

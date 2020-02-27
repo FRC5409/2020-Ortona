@@ -38,7 +38,7 @@ public final class Constants {
     // PID Configurations
         public static final PIDFConfig shooter_turret_pid = new PIDFConfig(0.03, 0, 0, 0);
 
-        public static final PIDFConfig shooter_flywheel_pid = new PIDFConfig(6e-5, 0, 0, 0.000015);
+        public static final PIDFConfig shooter_flywheel_pid = new PIDFConfig(6e-5, 0, 0, 0.000211);
 
 
     // Range Configurations
@@ -74,14 +74,14 @@ public final class Constants {
 
 
     // Smooth Sweep Constants (experimental)
-        public static final double shooter_smooth_sweep_period = 10;
+        public static final double shooter_smooth_sweep_period = 5;
 
         public static final SimpleEquation shooter_smooth_sweep_func = t -> {
-            return Math.cos(2d*Math.PI*t/shooter_smooth_sweep_period+1)/2d*shooter_turret_range.magnitude+shooter_turret_range.min;
+            return (Math.cos(2d*Math.PI*t/shooter_smooth_sweep_period)+1d)/2d*shooter_turret_range.magnitude+shooter_turret_range.min;
         };
 
         public static final SimpleEquation shooter_smooth_sweep_inverse = a -> {
-            return shooter_smooth_sweep_period*Math.acos(2d*(a-shooter_turret_range.min)/shooter_turret_range.magnitude-2d)/(Math.PI*2d);
+            return shooter_smooth_sweep_period*Math.acos(2d*(a-shooter_turret_range.min)/shooter_turret_range.magnitude-1d)/(Math.PI*2d);
         };
 
         public static final double shooter_smooth_sweep_max_sweeps = 2;
@@ -107,18 +107,17 @@ public final class Constants {
 
         public static final int currentLimit = 20; 
 
-        public static final int rangeEnter_1 = 
-        50; 
+        public static final int rangeEnter_1 =  50; 
         
-        public static final int rangeEnter_2 = 150; 
+        public static final int rangeEnter_2 = 100; 
 
         public static final int rangeBall1_1 = 140; 
 
-        public static final int rangeBall1_2 = 130; 
+        public static final int rangeBall1_2 = 115; 
 
-        public static final int rangeExit_1 = 150; 
+        public static final int rangeExit_1 = 140; 
 
-        public static final int rangeExit_2 = 100; 
+        public static final int rangeExit_2 = 90; 
 
     }
 

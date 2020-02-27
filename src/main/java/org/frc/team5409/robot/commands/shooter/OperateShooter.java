@@ -91,7 +91,8 @@ public final class OperateShooter extends CommandBase {
     
     @Override
     public boolean isFinished() {
-        return !m_shooter_flywheel.isEnabled() || !m_shooter_flywheel.isEnabled();
+        return false;
+        //return !m_shooter_flywheel.isEnabled() || !m_shooter_turret.isEnabled(); || !m_limelight.isEnabled();
     }
 
     /**
@@ -107,7 +108,7 @@ public final class OperateShooter extends CommandBase {
             m_shooter_turret.enable();
             m_smooth_sweep_toff = m_smooth_sweep_inverse.calculate(m_shooter_turret.getRotation());
         } else if (state == CommandState.kShooting) {
-            m_shooter_flywheel.enable();
+            //m_shooter_flywheel.enable();
             m_shooter_flywheel.startFeeder();
         }
     }
@@ -128,7 +129,9 @@ public final class OperateShooter extends CommandBase {
     private void internal_operateSearching(double time) {
         if (m_limelight.hasTarget() && m_limelight.getTargetType() == Limelight.TargetType.kOuterPort) {
             internal_switchState(CommandState.kShooting);
+            System.out.println("STATE SWITCH SHOOT");
         } else if (time > Constants.Vision.vision_acquisition_delay) {
+            System.out.println("STATE SWITCH SWEEP");
             internal_switchState(CommandState.kSweeping);
         }
     }
@@ -171,13 +174,14 @@ public final class OperateShooter extends CommandBase {
             Vec2 target = m_limelight.getTarget();
     
             double distance = m_port_height / Math.tan(Math.toRadians(target.y + Constants.Vision.vision_limelight_pitch));
-    
+            
+            System.out.println("STATE EXEC SHOOTING");
             m_shooter_flywheel.setVelocity(m_rpm_curve.calculate(m_distance_range.clamp(distance)));
             m_shooter_turret.setRotation(m_shooter_turret.getRotation()+target.x);
         }
     
         if (m_shooter_turret.isTargetReached() && m_shooter_flywheel.isTargetReached()) {
-            m_indexer.moveIndexerMotor(-0.8);
+            // m_indexer.moveIndexerMotor(-0.8);
         } else {
             m_indexer.moveIndexerMotor(0);
         }
