@@ -12,6 +12,7 @@ import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
+import com.revrobotics.CANSparkMax.ExternalFollower;
 // import com.revrobotics.CANDigitalInput.LimitSwitchPolarity;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -77,6 +78,7 @@ public class Hanging extends SubsystemBase {
     enc1_hanging.setPosition(0);
     enc2_hanging.setPosition(0); 
 
+    mot_hanging_neo_Master.follow(ExternalFollower.kFollowerDisabled, 0);
     mot_hanging_neo_Slave.follow(mot_hanging_neo_Master, true);
 
     mot_hanging_neo_Slave.burnFlash();
