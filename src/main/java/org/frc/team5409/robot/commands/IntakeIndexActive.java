@@ -117,7 +117,7 @@ public class IntakeIndexActive extends CommandBase {
 
 		if (powerCellsInIndexer == 5) {
 		// Retracts intake
-		subsys_Intake.retract();
+		// subsys_Intake.retract();
 		IndexerFull = true;
 		SmartDashboard.putBoolean("Indexer Full", IndexerFull);
 		powerCellsInIndexer = 0;
@@ -128,7 +128,7 @@ public class IntakeIndexActive extends CommandBase {
 	// Called once the command ends or is interrupted.
 	@Override
 	public void end(boolean interrupted) {
-		// subsys_Intake.extend();
+		// subsys_Intake.retract();
 	}
 
 	// Returns true when the command should end.
