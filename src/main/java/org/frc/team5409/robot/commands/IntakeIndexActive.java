@@ -15,6 +15,8 @@ import org.frc.team5409.robot.subsystems.Indexer;
 
 public class IntakeIndexActive extends CommandBase {
 
+	boolean intake;
+
 	// Time of Flight sensors
 	boolean TOF_Enter;
 	boolean TOF_Exit;
@@ -22,7 +24,8 @@ public class IntakeIndexActive extends CommandBase {
 
 	// Makes Indexer Motor run
 	boolean indexerRun;
-//	boolean intakeRun;
+
+	boolean intakeRun;
 
 	// Whether or not ball is at position 1
 	boolean ballAtPosition1;
@@ -32,16 +35,16 @@ public class IntakeIndexActive extends CommandBase {
 
 	int powerCellsInIndexer;
 
-	//private final Intake subsys_Intake;
+	private final Intake subsys_Intake;
 	private final Indexer subsys_indexer;
 
 	/**
 	 * Creates a new IntakeIndexActive
 	 */
-	public IntakeIndexActive(Indexer indexerSubsystem){// Intake intakeSubsystem) {
+	public IntakeIndexActive(Indexer indexerSubsystem, Intake intakeSubsystem) {
 		subsys_indexer = indexerSubsystem;
-		//subsys_Intake = intakeSubsystem;
-		addRequirements(indexerSubsystem); //intakeSubsystem);
+		subsys_Intake = intakeSubsystem;
+		addRequirements(indexerSubsystem, intakeSubsystem);
 
 		TOF_Enter = subsys_indexer.ballDetectionEnter();
 		TOF_Ball1 = subsys_indexer.ballDetectionBall1();
@@ -49,12 +52,14 @@ public class IntakeIndexActive extends CommandBase {
 
 		powerCellsInIndexer = subsys_indexer.getNumberOfPowerCellsEnter();
 
+		Intake intake = intakeSubsystem;
+
 	}
 
 	// Called when the command is initially scheduled.
 	@Override
 	public void initialize() {
-		//subsys_Intake.extend();
+		// subsys_Intake.extend();
 		indexerRun = false;
 		ballAtPosition1 = false;
 	}
@@ -70,7 +75,6 @@ public class IntakeIndexActive extends CommandBase {
 		SmartDashboard.putBoolean("Ball at Position 1", ballAtPosition1);
 		SmartDashboard.putBoolean("TOF_Enter", TOF_Enter);
 		// if time of flight sensor closest to the shooter is false run this
-
 
 		if (TOF_Exit == false) {
 			// time of flight closest to intake becomes true and the indexer will run
@@ -98,7 +102,6 @@ public class IntakeIndexActive extends CommandBase {
 			indexerRun = false;
 		}
 
-
 		// if statements to run the indexer motor
 		if (indexerRun == true) {
 			subsys_indexer.moveIndexerMotor(0.75);
@@ -106,20 +109,26 @@ public class IntakeIndexActive extends CommandBase {
 			subsys_indexer.moveIndexerMotor(0);
 		}
 
-		// if (powerCellsInIndexer == 5) {
-		// 	// Retracts intake
-		// 	subsys_Intake.retract();
-		// 	IndexerFull = true;
-		// 	SmartDashboard.putBoolean("Indexer Full", IndexerFull);
-		// 	powerCellsInIndexer = 0;
-		// }
+		if (intake == true) {
+			intake = true;
+		} else {
+			intake = false;
+		}
+
+		if (powerCellsInIndexer == 5) {
+		// Retracts intake
+		subsys_Intake.retract();
+		IndexerFull = true;
+		SmartDashboard.putBoolean("Indexer Full", IndexerFull);
+		powerCellsInIndexer = 0;
+		}
 
 	}
 
 	// Called once the command ends or is interrupted.
 	@Override
 	public void end(boolean interrupted) {
-		//subsys_Intake.extend();
+		// subsys_Intake.extend();
 	}
 
 	// Returns true when the command should end.
