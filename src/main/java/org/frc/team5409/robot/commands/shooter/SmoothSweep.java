@@ -45,11 +45,8 @@ public final class SmoothSweep extends CommandBase {
     @Override
     public void execute() {
         double time = Timer.getFPGATimestamp() - m_timer;
-        double target = m_smooth_sweep.calculate(time + m_smooth_sweep_toff);
         
-        m_turret.setRotation(target);
-
-        SmartDashboard.putNumber("Smooth Sweep target", target);
+        m_turret.setRotation(m_smooth_sweep.calculate(time + m_smooth_sweep_toff));
     }
 
     @Override

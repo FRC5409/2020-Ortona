@@ -157,6 +157,7 @@ public final class ShooterTurret extends SubsystemBase implements Toggleable {
     public boolean isTargetReached() {
         m_watchdog.feed();
 
+        SmartDashboard.putNumber("Turret target offset", Math.abs(getRotation()-m_target));
         return (Math.abs(getRotation()-m_target) < m_target_reached_thresh);
     }
 
