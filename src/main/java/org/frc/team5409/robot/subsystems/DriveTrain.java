@@ -182,6 +182,22 @@ public class DriveTrain extends SubsystemBase {
     dsl_gearSolenoid.set(Value.kReverse);
   }
 
+  /**
+   * Method to get velocity of left encoder
+   */
+  public double getLeftEncoderRate() {
+    return m_leftEncoder.getVelocity();
+  }
+
+  /**
+   * Method to get velocity of right encoder
+   */
+  public double getRightEncoderRate() {
+    return m_rightEncoder.getVelocity();
+  }
+
+
+
   public void arcadeDrive(double fwd, double rot) {
     m_drive.arcadeDrive(fwd, rot);
   }
