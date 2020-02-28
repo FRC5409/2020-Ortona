@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import org.frc.team5409.robot.subsystems.DriveTrain;
 
@@ -62,6 +63,7 @@ public class DriveCommand extends CommandBase {
     leftEncoderRate = sys_driveSubsystem.getLeftEncoderRate();
     rightEncoderRate = sys_driveSubsystem.getRightEncoderRate();
     averageEncoderRate = (leftEncoderRate + rightEncoderRate)/2;
+    SmartDashboard.putNumber("Average Encoder Rate", averageEncoderRate);
 
 
     // if(averageEncoderRate <= lowGearShiftThreshold){
