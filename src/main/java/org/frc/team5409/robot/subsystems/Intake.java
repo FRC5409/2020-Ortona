@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Intake extends SubsystemBase {
   private CANSparkMax mot_intake_sparkMax_C10;
+  private CANSparkMax mot_intake_sparkMax_C11;
   private DoubleSolenoid dsl_rightIntakeSolenoid;
   private DoubleSolenoid dsl_leftIntakeSolenoid;
 
@@ -22,7 +23,9 @@ public class Intake extends SubsystemBase {
    * Creates a new Intake.
    */
   public Intake() {
-    //mot_intake_sparkMax_C10 = new CANSparkMax(Constants.Intake.kIntakeMotor, MotorType.kBrushless);
+    //mot_intake_sparkMax_C10 = new CANSparkMax(Constants.Intake.kIntakeMotor1, MotorType.kBrushless);
+    //mot_intake_sparkMax_C11 = new CANSparkMax(Constants.Intake.kIntakeMotor2, MotorType.kBrushless);
+
     //dsl_rightIntakeSolenoid = new DoubleSolenoid(Constants.Intake.kRightIntakeSolenoid1, Constants.Intake.kRightIntakeSolenoid2);
     //dsl_leftIntakeSolenoid = new DoubleSolenoid(Constants.Intake.kLeftIntakeSolenoid1, Constants.Intake.kLeftIntakeSolenoid2);
 
@@ -39,7 +42,9 @@ public class Intake extends SubsystemBase {
   public void extend() {
     dsl_rightIntakeSolenoid.set(DoubleSolenoid.Value.kForward);
     dsl_leftIntakeSolenoid.set(DoubleSolenoid.Value.kForward);
+    // Will tune specific speeds
     mot_intake_sparkMax_C10.set(0.5);
+    mot_intake_sparkMax_C11.set(0.5);
   }
 
   /**
@@ -49,9 +54,16 @@ public class Intake extends SubsystemBase {
     dsl_rightIntakeSolenoid.set(DoubleSolenoid.Value.kReverse);
     dsl_leftIntakeSolenoid.set(DoubleSolenoid.Value.kReverse);
     mot_intake_sparkMax_C10.set(0);
+    mot_intake_sparkMax_C11.set(0);
   }
-  
+  /**
+   * Method to reverse intake, in case of jamming
+   */
   public void reverse() {
+    dsl_rightIntakeSolenoid.set(DoubleSolenoid.Value.kForward);
+    dsl_leftIntakeSolenoid.set(DoubleSolenoid.Value.kForward);
+    // Will tune specific speeds
     mot_intake_sparkMax_C10.set(-0.5);
+    mot_intake_sparkMax_C11.set(-0.5);
   }
 }

@@ -49,9 +49,6 @@ public class IntakeIndexActive extends CommandBase {
 		TOF_Exit = subsys_indexer.ballDetectionExit();
 
 		powerCellsInIndexer = subsys_indexer.getNumberOfPowerCellsEnter();
-
-		Intake intake = intakeSubsystem;
-
 	}
 
 	// Called when the command is initially scheduled.

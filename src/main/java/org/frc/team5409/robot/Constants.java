@@ -123,7 +123,9 @@ public final class Constants {
 
     public static final class Intake {
 
-        public static final int kIntakeMotor = 0;
+        public static final int kIntakeMotor1 = 0;
+
+        public static final int kIntakeMotor2 = 0;
 
         public static final int kRightIntakeSolenoid1 = 0;
 

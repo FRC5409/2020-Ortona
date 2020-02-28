@@ -8,8 +8,6 @@
 package org.frc.team5409.robot.commands;
 
 import edu.wpi.first.wpilibj.DriverStation;
-//import edu.wpi.first.wpilibj.Joystick;
-
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -64,6 +62,8 @@ public class DriveCommand extends CommandBase {
     rightEncoderRate = sys_driveSubsystem.getRightEncoderRate();
     averageEncoderRate = (leftEncoderRate + rightEncoderRate)/2;
     SmartDashboard.putNumber("Average Encoder Rate", averageEncoderRate);
+    SmartDashboard.putNumber("Pitch Angle Degrees", pitchAngleDegrees);
+    SmartDashboard.putNumber("Roll Angle Degrees", rollAngleDegrees);
 
 
     // if(averageEncoderRate <= lowGearShiftThreshold){
