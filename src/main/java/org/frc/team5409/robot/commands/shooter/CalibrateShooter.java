@@ -32,7 +32,6 @@ public final class CalibrateShooter extends CommandBase {
         ResetSwitchType type = m_turret.getActiveResetSwitch();
 
         if (type != ResetSwitchType.kNone) {
-            System.out.println("SENSOR SENSEDSENSOR SENSEDSENSOR SENSEDSENSOR SENSEDSENSOR SENSEDSENSOR SENSEDSENSOR SENSEDSENSOR SENSED");
             m_turret.resetRotation(type);
             return true;
         }

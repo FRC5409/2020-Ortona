@@ -24,7 +24,7 @@ public final class OperateShooter extends CommandBase {
      * during it's execution.
      */
     private enum CommandState {
-        kSearching, kSweeping, kShooting
+        kSearching, kSweeping, kShooting, kEnd
     }
 
     private final ShooterFlywheel m_shooter_flywheel;
@@ -77,7 +77,10 @@ public final class OperateShooter extends CommandBase {
                 break;
             case kShooting:
                 internal_operateShooting(time);
-               break;
+                break;
+            case kEnd:
+                end(true);
+                break;
         }
     }
 
@@ -92,8 +95,7 @@ public final class OperateShooter extends CommandBase {
     
     @Override
     public boolean isFinished() {
-        return false;
-        //return !m_shooter_flywheel.isEnabled() || !m_shooter_turret.isEnabled(); || !m_limelight.isEnabled();
+        return m_state == CommandState.kEnd;
     }
 
     /**
@@ -108,6 +110,7 @@ public final class OperateShooter extends CommandBase {
         if (state == CommandState.kSweeping) {
             m_shooter_turret.enable();
             m_shooter_turret.setSafety(false);
+
             m_smooth_sweep_toff = m_smooth_sweep_inverse.calculate(m_shooter_turret.getRotation());
         } else if (state == CommandState.kShooting) {
             m_shooter_flywheel.enable();
@@ -153,9 +156,10 @@ public final class OperateShooter extends CommandBase {
     private void internal_operateSweeping(double time) {
         if (m_limelight.hasTarget() && m_limelight.getTargetType() == Limelight.TargetType.kOuterPort) {
             internal_switchState(CommandState.kShooting);
-        //} else if (time / Constants.ShooterControl.shooter_smooth_sweep_period > Constants.ShooterControl.shooter_smooth_sweep_max_sweeps) {
-        //s    this.cancel();
-        } else {
+            m_shooter_flywheel.setVelocity(3000);
+        } /*else if (time / Constants.ShooterControl.shooter_smooth_sweep_period > Constants.ShooterControl.shooter_smooth_sweep_max_sweeps) {
+            internal_switchState(CommandState.kEnd);
+        }*/ else {
             m_shooter_turret.setRotation(m_smooth_sweep.calculate(time+m_smooth_sweep_toff));
         }
     }
@@ -176,13 +180,11 @@ public final class OperateShooter extends CommandBase {
             Vec2 target = m_limelight.getTarget();
     
             double distance = m_port_height / Math.tan(Math.toRadians(target.y + Constants.Vision.vision_limelight_pitch));
-            
-            //m_shooter_flywheel.setVelocity(3000);
             m_shooter_turret.setRotation(m_shooter_turret.getRotation()+target.x);
         }
-    
+
         if (m_shooter_turret.isTargetReached() && m_shooter_flywheel.isTargetReached()) {
-            m_indexer.moveIndexerMotor(-0.75);
+            m_indexer.moveIndexerMotor(1);
         } else {
             m_indexer.moveIndexerMotor(0);
         }

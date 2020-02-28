@@ -36,9 +36,19 @@ public final class Constants {
 
 
     // PID Configurations
-        public static final PIDFConfig shooter_turret_pid = new PIDFConfig(0.03d, 0, 0, 0);
+        public static final PIDFConfig shooter_turret_pid = new PIDFConfig(
+            0.03d,
+            0,
+            0,
+            0
+        );
 
-        public static final PIDFConfig shooter_flywheel_pid = new PIDFConfig(6e-5, 0, 0, 0.000211);
+        public static final PIDFConfig shooter_flywheel_pid = new PIDFConfig(
+            6e-5,
+            0,
+            0, 
+            0.000211
+        );
 
 
     // Range Configurations
@@ -62,7 +72,7 @@ public final class Constants {
 
 
     // Shooter Turret Constants
-        public static final double shooter_turret_target_thresh = 0;
+        public static final double shooter_turret_target_thresh = 0.4;
 
         public static final double shooter_turret_limit_left_angle = -270;
 
@@ -72,9 +82,12 @@ public final class Constants {
 
         public static final double shooter_calibrate_speed = 0.07;
 
+    // Shooter Flywheel Constants
+        public static final double shooter_flywheel_target_thresh = 0.93;
+
 
     // Smooth Sweep Constants (experimental)
-        public static final double shooter_smooth_sweep_period = 4.5;
+        public static final double shooter_smooth_sweep_period = 6;
 
         public static final SimpleEquation shooter_smooth_sweep_func = t -> {
             return (Math.cos(2d*Math.PI*t/shooter_smooth_sweep_period)+1d)/2d*shooter_turret_range.magnitude+shooter_turret_range.min;
@@ -86,11 +99,6 @@ public final class Constants {
 
         public static final double shooter_smooth_sweep_max_sweeps = 2;
 
-
-    // Shooter Flywheel Constants
-        public static final double shooter_flywheel_target_thresh = 0.93;
-
-        public static final double shooter_flywheel_rpm_scale = 4.25;
     }
 
     public static final class Indexer {

@@ -150,9 +150,11 @@ public class RobotContainer {
 		);
 
 		//but_main_Y.whileActiveOnce(new SmoothSweep(sys_shooter_turret, sys_shooter_flywheel));
-		but_main_Y.whileActiveOnce(new OperateShooter(sys_shooter_flywheel, sys_shooter_turret, sys_limelight, subsys_indexer));
+		but_main_Y.whileActiveOnce(new OperateShooter(sys_shooter_flywheel, sys_shooter_turret, sys_limelight, subsys_indexer))
+			      .whenInactive(new RotateTurret(sys_shooter_turret, 0));
 
 		//subsys_indexer.setDefaultCommand(new IntakeIndexActive(subsys_indexer));
+		//configureBindings();
 	}
 
 	
@@ -162,7 +164,6 @@ public class RobotContainer {
 
 	    // Run intake while held
 		//but_main_Y.whileHeld(new IntakeIndexActive(subsys_indexer, subsys_intake));
-		// Toggle AntiTip
 	    but_secondary_Y.whenPressed(new AntiTipToggle(subsys_driveTrain));
 		
 		// Shift gear to fast
