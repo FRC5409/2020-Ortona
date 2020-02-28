@@ -36,7 +36,7 @@ public final class Constants {
 
 
     // PID Configurations
-        public static final PIDFConfig shooter_turret_pid = new PIDFConfig(0.03, 0, 0, 0);
+        public static final PIDFConfig shooter_turret_pid = new PIDFConfig(0.03d, 0, 0, 0);
 
         public static final PIDFConfig shooter_flywheel_pid = new PIDFConfig(6e-5, 0, 0, 0.000211);
 
@@ -74,7 +74,7 @@ public final class Constants {
 
 
     // Smooth Sweep Constants (experimental)
-        public static final double shooter_smooth_sweep_period = 5;
+        public static final double shooter_smooth_sweep_period = 4.5;
 
         public static final SimpleEquation shooter_smooth_sweep_func = t -> {
             return (Math.cos(2d*Math.PI*t/shooter_smooth_sweep_period)+1d)/2d*shooter_turret_range.magnitude+shooter_turret_range.min;

@@ -1,6 +1,7 @@
 package org.frc.team5409.robot.commands.shooter;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import org.frc.team5409.robot.subsystems.shooter.ShooterFlywheel;
@@ -106,9 +107,10 @@ public final class OperateShooter extends CommandBase {
 
         if (state == CommandState.kSweeping) {
             m_shooter_turret.enable();
+            m_shooter_turret.setSafety(false);
             m_smooth_sweep_toff = m_smooth_sweep_inverse.calculate(m_shooter_turret.getRotation());
         } else if (state == CommandState.kShooting) {
-            //m_shooter_flywheel.enable();
+            m_shooter_flywheel.enable();
             m_shooter_flywheel.startFeeder();
         }
     }
@@ -151,8 +153,8 @@ public final class OperateShooter extends CommandBase {
     private void internal_operateSweeping(double time) {
         if (m_limelight.hasTarget() && m_limelight.getTargetType() == Limelight.TargetType.kOuterPort) {
             internal_switchState(CommandState.kShooting);
-        } else if (time / Constants.ShooterControl.shooter_smooth_sweep_period > Constants.ShooterControl.shooter_smooth_sweep_max_sweeps) {
-            this.cancel();
+        //} else if (time / Constants.ShooterControl.shooter_smooth_sweep_period > Constants.ShooterControl.shooter_smooth_sweep_max_sweeps) {
+        //s    this.cancel();
         } else {
             m_shooter_turret.setRotation(m_smooth_sweep.calculate(time+m_smooth_sweep_toff));
         }
@@ -175,13 +177,12 @@ public final class OperateShooter extends CommandBase {
     
             double distance = m_port_height / Math.tan(Math.toRadians(target.y + Constants.Vision.vision_limelight_pitch));
             
-            System.out.println("STATE EXEC SHOOTING");
-            m_shooter_flywheel.setVelocity(m_rpm_curve.calculate(m_distance_range.clamp(distance)));
+            //m_shooter_flywheel.setVelocity(3000);
             m_shooter_turret.setRotation(m_shooter_turret.getRotation()+target.x);
         }
     
         if (m_shooter_turret.isTargetReached() && m_shooter_flywheel.isTargetReached()) {
-            // m_indexer.moveIndexerMotor(-0.8);
+            m_indexer.moveIndexerMotor(-0.75);
         } else {
             m_indexer.moveIndexerMotor(0);
         }

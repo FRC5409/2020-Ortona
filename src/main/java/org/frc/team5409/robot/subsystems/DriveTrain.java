@@ -105,7 +105,7 @@ public class DriveTrain extends SubsystemBase {
     resetEncoders();
     //m_odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
     
-    dsl_gearSolenoid = new DoubleSolenoid(Constants.DriveTrain.kShiftSolenoid1, Constants.DriveTrain.kShiftSolenoid2);
+    dsl_gearSolenoid = null; //new DoubleSolenoid(Constants.DriveTrain.kShiftSolenoid1, Constants.DriveTrain.kShiftSolenoid2);
 
     // Calibrate the gyro
     m_navX = new AHRS(SPI.Port.kMXP);

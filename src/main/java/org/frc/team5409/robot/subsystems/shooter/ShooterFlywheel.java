@@ -33,18 +33,21 @@ public final class ShooterFlywheel extends SubsystemBase implements Toggleable {
      * Constructs a Turret Flywheel subsystem.
      */
     public ShooterFlywheel() {
-        mot_C07_shooter_flywheel = new CANSparkMax(7, CANSparkMax.MotorType.kBrushless);
-            mot_C07_shooter_flywheel.restoreFactoryDefaults(true);
-                mot_C07_shooter_flywheel.setSmartCurrentLimit(Constants.ShooterControl.shooter_flywheel_current_limit);
-                mot_C07_shooter_flywheel.setIdleMode(CANSparkMax.IdleMode.kCoast);
-                mot_C07_shooter_flywheel.follow(CANSparkMax.ExternalFollower.kFollowerDisabled, 0);
-            mot_C07_shooter_flywheel.burnFlash();
+        mot_C07_shooter_flywheel = new CANSparkMax(19, CANSparkMax.MotorType.kBrushless);
+            mot_C07_shooter_flywheel.restoreFactoryDefaults();
+            mot_C07_shooter_flywheel.setSmartCurrentLimit(Constants.ShooterControl.shooter_flywheel_current_limit);
+            mot_C07_shooter_flywheel.setIdleMode(CANSparkMax.IdleMode.kCoast);
+            mot_C07_shooter_flywheel.setInverted(true);
  
-        mot_C19_shooter_flywheel = new CANSparkMax(19, CANSparkMax.MotorType.kBrushless);
-            mot_C19_shooter_flywheel.restoreFactoryDefaults(true);
-                mot_C19_shooter_flywheel.setIdleMode(CANSparkMax.IdleMode.kCoast);
-                mot_C19_shooter_flywheel.follow(mot_C07_shooter_flywheel, true);
-            mot_C19_shooter_flywheel.burnFlash();
+        mot_C19_shooter_flywheel = new CANSparkMax(7, CANSparkMax.MotorType.kBrushless);
+            mot_C19_shooter_flywheel.restoreFactoryDefaults();
+            mot_C19_shooter_flywheel.setIdleMode(CANSparkMax.IdleMode.kCoast);
+
+        mot_C19_shooter_flywheel.follow(CANSparkMax.ExternalFollower.kFollowerDisabled, 0);
+        mot_C07_shooter_flywheel.follow(mot_C19_shooter_flywheel, true);
+
+        mot_C19_shooter_flywheel.burnFlash();
+        mot_C07_shooter_flywheel.burnFlash();
 
         mot_C18_shooter_feeder = new CANSparkMax(18, CANSparkMax.MotorType.kBrushless);
             mot_C18_shooter_feeder.restoreFactoryDefaults(true);
@@ -52,10 +55,10 @@ public final class ShooterFlywheel extends SubsystemBase implements Toggleable {
                 mot_C18_shooter_feeder.setSmartCurrentLimit(Constants.ShooterControl.shooter_feeder_current_limit);
             mot_C18_shooter_feeder.burnFlash();
     
-        enc_C07_shooter_flywheel = mot_C07_shooter_flywheel.getEncoder();
-            enc_C07_shooter_flywheel.setVelocityConversionFactor(Constants.ShooterControl.shooter_flywheel_rpm_scale);
+        enc_C07_shooter_flywheel = mot_C19_shooter_flywheel.getEncoder();
+            enc_C07_shooter_flywheel.setVelocityConversionFactor(1);//Constants.ShooterControl.shooter_flywheel_rpm_scale);
 
-        pid_C07_shooter_flywheel = mot_C07_shooter_flywheel.getPIDController();
+        pid_C07_shooter_flywheel = mot_C19_shooter_flywheel.getPIDController();
             pid_C07_shooter_flywheel.setFeedbackDevice(enc_C07_shooter_flywheel);
             pid_C07_shooter_flywheel.setOutputRange(0, 1);
             pid_C07_shooter_flywheel.setP(Constants.ShooterControl.shooter_flywheel_pid.P);
@@ -116,8 +119,7 @@ public final class ShooterFlywheel extends SubsystemBase implements Toggleable {
         m_target = m_velocity_range.clamp(target);
 
         pid_C07_shooter_flywheel.setReference(
-            m_target * Constants.ShooterControl.shooter_flywheel_rpm_scale,
-            ControlType.kVelocity
+            m_target, ControlType.kVelocity
         );
        
         m_watchdog.feed();
