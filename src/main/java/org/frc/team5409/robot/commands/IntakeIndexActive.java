@@ -7,10 +7,15 @@
 
 package org.frc.team5409.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import org.frc.team5409.robot.subsystems.Intake;
+import org.frc.team5409.robot.util.Logger;
+
+import java.time.Instant;
+
 import org.frc.team5409.robot.subsystems.Indexer;
 
 public class IntakeIndexActive extends CommandBase {
@@ -19,6 +24,8 @@ public class IntakeIndexActive extends CommandBase {
 	boolean TOF_Enter;
 	boolean TOF_Exit;
 	boolean TOF_Ball1;
+
+	protected Logger indexerLogger, indexerEvents;
 
 	// Makes Indexer Motor run
 	boolean indexerRun;
@@ -36,6 +43,8 @@ public class IntakeIndexActive extends CommandBase {
 	//private final Intake subsys_Intake;
 	private final Indexer subsys_indexer;
 
+	private double m_timer;
+
 	/**
 	 * Creates a new IntakeIndexActive
 	 */
@@ -49,6 +58,7 @@ public class IntakeIndexActive extends CommandBase {
 		TOF_Exit = subsys_indexer.ballDetectionExit();
 
 		powerCellsInIndexer = subsys_indexer.getNumberOfPowerCellsEnter();
+
 	}
 
 	// Called when the command is initially scheduled.
@@ -57,6 +67,12 @@ public class IntakeIndexActive extends CommandBase {
 		// subsys_Intake.extend();
 		indexerRun = false;
 		ballAtPosition1 = false;
+
+		String logs_path = "indexer/"+Long.toString(Instant.now().getEpochSecond());
+		indexerLogger = new Logger(logs_path+ "/INDEXER_DATA.csv");
+		indexerEvents = new Logger(logs_path+ "/INDEXER_EVENTS.csv");
+
+		m_timer = Timer.getFPGATimestamp();
 	}
 
 	// Called every time the scheduler runs while the command is scheduled.
@@ -93,12 +109,20 @@ public class IntakeIndexActive extends CommandBase {
 		powerCellsInIndexer = 0;
 		}
 
+		indexerLogger.writeln("%f, %f, %f, %f",
+			Timer.getFPGATimestamp()-m_timer,
+			subsys_indexer.getRangeEnter(),
+			subsys_indexer.getRangeBall1(),
+			subsys_indexer.getRangeExit()
+		);
 	}
 
 	// Called once the command ends or is interrupted.
 	@Override
 	public void end(boolean interrupted) {
 		// subsys_Intake.retract();
+		indexerLogger.save();
+		indexerEvents.save();
 	}
 
 	// Returns true when the command should end.

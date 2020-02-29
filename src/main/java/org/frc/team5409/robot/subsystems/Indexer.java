@@ -15,6 +15,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.frc.team5409.robot.Constants;
+import org.frc.team5409.robot.util.Logger;
 
 /**
  * Add your docs here.
