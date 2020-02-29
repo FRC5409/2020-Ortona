@@ -1,17 +1,18 @@
 package org.frc.team5409.robot.commands.shooter;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+
+import org.frc.team5409.robot.subsystems.shooter.ShooterTurret;
 import org.frc.team5409.robot.Constants;
-import org.frc.team5409.robot.subsystems.shooter.*;
-import org.frc.team5409.robot.subsystems.shooter.ShooterTurret.ResetSwitchType;
+
 
 public final class CalibrateShooter extends CommandBase {
     private final ShooterTurret m_turret;
 
-    public CalibrateShooter(ShooterTurret sys_rotation, ShooterFlywheel sys_flywheel) {
+    public CalibrateShooter(ShooterTurret sys_rotation) {
         m_turret = sys_rotation;
 
-        addRequirements(sys_rotation, sys_flywheel);
+        addRequirements(sys_rotation);
     }
 
     @Override
@@ -29,9 +30,8 @@ public final class CalibrateShooter extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        ResetSwitchType type = m_turret.getActiveResetSwitch();
-
-        if (type != ResetSwitchType.kNone) {
+        var type = m_turret.getActiveResetSwitch();
+        if (type != ShooterTurret.ResetSwitchType.kNone) {
             m_turret.resetRotation(type);
             return true;
         }
