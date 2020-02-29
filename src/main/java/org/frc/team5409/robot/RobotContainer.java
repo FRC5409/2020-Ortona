@@ -144,7 +144,7 @@ public class RobotContainer {
 		//subsys_indexer.setDefaultCommand(new IntakeIndexActive(subsys_indexer, subsys_intake));
 		but_main_A.whenPressed(
 			new SequentialCommandGroup(
-				new CalibrateShooter(sys_shooter_turret, sys_shooter_flywheel),
+				new CalibrateShooter(sys_shooter_turret),
 				new RotateTurret(sys_shooter_turret, 0)
 			)		
 		);
