@@ -30,7 +30,7 @@ public final class Constants {
 
         public static final int shooter_turret_current_limit = 25;
 
-        public static final int shooter_flywheel_current_limit = 40;
+        public static final int shooter_flywheel_current_limit = 50;
 
         public static final int shooter_feeder_current_limit = 25;
 
