@@ -156,10 +156,9 @@ public final class OperateShooter extends CommandBase {
     private void internal_operateSweeping(double time) {
         if (m_limelight.hasTarget() && m_limelight.getTargetType() == Limelight.TargetType.kOuterPort) {
             internal_switchState(CommandState.kShooting);
-            m_shooter_flywheel.setVelocity(3000);
-        } /*else if (time / Constants.ShooterControl.shooter_smooth_sweep_period > Constants.ShooterControl.shooter_smooth_sweep_max_sweeps) {
+        } else if (time / Constants.ShooterControl.shooter_smooth_sweep_period > Constants.ShooterControl.shooter_smooth_sweep_max_sweeps) {
             internal_switchState(CommandState.kEnd);
-        }*/ else {
+        } else {
             m_shooter_turret.setRotation(m_smooth_sweep.calculate(time+m_smooth_sweep_toff));
         }
     }
@@ -176,10 +175,17 @@ public final class OperateShooter extends CommandBase {
      * @param time The time since the this state began execution.
      */
     private void internal_operateShooting(double time) {
+        //
         if (m_limelight.hasTarget() && m_limelight.getTargetType() == Limelight.TargetType.kOuterPort) {
             Vec2 target = m_limelight.getTarget();
     
             double distance = m_port_height / Math.tan(Math.toRadians(target.y + Constants.Vision.vision_limelight_pitch));
+            double predicted = m_rpm_curve.calculate(distance);
+
+            SmartDashboard.putNumber("Target distance (ft)", distance);
+            SmartDashboard.putNumber("Predicted rpm", predicted);
+
+            m_shooter_flywheel.setVelocity(4000);
             m_shooter_turret.setRotation(m_shooter_turret.getRotation()+target.x);
         }
 

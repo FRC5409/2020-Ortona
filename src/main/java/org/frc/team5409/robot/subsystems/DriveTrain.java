@@ -105,7 +105,7 @@ public class DriveTrain extends SubsystemBase {
     resetEncoders();
     //m_odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
     
-    dsl_gearSolenoid = null; //new DoubleSolenoid(Constants.DriveTrain.kShiftSolenoid1, Constants.DriveTrain.kShiftSolenoid2);
+    dsl_gearSolenoid = new DoubleSolenoid(Constants.DriveTrain.kShiftSolenoid1, Constants.DriveTrain.kShiftSolenoid2);
 
     // Calibrate the gyro
     m_navX = new AHRS(SPI.Port.kMXP);
@@ -172,14 +172,14 @@ public class DriveTrain extends SubsystemBase {
    * Method to shift to fast gear
    */
   public void fastShift() {
-    dsl_gearSolenoid.set(Value.kForward);
+    dsl_gearSolenoid.set(Value.kReverse);
   }
 
   /**
    * Method to shift to slow gear
    */
   public void slowShift() {
-    dsl_gearSolenoid.set(Value.kReverse);
+    dsl_gearSolenoid.set(Value.kForward);
   }
 
   /**

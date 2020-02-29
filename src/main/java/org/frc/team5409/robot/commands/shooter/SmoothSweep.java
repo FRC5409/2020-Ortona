@@ -1,12 +1,9 @@
 package org.frc.team5409.robot.commands.shooter;
 
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj.Timer;
 
-import org.frc.team5409.robot.subsystems.shooter.ShooterFlywheel;
-import org.frc.team5409.robot.subsystems.shooter.ShooterTurret;
-import org.frc.team5409.robot.subsystems.*;
+import org.frc.team5409.robot.subsystems.shooter.*;
 import org.frc.team5409.robot.Constants;
 import org.frc.team5409.robot.util.*;
 
