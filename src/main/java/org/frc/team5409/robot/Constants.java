@@ -247,7 +247,7 @@ public final class Constants {
         //Neo Variables
         public static final int NEO_SLAVE_ID = 3;
 
-        public static final int NEO_MASTER_ID = 5;
+        public static final int NEO_MASTER_ID = 11;
 
         public static final double EXTEND_NEO_POS = 10;
 
