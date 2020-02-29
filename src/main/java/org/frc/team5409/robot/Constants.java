@@ -254,9 +254,9 @@ public final class Constants {
         public static final double RETRACT_NEO_POS = 0;
 
         //Piston
-        public static final int FORWARD_CHANEL = 1;
+        public static final int FORWARD_CHANEL = 4;
 
-        public static final int BACKWARD_CHANEL = 2;
+        public static final int BACKWARD_CHANEL = 5;
 
         //Time Of Flight
         public static final int TOF_ID = 4;
