@@ -27,6 +27,8 @@ public class IntakeIndexActive extends CommandBase {
 
 	protected Logger indexerLogger, indexerEvents;
 
+	protected boolean m_triggered;
+
 	// Makes Indexer Motor run
 	boolean indexerRun;
 
@@ -43,7 +45,10 @@ public class IntakeIndexActive extends CommandBase {
 	//private final Intake subsys_Intake;
 	private final Indexer subsys_indexer;
 
-	private double m_timer;
+	private double m_timer2;
+
+	private double m_timer,
+	  			   m_delay = 0.05;
 
 	/**
 	 * Creates a new IntakeIndexActive
@@ -72,12 +77,14 @@ public class IntakeIndexActive extends CommandBase {
 		indexerLogger = new Logger(logs_path+ "/INDEXER_DATA.csv");
 		indexerEvents = new Logger(logs_path+ "/INDEXER_EVENTS.csv");
 
-		m_timer = Timer.getFPGATimestamp();
+		m_timer2 = Timer.getFPGATimestamp();
+		m_triggered = false;
 	}
 
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
 	public void execute() {
+		double time = Timer.getFPGATimestamp()-m_timer2;
 
 		TOF_Enter = subsys_indexer.ballDetectionEnter();
 		TOF_Ball1 = subsys_indexer.ballDetectionBall1();
@@ -86,19 +93,25 @@ public class IntakeIndexActive extends CommandBase {
 		SmartDashboard.putBoolean("Ball at Position 1", ballAtPosition1);
 		SmartDashboard.putBoolean("TOF_Enter", TOF_Enter);
 		// if time of flight sensor closest to the shooter is false run this
-
-		if (TOF_Enter && !TOF_Ball1 && !TOF_Exit){
-			indexerRun = true; 
-		} else if(TOF_Enter && TOF_Ball1 && !TOF_Exit){
-			indexerRun = true; 
-		} else {
-			indexerRun = false; 
-		}
+		
 		// if statements to run the indexer motor
-		if (indexerRun == true) {
-			subsys_indexer.moveIndexerMotor(0.75);
-		} else {
+		if (TOF_Exit) {
 			subsys_indexer.moveIndexerMotor(0);
+		} else if (TOF_Enter) {
+			subsys_indexer.moveIndexerMotor(0.75);
+
+			if (!m_triggered)
+				indexerEvents.writeln("%f, INDEXER TRIGGERED", time);
+			
+			m_triggered = true;
+		} else {
+			if (m_triggered)
+				m_timer = Timer.getFPGATimestamp();
+			
+			m_triggered = false;
+
+			if (Timer.getFPGATimestamp()-m_timer > m_delay)
+				subsys_indexer.moveIndexerMotor(0);
 		}
 
 		if (powerCellsInIndexer == 5) {
@@ -110,7 +123,7 @@ public class IntakeIndexActive extends CommandBase {
 		}
 
 		indexerLogger.writeln("%f, %f, %f, %f",
-			Timer.getFPGATimestamp()-m_timer,
+			time,
 			subsys_indexer.getRangeEnter(),
 			subsys_indexer.getRangeBall1(),
 			subsys_indexer.getRangeExit()

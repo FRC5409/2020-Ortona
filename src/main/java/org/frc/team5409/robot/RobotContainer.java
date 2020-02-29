@@ -160,7 +160,7 @@ public class RobotContainer {
 		// Shift gear to slow
 		but_main_bmp_right.whenReleased(new SlowGearShift(subsys_driveTrain));
 		
-		but_main_A.whenPressed(
+		/*but_main_A.whenPressed(
 			new SequentialCommandGroup(
 				new CalibrateShooter(sys_shooter_turret),
 				new RotateTurret(sys_shooter_turret, 0)
@@ -174,8 +174,11 @@ public class RobotContainer {
 		but_main_Y.whileActiveOnce(new OperateShooter(sys_shooter_flywheel, sys_shooter_turret, sys_limelight, subsys_indexer))
 				  .whenInactive(new RotateTurret(sys_shooter_turret, 0));
 
-		subsys_indexer.setDefaultCommand(new IntakeIndexActive(subsys_indexer));
+		subsys_indexer.setDefaultCommand(new IntakeIndexActive(subsys_indexer));*/
 		subsys_driveTrain.setDefaultCommand(new DriveCommand(subsys_driveTrain, joy_main));
+		sys_limelight.setDefaultCommand(new RunShooterFlywheel(sys_shooter_flywheel, subsys_indexer, sys_limelight, joy_main, joy_secondary));
+
+		but_main_B.whileActiveOnce(new AlignTurret(sys_shooter_turret, sys_limelight));
 	}
 
 	  /**

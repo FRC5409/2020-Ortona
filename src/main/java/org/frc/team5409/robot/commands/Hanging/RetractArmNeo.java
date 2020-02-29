@@ -32,7 +32,7 @@ public class RetractArmNeo extends CommandBase {
   @Override
   public void initialize() {
     m_hanging.lockPiston();
-    m_hanging.controlArmNeo(-0.6);
+    m_hanging.controlArmNeo(-0.8);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

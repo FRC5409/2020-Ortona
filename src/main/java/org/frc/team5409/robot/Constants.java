@@ -14,7 +14,6 @@ public final class Constants {
         public static final double vision_outerport_height = 90.75d/12.0d;
         
 
-
     // Robot configuration Constants
         public static final double vision_limelight_height = 42.5d/12.0d;
 
@@ -24,7 +23,7 @@ public final class Constants {
     // Timing Constants
         public static final double vision_acquisition_delay = 0.5;
 
-        public static final double vision_aligned_thresh = 0.1;
+        public static final double vision_aligned_thresh = 1.5;
     }
 
     public static final class ShooterControl {
@@ -122,7 +121,7 @@ public final class Constants {
 
         public static final int rangeEnter_1 =  25; 
         
-        public static final int rangeEnter_2 = 190; 
+        public static final int rangeEnter_2 = 175; 
 
         public static final int rangeBall1_1 = 160; 
 
