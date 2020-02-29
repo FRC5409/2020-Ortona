@@ -1,6 +1,9 @@
 package org.frc.team5409.robot.commands.shooter.logging;
 
 import java.time.Instant;
+import java.util.List;
+
+import org.apache.commons.math3.fitting.*;
 
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -37,7 +40,11 @@ public final class RunShooterFlywheel extends CommandBase {
 
     private       JoystickButton  m_trg_flywheel, m_trg_score, m_trg_miss;
 
-    private       Logger          m_log_flywheel, m_log_events, m_log_powercells;
+    private       Logger          m_log_flywheel, m_log_events, m_log_powercells, m_log_descent;
+    
+    private PolynomialCurveFitter  m_curve_fitter;
+    private List<WeightedObservedPoint> m_data;
+    private double m_learning_rate, m_babble_shots;
 
     public RunShooterFlywheel(ShooterFlywheel sys_flywheel, Indexer sys_indexer, Limelight sys_limelight, XboxController joy_main, XboxController joy_sec) {
         m_limelight = sys_limelight;
@@ -57,6 +64,8 @@ public final class RunShooterFlywheel extends CommandBase {
         m_distance_range = Constants.ShooterControl.shooter_distance_range;
         m_rpm_curve = Constants.ShooterControl.shooter_distance_rpm_curve;
 
+        m_curve_fitter = PolynomialCurveFitter.create(2);
+
         addRequirements(sys_flywheel, sys_indexer, sys_limelight);
     }
 
@@ -75,6 +84,7 @@ public final class RunShooterFlywheel extends CommandBase {
         m_log_flywheel = new Logger(logs_path+"/FLYWHEEL_DATA.csv");
         m_log_powercells = new Logger(logs_path+"/POWERCELL_EVENTS.csv");
         m_log_events = new Logger(logs_path+"/TURRET_EVENTS.csv");
+        m_log_descent = new Logger(logs_path+"/RPM_GRADIENT_DESCENT.csv");
 
         m_debounce1 = false;
         m_debounce2 = false;
@@ -89,8 +99,12 @@ public final class RunShooterFlywheel extends CommandBase {
         m_scored = 0;
         m_missed = 0;
 
+        m_target = SmartDashboard.getNumber("Starting Velocity", 0);
+        m_learning_rate = SmartDashboard.getNumber("Learning Rate", 30000);
+        m_babble_shots = SmartDashboard.getNumber("Babbling shots", 10);
+
         new Logger(logs_path+"/TURRET_CONSTANTS.csv")
-            .write("%f, %f, %f, %f, %d, %d, %f, %f, %f, %f, %s",
+            .writeln("%f, %f, %f, %f, %d, %d, %f, %f, %f, %f, %s",
                 Constants.ShooterControl.shooter_flywheel_pid.P,
                 Constants.ShooterControl.shooter_flywheel_pid.I,
                 Constants.ShooterControl.shooter_flywheel_pid.D,
@@ -106,10 +120,13 @@ public final class RunShooterFlywheel extends CommandBase {
                 Constants.Vision.vision_limelight_pitch,
 
                 Constants.ShooterControl.shooter_distance_rpm_curve_string)
+            .writeln("%f, %f, %f", m_learning_rate, m_babble_shots, m_target)
             .save();
-        
+
         m_log_events.writeln("0, SESSION START, ");
         m_log_flywheel.writeln("0, 0, 0, 0");
+
+        m_data.clear();
     }
 
     @Override
@@ -157,8 +174,25 @@ public final class RunShooterFlywheel extends CommandBase {
 
         if (m_trg_flywheel.get()) {
             if (!m_debounce3) {
-                m_target = SmartDashboard.getNumber("Target Velocity", 0);
-                m_flywheel.setVelocity(m_target);
+                if (m_missed+m_scored != 0)
+                    m_data.add(new WeightedObservedPoint(1, m_target, m_scored/(m_scored+m_missed)));
+
+                if (m_data.size() < 10) {
+                    m_flywheel.setVelocity(Math.random()*(4500-m_target)+m_target);
+                } else {
+                    double coeffs[] = m_curve_fitter.fit(m_data);
+                    double slope = (coeffs[0]*2*m_target+coeffs[1])*m_learning_rate;
+
+                    m_log_descent.writeln("%f, %f, %f, %f, %f, %f",
+                        m_target, slope, 
+                        m_scored/(m_scored+m_missed),
+                        coeffs[0], coeffs[1], coeffs[2]
+                    );
+
+                    m_target += slope;
+                    m_flywheel.setVelocity(m_target);
+
+                }
                 m_flywheel.startFeeder();
 
                 m_scored = 0;
@@ -198,11 +232,12 @@ public final class RunShooterFlywheel extends CommandBase {
         } else
             m_debounce4 = false;
 
-        m_log_flywheel.writeln("%f, %f, %f, %f", time, 
-                                                 velocity,
-                                                 m_flywheel.getData(ShooterFlywheel.ShooterData.kFlywheelCurrent),
-                                                 m_flywheel.getData(ShooterFlywheel.ShooterData.kFeederCurrent)
-                              );
+        m_log_flywheel.writeln("%f, %f, %f, %f",
+            time, 
+            velocity,
+            m_flywheel.getData(ShooterFlywheel.ShooterData.kFlywheelCurrent),
+            m_flywheel.getData(ShooterFlywheel.ShooterData.kFeederCurrent)
+        );
 
         SmartDashboard.putNumber(      "Real Velocity", velocity);
         //SmartDashboard.putNumber(    "Target Velocity", m_target);
@@ -236,6 +271,7 @@ public final class RunShooterFlywheel extends CommandBase {
         m_log_flywheel.save();
         m_log_powercells.save();
         m_log_events.save();
+        m_log_descent.save();
     }
     
     @Override
