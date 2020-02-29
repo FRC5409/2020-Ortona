@@ -31,7 +31,8 @@ public class RetractArmNeo extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_hanging.retractArmNeo();
+    m_hanging.lockPiston();
+    m_hanging.controlArmNeo(-0.6);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -42,7 +43,7 @@ public class RetractArmNeo extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_hanging.stopNeo();
+    m_hanging.controlArmNeo(0);;
   }
 
   public boolean finished = false;

@@ -30,7 +30,8 @@ public class ExtendArmNeo extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_hanging.extendArmNeo();
+    m_hanging.unlockPiston();
+    m_hanging.controlArmNeo(0.3);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -41,6 +42,7 @@ public class ExtendArmNeo extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    m_hanging.controlArmNeo(0);
   }
 
   public boolean finished = false;
@@ -48,9 +50,9 @@ public class ExtendArmNeo extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if ((m_hanging.enc1_hanging.getPosition() + m_hanging.enc2_hanging.getPosition())/2 >= Constants.Hanging.EXTEND_NEO_POS) {
-      finished = true;
-    }
+    // if ((m_hanging.enc1_hanging.getPosition() + m_hanging.enc2_hanging.getPosition())/2 >= Constants.Hanging.EXTEND_NEO_POS) {
+    //   finished = true;
+    // }
     // if(m_hanging.isSwitchSet() == false){
     // finished = true;
     // }

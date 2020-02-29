@@ -69,8 +69,8 @@ public class Hanging extends SubsystemBase {
     // mot_hanging_neo_Master.getForwardLimitSwitch(LimitSwitchPolarity.kNormallyOpen).enableLimitSwitch(false);
     // mot_hanging_neo_Master.getReverseLimitSwitch(LimitSwitchPolarity.kNormallyOpen).enableLimitSwitch(false);
 
-    mot_hanging_neo_Slave.setIdleMode(IdleMode.kBrake);
-    mot_hanging_neo_Master.setIdleMode(IdleMode.kBrake);
+    mot_hanging_neo_Slave.setIdleMode(IdleMode.kCoast);
+    mot_hanging_neo_Master.setIdleMode(IdleMode.kCoast);
 
     enc1_hanging = mot_hanging_neo_Slave.getEncoder();
     enc2_hanging = mot_hanging_neo_Master.getEncoder();
@@ -162,20 +162,12 @@ public class Hanging extends SubsystemBase {
  * ExtendArmNeo Command
  * Runs neo to move while hang retracts
  */
-  public void retractArmNeo() {
+  public void controlArmNeo(double speed) {
     // rotations = Constants.Hanging.RETRACT_NEO_POS;
     // m_pidController_hanging.setReference(rotations, ControlType.kPosition);
-    mot_hanging_neo_Master.set(-0.6);
+    mot_hanging_neo_Master.set(speed);
   }
-/**
- * ExtendArmNeo 
- * Runs neo to move while hang extends
- */
-  public void extendArmNeo() {
-    // rotations = Constants.Hanging.EXTEND_NEO_POS;
-    // m_pidController_hanging.setReference(rotations, ControlType.kPosition);
-    mot_hanging_neo_Master.set(0.6);
-  }
+
 /**
  * stopNeo
  * Stops the neo (sets the PID poisition to current position) once limit switch isSwitchSet

@@ -167,6 +167,10 @@ public class RobotContainer {
 			)		
 		);
 
+		// Hang Control
+		but_main_start.whenHeld(new ExtendArmNeo(subsys_climb));
+		but_main_back.whenHeld(new RetractArmNeo(subsys_climb));
+
 		but_main_Y.whileActiveOnce(new OperateShooter(sys_shooter_flywheel, sys_shooter_turret, sys_limelight, subsys_indexer))
 				  .whenInactive(new RotateTurret(sys_shooter_turret, 0));
 
