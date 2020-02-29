@@ -15,9 +15,9 @@ public final class Constants {
 
 
     // Robot configuration Constants
-        public static final double vision_limelight_height = 41.1d/12.0d;
+        public static final double vision_limelight_height = 42.5d/12.0d;
 
-        public static final double vision_limelight_pitch = 12.4;
+        public static final double vision_limelight_pitch = 10.2;
 
 
     // Timing Constants
@@ -83,7 +83,7 @@ public final class Constants {
         public static final double shooter_calibrate_speed = 0.07;
 
     // Shooter Flywheel Constants
-        public static final double shooter_flywheel_target_thresh = 0.93;
+        public static final double shooter_flywheel_target_thresh = 0.96;
 
 
     // Smooth Sweep Constants (experimental)
