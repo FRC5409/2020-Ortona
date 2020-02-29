@@ -2,7 +2,6 @@ package org.frc.team5409.robot.subsystems.shooter;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.revrobotics.*;
 
@@ -84,6 +83,7 @@ public final class ShooterTurret extends SubsystemBase implements Toggleable {
         m_turret_range = Constants.ShooterControl.shooter_turret_range;
 
         m_target = 0;
+        
         m_enabled = false;
         m_safety_enabled = true;
 
