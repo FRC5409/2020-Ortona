@@ -8,7 +8,8 @@ package org.frc.team5409.robot.util;
  * @author Keith Davies
  */
 public final class Range {
-    public final double min, max, magnitude;
+    public final double min, max;
+    public final double median, magnitude;
 
     /**
      * Constructs a range.
@@ -20,6 +21,7 @@ public final class Range {
         this.min = Math.min(min, max);
         this.max = Math.max(min, max);
 
+        this.median = (min + max) / 2d;
         this.magnitude = this.max - this.min;
     }
 
