@@ -57,12 +57,13 @@ public final class RunShooterFlywheel extends CommandBase {
         m_distance_range = Constants.ShooterControl.shooter_distance_range;
         m_rpm_curve = Constants.ShooterControl.shooter_distance_rpm_curve;
 
-        addRequirements(m_flywheel, m_indexer, m_limelight);
+        addRequirements(sys_flywheel, sys_indexer, sys_limelight);
     }
 
     @Override
     public void initialize() {
         m_flywheel.enable();
+        m_flywheel.setSafety(false);
         
         if (!m_limelight.isEnabled()) {
             m_limelight.enable();
@@ -89,7 +90,7 @@ public final class RunShooterFlywheel extends CommandBase {
         m_missed = 0;
 
         new Logger(logs_path+"/TURRET_CONSTANTS.csv")
-            .write("%f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %s",
+            .write("%f, %f, %f, %f, %d, %d, %f, %f, %f, %f, %s",
                 Constants.ShooterControl.shooter_flywheel_pid.P,
                 Constants.ShooterControl.shooter_flywheel_pid.I,
                 Constants.ShooterControl.shooter_flywheel_pid.D,
@@ -137,7 +138,7 @@ public final class RunShooterFlywheel extends CommandBase {
         }
 
         if (velocity > m_target*Constants.ShooterControl.shooter_flywheel_target_thresh) {
-            m_indexer.moveIndexerMotor(-0.8);
+            m_indexer.moveIndexerMotor(1);
 
             if (!m_debounce2) {
                 m_log_events.writeln("%f, FLYWHEEL AT SPEED [%f], %f", time, velocity, velocity);
@@ -204,7 +205,7 @@ public final class RunShooterFlywheel extends CommandBase {
                               );
 
         SmartDashboard.putNumber(      "Real Velocity", velocity);
-        SmartDashboard.putNumber(    "Target Velocity", m_target);
+        //SmartDashboard.putNumber(    "Target Velocity", m_target);
         SmartDashboard.putNumber(    "Actual Velocity", m_flywheel.getVelocity());     
         SmartDashboard.putNumber( "Predicted Velocity", m_predicted);
         SmartDashboard.putNumber("Robot Distance (ft)", m_distance);

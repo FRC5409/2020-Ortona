@@ -25,8 +25,8 @@ public class DriveCommand extends CommandBase {
   static final double kOonBalanceAngleThresholdDegrees = 5;
   static final double highGearShiftThreshold = 100;
   static final double lowGearShiftThreshold = 20; 
-  public double rightTrigger;
   public double leftTrigger;
+  public double rightTrigger;
   public double lxAxis;
   public double lyAxis;
   public double leftEncoderRate;
@@ -52,8 +52,8 @@ public class DriveCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    rightTrigger = m_joystick.getTriggerAxis(Hand.kLeft);
-    leftTrigger = m_joystick.getTriggerAxis(Hand.kRight);
+    leftTrigger = m_joystick.getTriggerAxis(Hand.kLeft);
+    rightTrigger = m_joystick.getTriggerAxis(Hand.kRight);
     lxAxis = m_joystick.getX(Hand.kLeft);
     lyAxis = rightTrigger - leftTrigger;
     pitchAngleDegrees = sys_driveSubsystem.getPitchAngle();
@@ -110,7 +110,7 @@ public class DriveCommand extends CommandBase {
         DriverStation.reportError(err_string, true);
       }
     } else { //If AntiTip is disabled, default to manual drive
-        sys_driveSubsystem.manualDrive(leftTrigger, rightTrigger, lxAxis);
+        sys_driveSubsystem.manualDrive(rightTrigger, leftTrigger, lxAxis);
     }
 
   }

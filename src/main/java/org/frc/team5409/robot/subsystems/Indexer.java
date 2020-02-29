@@ -99,10 +99,10 @@ public class Indexer extends SubsystemBase {
     double range = TOF_Enter.getRange();
     if (range > Constants.Indexer.rangeEnter_1 && range < Constants.Indexer.rangeEnter_2) {
 
-      if (range == 115) {
-        getNumberOfPowerCellsEnter++;
-        // this could be a for loop
-      }
+      // if (range == 115) {
+      //   getNumberOfPowerCellsEnter++;
+      //   // this could be a for loop
+      // }
 
       return true;
     }

@@ -61,11 +61,12 @@ public final class Constants {
         
     // Curve fitting Constants
         public static final SimpleEquation shooter_distance_rpm_curve = d -> {
-            d += (10.d/12.0d);
+            //d += (10.d/12.0d);
             //return 1.8*(d*d) - 26.8*(d) + 2929; //2nd POLY CURVE
-            //return 1326*Math.log(d) - 784; // LOG CURVE
+            return 1326*Math.log(d) - 784; // LOG CURVE
             //return 978*Math.pow(d, 0.393); // POWER SERIES CURVE
-            return 1506*Math.log(d) - 1492;
+            //return 1506*Math.log(d) - 1492;
+            //return 2191.7 + 51.59 * d;
         };
 
         public static final String shooter_distance_rpm_curve_string = "1506 * ln(d + 0.83) - 1492";
@@ -115,11 +116,11 @@ public final class Constants {
 
         public static final int currentLimit = 20; 
 
-        public static final int rangeEnter_1 =  50; 
+        public static final int rangeEnter_1 =  25; 
         
-        public static final int rangeEnter_2 = 100; 
+        public static final int rangeEnter_2 = 180; 
 
-        public static final int rangeBall1_1 = 140; 
+        public static final int rangeBall1_1 = 160; 
 
         public static final int rangeBall1_2 = 115; 
 
