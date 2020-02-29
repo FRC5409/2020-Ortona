@@ -14,6 +14,7 @@ import org.frc.team5409.robot.commands.*;
 import org.frc.team5409.robot.commands.Hanging.*;
 import org.frc.team5409.robot.commands.shooter.*;
 import org.frc.team5409.robot.commands.shooter.RotateTurret;
+import org.frc.team5409.robot.commands.shooter.logging.RunShooterFlywheel;
 import org.frc.team5409.robot.subsystems.*;
 import org.frc.team5409.robot.subsystems.shooter.*;
 
@@ -43,6 +44,7 @@ public class RobotContainer {
 	
 	//commands
 	private IntakeIndexActive cmd_IntakeIndexActive;
+    private IntakeReverse cmd_IntakeReverse;
 	private AntiTipToggle cmd_AntiTipToggle;
 	private FastGearShift cmd_FastGearShift;
 	private SlowGearShift cmd_SlowGearShift;
@@ -136,25 +138,7 @@ public class RobotContainer {
 		but_secondary_bmp_left = new JoystickButton(joy_secondary, XboxController.Button.kBumperLeft.value);
 		but_secondary_bmp_right = new JoystickButton(joy_secondary, XboxController.Button.kBumperRight.value);
 
-		//configureBindings();
-
-
-		//subsys_driveTrain.setDefaultCommand(new DriveCommand(subsys_driveTrain, joy_main));
-
-		//subsys_indexer.setDefaultCommand(new IntakeIndexActive(subsys_indexer, subsys_intake));
-		but_main_A.whenPressed(
-			new SequentialCommandGroup(
-				new CalibrateShooter(sys_shooter_turret),
-				new RotateTurret(sys_shooter_turret, 0)
-			)		
-		);
-
-		//but_main_Y.whileActiveOnce(new SmoothSweep(sys_shooter_turret, sys_shooter_flywheel));
-		but_main_Y.whileActiveOnce(new OperateShooter(sys_shooter_flywheel, sys_shooter_turret, sys_limelight, subsys_indexer))
-			      .whenInactive(new RotateTurret(sys_shooter_turret, 0));
-
-		//subsys_indexer.setDefaultCommand(new IntakeIndexActive(subsys_indexer));
-		//configureBindings();
+		configureBindings();
 	}
 
 	
@@ -164,16 +148,30 @@ public class RobotContainer {
 
 	    // Run intake while held
 		//but_main_Y.whileHeld(new IntakeIndexActive(subsys_indexer, subsys_intake));
-	    but_secondary_Y.whenPressed(new AntiTipToggle(subsys_driveTrain));
+
+		// Reverse intake
+		//but_secondary_Y.whenPressed(new IntakeReverse(subsys_intake));
+
+		// Toggle AntiTip
+		//but_secondary_bmp_left.whenPressed(new AntiTipToggle(subsys_driveTrain));
 		
 		// Shift gear to fast
 		but_main_bmp_right.whenPressed(new FastGearShift(subsys_driveTrain));
 		// Shift gear to slow
 		but_main_bmp_right.whenReleased(new SlowGearShift(subsys_driveTrain));
 		
-		//WuTang's Stuff
-		but_main_start.whenPressed(new ExtendArmNeo(subsys_climb));
-		but_main_back.whenPressed(new RetractArmNeo(subsys_climb));
+		but_main_A.whenPressed(
+			new SequentialCommandGroup(
+				new CalibrateShooter(sys_shooter_turret),
+				new RotateTurret(sys_shooter_turret, 0)
+			)		
+		);
+
+		but_main_Y.whileActiveOnce(new OperateShooter(sys_shooter_flywheel, sys_shooter_turret, sys_limelight, subsys_indexer))
+				  .whenInactive(new RotateTurret(sys_shooter_turret, 0));
+
+		subsys_indexer.setDefaultCommand(new IntakeIndexActive(subsys_indexer));
+		subsys_driveTrain.setDefaultCommand(new DriveCommand(subsys_driveTrain, joy_main));
 	}
 
 	  /**
@@ -234,6 +232,6 @@ public class RobotContainer {
 //   }
 
 	public Command getAutonomousCommand() {
-		return cmd_DriveStraightAuto;
+		return null;
 	}
 }

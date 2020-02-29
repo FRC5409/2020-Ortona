@@ -2,6 +2,7 @@ package org.frc.team5409.robot.commands.shooter;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.frc.team5409.robot.subsystems.shooter.*;
 import org.frc.team5409.robot.subsystems.*;
@@ -59,11 +60,13 @@ public final class OperateShooter extends CommandBase {
     @Override
     public void initialize() {
         m_shooter_flywheel.enable();
-        m_shooter_flywheel.startFeeder();
-        m_shooter_flywheel.setVelocity(m_rpm_curve.calculate(m_distance_range.median));
+        m_shooter_flywheel.setSafety(false);
 
         m_limelight.enable();
         m_limelight.setLedMode(Limelight.LedMode.kModeOn);
+
+        m_shooter_flywheel.startFeeder();
+        m_shooter_flywheel.setVelocity(m_rpm_curve.calculate(m_distance_range.median));
 
         internal_switchState(CommandState.kSearching);
     }
@@ -118,8 +121,10 @@ public final class OperateShooter extends CommandBase {
 
             m_smooth_sweep_toff = m_smooth_sweep_inverse.calculate(m_shooter_turret.getRotation());
         } else if (state == CommandState.kShooting) {
+            Vec2 target = m_limelight.getTarget();
             m_limelight.disable();
-            
+
+            m_distance = m_distance_range.clamp(m_port_height / Math.tan(Math.toRadians(target.y + Constants.Vision.vision_limelight_pitch)));
             m_shooter_flywheel.setVelocity(m_rpm_curve.calculate(m_distance));
         }
     }
@@ -139,7 +144,7 @@ public final class OperateShooter extends CommandBase {
      */
     private void internal_operateSearching(double time) {
         if (m_limelight.hasTarget() && m_limelight.getTargetType() == Limelight.TargetType.kOuterPort) {
-            internal_switchState(CommandState.kShooting);
+            internal_switchState(CommandState.kAligning);
         } else if (time > Constants.Vision.vision_acquisition_delay) {
             internal_switchState(CommandState.kSweeping);
         }
@@ -170,13 +175,13 @@ public final class OperateShooter extends CommandBase {
     private void internal_operateAligning(double time) {
         if (m_limelight.hasTarget() && m_limelight.getTargetType() == Limelight.TargetType.kOuterPort) {
             Vec2 target = m_limelight.getTarget();
+
             m_shooter_turret.setRotation(m_shooter_turret.getRotation()+target.x);
-
-            m_distance = m_port_height / Math.tan(Math.toRadians(target.y + Constants.Vision.vision_limelight_pitch));
+            if (target.x < Constants.Vision.vision_aligned_thresh)
+                internal_switchState(CommandState.kShooting);
+            
+            SmartDashboard.putNumber("Aligning offset", target.x);
         }
-
-        if (m_shooter_turret.isTargetReached())
-            internal_switchState(CommandState.kShooting);
     }
 
     /**
@@ -191,6 +196,8 @@ public final class OperateShooter extends CommandBase {
      * @param time The time since the this state began execution.
      */
     private void internal_operateShooting(double time) {
+        SmartDashboard.putBoolean("Turret target reached", m_shooter_turret.isTargetReached());
+        SmartDashboard.putBoolean("Shooter target reached", m_shooter_flywheel.isTargetReached());
         if (m_shooter_turret.isTargetReached() && m_shooter_flywheel.isTargetReached()) {
             m_indexer.moveIndexerMotor(1);
         } else {

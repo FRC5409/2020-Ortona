@@ -7,6 +7,8 @@
 
 package org.frc.team5409.robot.subsystems;
 
+import java.time.Instant;
+
 import com.playingwithfusion.TimeOfFlight;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
@@ -34,6 +36,8 @@ public class Indexer extends SubsystemBase {
   protected TimeOfFlight TOF_Exit;
   // sensor to detect balls
   protected TimeOfFlight TOF_Ball1;
+
+  protected Logger indexerLogger; 
 
   // get the valid ranges of all three sensors
   protected boolean isRangeValidEnter;
@@ -78,6 +82,7 @@ public class Indexer extends SubsystemBase {
     TOF_Exit.setRangingMode(TimeOfFlight.RangingMode.Short, Constants.Indexer.sampleTime);
     TOF_Ball1.setRangingMode(TimeOfFlight.RangingMode.Short, Constants.Indexer.sampleTime);
 
+    indexerLogger = new Logger("indexer/"+Long.toString(Instant.now().getEpochSecond())+"/logging.csv");
   }
 
   //the measured distance in mm

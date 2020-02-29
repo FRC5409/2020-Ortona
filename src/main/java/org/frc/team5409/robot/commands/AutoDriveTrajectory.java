@@ -16,7 +16,7 @@ import org.frc.team5409.robot.Constants;
 public final class AutoDriveTrajectory extends CommandBase {
     private final DriveTrain m_drivetrain;
 
-    private final RamseteCommand m_ramsete;
+    private RamseteCommand m_ramsete;
 
     public AutoDriveTrajectory(DriveTrain sys_drivetrain) {
         m_drivetrain = sys_drivetrain;
@@ -43,33 +43,6 @@ public final class AutoDriveTrajectory extends CommandBase {
             config
         );
 
-        m_ramsete = new RamseteCommand( 
-            trajectory,
-            m_drivetrain::getPose,
-            new RamseteController(
-                Constants.Trajectory.kRamseteB,
-                Constants.Trajectory.kRamseteZeta
-            ),
-            new SimpleMotorFeedforward(
-                Constants.Trajectory.ksVolts,
-                Constants.Trajectory.kvVoltSecondsPerMeter,
-                Constants.Trajectory.kaVoltSecondsSquaredPerMeter
-            ),
-            Constants.Trajectory.kDriveKinematics,
-            m_drivetrain::getWheelSpeeds,
-            new PIDController(
-                Constants.Trajectory.kPDriveVel,
-                0,
-                0
-            ),
-            new PIDController(
-                Constants.Trajectory.kPDriveVel,
-                0,
-                0
-            ),
-            m_drivetrain::tankDriveVolts,
-            m_drivetrain
-        );
     }
 
     @Override

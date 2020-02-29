@@ -207,9 +207,9 @@ public class DriveTrain extends SubsystemBase {
    *
    * @return The pose.
    */
-  public Pose2d getPose() {
-    return m_odometry.getPoseMeters();
-  }
+ // public Pose2d getPose() {
+  //  return m_odometry.getPoseMeters();
+  //}
 
   /**
    * Returns the current wheel speeds of the robot.
@@ -225,10 +225,10 @@ public class DriveTrain extends SubsystemBase {
    *
    * @param pose The pose to which to set the odometry.
    */
-  public void resetOdometry(Pose2d pose) {
-    resetEncoders();
-    m_odometry.resetPosition(pose, Rotation2d.fromDegrees(getHeading()));
-  }
+  //public void resetOdometry(Pose2d pose) {
+    //resetEncoders();
+   // m_odometry.resetPosition(pose, Rotation2d.fromDegrees(getHeading()));
+ // }
 
   /**
    * Drives the robot using arcade controls.

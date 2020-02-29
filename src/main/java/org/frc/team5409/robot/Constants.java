@@ -12,6 +12,7 @@ public final class Constants {
     public static final class Vision {
     // Target Constants
         public static final double vision_outerport_height = 90.75d/12.0d;
+        
 
 
     // Robot configuration Constants
@@ -22,6 +23,8 @@ public final class Constants {
 
     // Timing Constants
         public static final double vision_acquisition_delay = 0.5;
+
+        public static final double vision_aligned_thresh = 0.1;
     }
 
     public static final class ShooterControl {
@@ -41,7 +44,7 @@ public final class Constants {
         );
 
         public static final PIDFConfig shooter_flywheel_pid = new PIDFConfig(
-            6e-5, 0, 0, 0.000211
+            6e-5, 0, 0, 0.000231
         );
 
 
@@ -55,7 +58,7 @@ public final class Constants {
         );
 
         public static final Range shooter_distance_range = new Range(
-            15, 33
+            10, 33
         );
 
         
@@ -85,7 +88,7 @@ public final class Constants {
 
 
     // Shooter Flywheel Constants
-        public static final double shooter_flywheel_target_thresh = 0.96;
+        public static final double shooter_flywheel_target_thresh = 0.98;
 
 
     // Smooth Sweep Constants (experimental)
@@ -119,7 +122,7 @@ public final class Constants {
 
         public static final int rangeEnter_1 =  25; 
         
-        public static final int rangeEnter_2 = 180; 
+        public static final int rangeEnter_2 = 190; 
 
         public static final int rangeBall1_1 = 160; 
 
@@ -175,7 +178,7 @@ public final class Constants {
 
     public static class DriveTrain{
 
-        public static final IdleMode idle = IdleMode.kBrake;
+        public static final IdleMode idle = IdleMode.kCoast;
 
         public static final double loopRampRate= 0.5;
 

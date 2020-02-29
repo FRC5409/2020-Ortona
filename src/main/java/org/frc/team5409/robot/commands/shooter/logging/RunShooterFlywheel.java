@@ -35,6 +35,7 @@ public final class RunShooterFlywheel extends CommandBase {
     private final SimpleEquation  m_rpm_curve;
 
     private       double          m_target, m_distance, m_timer, m_predicted, m_scored, m_missed;
+    private       Range           m_babble_range;
 
     private       boolean         m_debounce1, m_debounce2, m_debounce3, m_debounce4;
 
@@ -57,7 +58,7 @@ public final class RunShooterFlywheel extends CommandBase {
         m_timer = 0;
 
         m_trg_flywheel = new JoystickButton(joy_main, 1);
-        m_trg_score = new JoystickButton(joy_sec, 1);
+        m_trg_score = new JoystickButton(joy_sec, 3);
         m_trg_miss = new JoystickButton(joy_sec, 2);
 
         m_target_height = Math.abs(Constants.Vision.vision_outerport_height - Constants.Vision.vision_limelight_height);
@@ -65,6 +66,12 @@ public final class RunShooterFlywheel extends CommandBase {
         m_rpm_curve = Constants.ShooterControl.shooter_distance_rpm_curve;
 
         m_curve_fitter = PolynomialCurveFitter.create(2);
+        m_data = new WeightedObservedPoints().toList();
+
+        SmartDashboard.setDefaultNumber("Starting Velocity", 2000);
+        SmartDashboard.setDefaultNumber("Capping Velocity", 3000);
+        SmartDashboard.setDefaultNumber("Learning Rate", 30000);
+        SmartDashboard.setDefaultNumber("Babbling shots", 10);
 
         addRequirements(sys_flywheel, sys_indexer, sys_limelight);
     }
@@ -81,7 +88,7 @@ public final class RunShooterFlywheel extends CommandBase {
 
         String logs_path = "flywheel/"+Long.toString(Instant.now().getEpochSecond());
 
-        m_log_flywheel = new Logger(logs_path+"/FLYWHEEL_DATA.csv");
+        m_log_flywheel = new Logger("/FLYWHEEL_DATA.csv");
         m_log_powercells = new Logger(logs_path+"/POWERCELL_EVENTS.csv");
         m_log_events = new Logger(logs_path+"/TURRET_EVENTS.csv");
         m_log_descent = new Logger(logs_path+"/RPM_GRADIENT_DESCENT.csv");
@@ -98,10 +105,6 @@ public final class RunShooterFlywheel extends CommandBase {
         
         m_scored = 0;
         m_missed = 0;
-
-        m_target = SmartDashboard.getNumber("Starting Velocity", 0);
-        m_learning_rate = SmartDashboard.getNumber("Learning Rate", 30000);
-        m_babble_shots = SmartDashboard.getNumber("Babbling shots", 10);
 
         new Logger(logs_path+"/TURRET_CONSTANTS.csv")
             .writeln("%f, %f, %f, %f, %d, %d, %f, %f, %f, %f, %s",
@@ -126,7 +129,15 @@ public final class RunShooterFlywheel extends CommandBase {
         m_log_events.writeln("0, SESSION START, ");
         m_log_flywheel.writeln("0, 0, 0, 0");
 
-        m_data.clear();
+        //m_data.clear();
+        
+        m_babble_range = new Range(
+            SmartDashboard.getNumber("Starting Velocity", 0),
+            SmartDashboard.getNumber("Capping Velocity", 0)
+        );
+        
+        m_learning_rate = SmartDashboard.getNumber("Learning Rate", 30000);
+        m_babble_shots = SmartDashboard.getNumber("Babbling shots", 10);
     }
 
     @Override
@@ -154,7 +165,7 @@ public final class RunShooterFlywheel extends CommandBase {
             m_debounce1 = false;
         }
 
-        if (velocity > m_target*Constants.ShooterControl.shooter_flywheel_target_thresh) {
+        if (m_debounce3 && m_flywheel.isTargetReached()) {
             m_indexer.moveIndexerMotor(1);
 
             if (!m_debounce2) {
@@ -174,25 +185,7 @@ public final class RunShooterFlywheel extends CommandBase {
 
         if (m_trg_flywheel.get()) {
             if (!m_debounce3) {
-                if (m_missed+m_scored != 0)
-                    m_data.add(new WeightedObservedPoint(1, m_target, m_scored/(m_scored+m_missed)));
-
-                if (m_data.size() < 10) {
-                    m_flywheel.setVelocity(Math.random()*(4500-m_target)+m_target);
-                } else {
-                    double coeffs[] = m_curve_fitter.fit(m_data);
-                    double slope = (coeffs[0]*2*m_target+coeffs[1])*m_learning_rate;
-
-                    m_log_descent.writeln("%f, %f, %f, %f, %f, %f",
-                        m_target, slope, 
-                        m_scored/(m_scored+m_missed),
-                        coeffs[0], coeffs[1], coeffs[2]
-                    );
-
-                    m_target += slope;
-                    m_flywheel.setVelocity(m_target);
-
-                }
+                m_flywheel.setVelocity(SmartDashboard.getNumber("Target velocity", 0));
                 m_flywheel.startFeeder();
 
                 m_scored = 0;
@@ -246,6 +239,7 @@ public final class RunShooterFlywheel extends CommandBase {
         SmartDashboard.putNumber("Robot Distance (ft)", m_distance);
         SmartDashboard.putNumber(  "Scored Powercells", m_scored);
         SmartDashboard.putNumber(  "Missed Powercells", m_missed);
+        SmartDashboard.putNumber("    Number of shots", m_data.size());
     }
 
     @Override
