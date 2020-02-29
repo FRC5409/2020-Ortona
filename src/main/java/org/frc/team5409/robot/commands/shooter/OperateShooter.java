@@ -1,11 +1,9 @@
 package org.frc.team5409.robot.commands.shooter;
 
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj.Timer;
 
-import org.frc.team5409.robot.subsystems.shooter.ShooterFlywheel;
-import org.frc.team5409.robot.subsystems.shooter.ShooterTurret;
+import org.frc.team5409.robot.subsystems.shooter.*;
 import org.frc.team5409.robot.subsystems.*;
 import org.frc.team5409.robot.Constants;
 import org.frc.team5409.robot.util.*;
@@ -60,11 +58,9 @@ public final class OperateShooter extends CommandBase {
 
     @Override
     public void initialize() {
-        m_distance = m_distance_range.min;
-
         m_shooter_flywheel.enable();
         m_shooter_flywheel.startFeeder();
-        m_shooter_flywheel.setVelocity(m_rpm_curve.calculate(m_distance));
+        m_shooter_flywheel.setVelocity(m_rpm_curve.calculate(m_distance_range.median));
 
         m_limelight.enable();
         m_limelight.setLedMode(Limelight.LedMode.kModeOn);
@@ -119,9 +115,11 @@ public final class OperateShooter extends CommandBase {
 
         if (state == CommandState.kSweeping) {
             m_shooter_turret.enable();
+
             m_smooth_sweep_toff = m_smooth_sweep_inverse.calculate(m_shooter_turret.getRotation());
         } else if (state == CommandState.kShooting) {
             m_limelight.disable();
+            
             m_shooter_flywheel.setVelocity(m_rpm_curve.calculate(m_distance));
         }
     }
