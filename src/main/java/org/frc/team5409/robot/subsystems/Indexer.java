@@ -103,9 +103,12 @@ public class Indexer extends SubsystemBase {
   // ball detection functions
   public boolean ballDetectionEnter() {
     double range = TOF_Enter.getRange();
-    if (range > Constants.Indexer.rangeEnter_1 && range < Constants.Indexer.rangeEnter_2) {
+    if (range < Constants.Indexer.rangeEnter_2) {
+      // CWU remove first range > check
 
-      // if (range == 115) {
+      //if (range > Constants.Indexer.rangeEnter_1 && range < Constants.Indexer.rangeEnter_2) {
+     
+        // if (range == 115) {
       //   getNumberOfPowerCellsEnter++;
       //   // this could be a for loop
       // }
@@ -124,6 +127,7 @@ public class Indexer extends SubsystemBase {
   public boolean ballDetectionBall1() {
     double range = TOF_Ball1.getRange();
     if (range < Constants.Indexer.rangeBall1_1 && range > Constants.Indexer.rangeBall1_2) {
+      // CWU check range numbers
       return true;
     }
     return false;
@@ -132,7 +136,10 @@ public class Indexer extends SubsystemBase {
   // detects whether or not power cells are in range of exit sensor
   public boolean ballDetectionExit() {
     double range = TOF_Exit.getRange();
-    if (range < Constants.Indexer.rangeExit_1 && range > Constants.Indexer.rangeExit_2) {
+    if (range < Constants.Indexer.rangeExit_2) {
+
+     // if (range < Constants.Indexer.rangeExit_1 && range > Constants.Indexer.rangeExit_2) {
+
       return true;
     }
     return false;

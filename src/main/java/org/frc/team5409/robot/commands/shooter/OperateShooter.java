@@ -177,7 +177,7 @@ public final class OperateShooter extends CommandBase {
             Vec2 target = m_limelight.getTarget();
 
             m_shooter_turret.setRotation(m_shooter_turret.getRotation()+target.x);
-            if (target.x < Constants.Vision.vision_aligned_thresh)
+            if (Math.abs(target.x) < Constants.Vision.vision_aligned_thresh)
                 internal_switchState(CommandState.kShooting);
             
             SmartDashboard.putNumber("Aligning offset", target.x);

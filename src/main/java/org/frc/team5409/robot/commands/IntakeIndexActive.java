@@ -26,15 +26,12 @@ public class IntakeIndexActive extends CommandBase {
 	boolean TOF_Ball1;
 
 	protected Logger indexerLogger, indexerEvents;
-	private double m_timer;
 	private boolean m_debounce;
 
 	protected boolean m_triggered;
 
 	// Makes Indexer Motor run
 	boolean indexerRun;
-
-	boolean intakeRun;
 
 	// Whether or not ball is at position 1
 	boolean ballAtPosition1;
@@ -44,24 +41,21 @@ public class IntakeIndexActive extends CommandBase {
 
 	int powerCellsInIndexer;
 
-	//private final Intake subsys_Intake;
+	private final Intake subsys_Intake;
 	private final Indexer subsys_indexer;
 
-<<<<<<< Updated upstream
 	private double m_timer2;
 
 	private double m_timer,
-	  			   m_delay = 0.05;
+	  			   m_delay = 0.14;
 
-=======
->>>>>>> Stashed changes
 	/**
 	 * Creates a new IntakeIndexActive
 	 */
-	public IntakeIndexActive(Indexer indexerSubsystem) {
+	public IntakeIndexActive(Indexer indexerSubsystem, Intake intakeSubsystem) {
 		subsys_indexer = indexerSubsystem;
-		//subsys_Intake = intakeSubsystem;
-		addRequirements(indexerSubsystem); //(intakeSubsystem);
+		subsys_Intake = intakeSubsystem;
+		addRequirements(indexerSubsystem, intakeSubsystem);
 
 		TOF_Enter = subsys_indexer.ballDetectionEnter();
 		TOF_Ball1 = subsys_indexer.ballDetectionBall1();
@@ -74,7 +68,7 @@ public class IntakeIndexActive extends CommandBase {
 	// Called when the command is initially scheduled.
 	@Override
 	public void initialize() {
-		// subsys_Intake.extend();
+		subsys_Intake.extend(0.7);
 		indexerRun = false;
 		ballAtPosition1 = false;
 
@@ -82,13 +76,8 @@ public class IntakeIndexActive extends CommandBase {
 		indexerLogger = new Logger(logs_path+"/INDEXER_DATA.csv");
 		indexerEvents = new Logger(logs_path+"/INDEXER_EVENTS.csv");
 
-<<<<<<< Updated upstream
 		m_timer2 = Timer.getFPGATimestamp();
 		m_triggered = false;
-=======
-		m_timer = Timer.getFPGATimestamp();
-		m_debounce = false;
->>>>>>> Stashed changes
 	}
 
 	// Called every time the scheduler runs while the command is scheduled.
@@ -102,33 +91,24 @@ public class IntakeIndexActive extends CommandBase {
 
 		SmartDashboard.putBoolean("Ball at Position 1", ballAtPosition1);
 		SmartDashboard.putBoolean("TOF_Enter", TOF_Enter);
+		SmartDashboard.putBoolean("TOF_Exit", TOF_Exit);
 		// if time of flight sensor closest to the shooter is false run this
-<<<<<<< Updated upstream
 		
-=======
-
-		double time = Timer.getFPGATimestamp()-m_timer;
-
-		if (TOF_Enter && !TOF_Ball1 && !TOF_Exit){
-			indexerRun = true;
-		} else if(TOF_Enter && TOF_Ball1 && !TOF_Exit){
-			indexerRun = true; 
-		} else {
-			indexerRun = false; 
-		}
->>>>>>> Stashed changes
 		// if statements to run the indexer motor
 		if (TOF_Exit) {
 			subsys_indexer.moveIndexerMotor(0);
 		} else if (TOF_Enter) {
-			subsys_indexer.moveIndexerMotor(0.75);
+			subsys_indexer.moveIndexerMotor(1);
 
-<<<<<<< Updated upstream
+			//subsys_Intake.extend(0);
+
 			if (!m_triggered)
 				indexerEvents.writeln("%f, INDEXER TRIGGERED", time);
 			
 			m_triggered = true;
 		} else {
+			//subsys_indexer.moveIndexerMotor(0);
+			
 			if (m_triggered)
 				m_timer = Timer.getFPGATimestamp();
 			
@@ -136,24 +116,10 @@ public class IntakeIndexActive extends CommandBase {
 
 			if (Timer.getFPGATimestamp()-m_timer > m_delay)
 				subsys_indexer.moveIndexerMotor(0);
-=======
-			if (!m_debounce)
-				indexerEvents.writeln("%f, INDEXER TRIGGERED", time);
-			
-			m_debounce = true;
-		} else {
-			subsys_indexer.moveIndexerMotor(0);
-
-			if (m_debounce)
-				indexerEvents.writeln("%f, INDEXER STOPPED", time);
-
-			m_debounce = false;
->>>>>>> Stashed changes
 		}
 
 		if (powerCellsInIndexer == 5) {
-			// Retracts intake
-			// subsys_Intake.retract();
+			subsys_Intake.retract();
 			IndexerFull = true;
 			SmartDashboard.putBoolean("Indexer Full", IndexerFull);
 			powerCellsInIndexer = 0;
@@ -166,12 +132,12 @@ public class IntakeIndexActive extends CommandBase {
 			subsys_indexer.getRangeExit()
 		);
 
-	}
+	} 
 
 	// Called once the command ends or is interrupted.
 	@Override
 	public void end(boolean interrupted) {
-		// subsys_Intake.retract();
+		subsys_Intake.retract();
 		indexerLogger.save();
 		indexerEvents.save();
 	}

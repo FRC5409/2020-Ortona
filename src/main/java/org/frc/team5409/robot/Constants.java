@@ -23,7 +23,7 @@ public final class Constants {
     // Timing Constants
         public static final double vision_acquisition_delay = 0.5;
 
-        public static final double vision_aligned_thresh = 1.5;
+        public static final double vision_aligned_thresh = 0.2;
     }
 
     public static final class ShooterControl {
@@ -119,9 +119,9 @@ public final class Constants {
 
         public static final int currentLimit = 20; 
 
-        public static final int rangeEnter_1 =  25; 
+        public static final int rangeEnter_1 =  40; 
         
-        public static final int rangeEnter_2 = 175; 
+        public static final int rangeEnter_2 = 90; 
 
         public static final int rangeBall1_1 = 160; 
 
@@ -129,15 +129,13 @@ public final class Constants {
 
         public static final int rangeExit_1 = 140; 
 
-        public static final int rangeExit_2 = 90; 
+        public static final int rangeExit_2 = 90;
 
     }
 
     public static final class Intake {
 
-        public static final int kIntakeMotor1 = 0;
-
-        public static final int kIntakeMotor2 = 0;
+        public static final int kIntakeMotor = 12;
 
         public static final int kRightIntakeSolenoid1 = 0;
 
@@ -147,8 +145,6 @@ public final class Constants {
 
         public static final int kLeftIntakeSolenoid2 = 0;
 
-		public void retract() {
-		}
     }
 
     public static class Trajectory{

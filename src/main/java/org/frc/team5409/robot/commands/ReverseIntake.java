@@ -8,24 +8,23 @@
 package org.frc.team5409.robot.commands;
 
 import org.frc.team5409.robot.subsystems.Intake;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-public class IntakeReverse extends CommandBase {
-  private Intake subsys_intake;
+public class ReverseIntake extends CommandBase {
+  private final Intake subsys_Intake;
+
   /**
-   * Creates a new IntakeReverse.
+   * Creates a new ReverseIntake.
    */
-  public IntakeReverse(Intake intakeSubsystem) {
-    subsys_intake = intakeSubsystem;
-    addRequirements(intakeSubsystem);
-    // Use addRequirements() here to declare subsystem dependencies.
+  public ReverseIntake(Intake intakeSubsystem) {
+    subsys_Intake = intakeSubsystem;
+		addRequirements(intakeSubsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    subsys_intake.reverse();
+    subsys_Intake.reverse();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -36,7 +35,7 @@ public class IntakeReverse extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    subsys_intake.retract();
+    subsys_Intake.retract();
   }
 
   // Returns true when the command should end.

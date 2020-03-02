@@ -105,7 +105,7 @@ public class RobotContainer {
 		//subsys_shooter_flywheel = new ShooterFlywheel();
 		//subsys_shooter_turret = new ShooterTurret();
 
-		cmd_IntakeIndexActive = new IntakeIndexActive(sys_indexer); //(subsys_intake);
+		cmd_IntakeIndexActive = new IntakeIndexActive(sys_indexer, subsys_intake); //(subsys_intake);
 
 		//grp_configure_turret = new SequentialCommandGroup(new CalibrateShooter(subsys_shooter_turret, subsys_shooter_flywheel),
 		//		new RotateTurret(subsys_shooter_turret, 0));
@@ -147,12 +147,12 @@ public class RobotContainer {
 		);*/
 
 		//but_main_Y.whileActiveOnce(new SmoothSweep(sys_shooter_turret, sys_shooter_flywheel));
-		but_main_Y.whileActiveOnce(new OperateShooter(sys_shooter_flywheel, sys_shooter_turret, sys_limelight, sys_indexer))
+		but_main_A.whileActiveOnce(new OperateShooter(sys_shooter_flywheel, sys_shooter_turret, sys_limelight, sys_indexer))
 			      .whenInactive(new RotateTurret(sys_shooter_turret, 0));
 		//sys_shooter_flywheel.setDefaultCommand(new RunShooterFlywheel(sys_shooter_flywheel, sys_indexer, sys_limelight, joy_main, joy_secondary));
 		//but_main_B.whileActiveOnce(new ReverseIndexer(sys_indexer));
-		sys_indexer.setDefaultCommand(new IntakeIndexActive(sys_indexer));
-		//configureBindings();
+		//sys_indexer.setDefaultCommand(new IntakeIndexActive(sys_indexer, subsys_intake));
+		configureBindings();
 	}
 
 	
@@ -161,7 +161,13 @@ public class RobotContainer {
 		//but_main_A.cancelWhenPressed(cmd_IndexActive);
 
 	    // Run intake while held
-		//but_main_Y.whileHeld(new IntakeIndexActive(subsys_indexer, subsys_intake));
+		but_main_Y.whileHeld(new IntakeIndexActive(sys_indexer, subsys_intake));
+
+		// Reverse intake while held
+		but_main_B.whileHeld(new ReverseIntake(subsys_intake));
+
+
+		// Toggle AntiTip
 	    but_secondary_Y.whenPressed(new AntiTipToggle(subsys_driveTrain));
 		
 		// Shift gear to fast
