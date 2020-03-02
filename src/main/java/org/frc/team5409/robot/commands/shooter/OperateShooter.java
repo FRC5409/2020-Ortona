@@ -118,14 +118,14 @@ public final class OperateShooter extends CommandBase {
 
         if (state == CommandState.kSweeping) {
             m_shooter_turret.enable();
-
             m_smooth_sweep_toff = m_smooth_sweep_inverse.calculate(m_shooter_turret.getRotation());
         } else if (state == CommandState.kShooting) {
-            Vec2 target = m_limelight.getTarget();
             m_limelight.disable();
 
-            m_distance = m_distance_range.clamp(m_port_height / Math.tan(Math.toRadians(target.y + Constants.Vision.vision_limelight_pitch)));
-            m_shooter_flywheel.setVelocity(m_rpm_curve.calculate(m_distance));
+            SmartDashboard.putNumber("Predicted Velocity", m_rpm_curve.calculate(m_distance));
+            SmartDashboard.putNumber("Robot Distance (ft)", m_distance);
+
+            m_shooter_flywheel.setVelocity(SmartDashboard.getNumber("Target Velocity", 0));
         }
     }
 
