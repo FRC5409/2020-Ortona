@@ -6,10 +6,10 @@ import org.frc.team5409.robot.subsystems.shooter.ShooterTurret;
 import org.frc.team5409.robot.Constants;
 
 
-public final class CalibrateShooter extends CommandBase {
+public final class CalibrateTurret extends CommandBase {
     private final ShooterTurret m_turret;
 
-    public CalibrateShooter(ShooterTurret sys_rotation) {
+    public CalibrateTurret(ShooterTurret sys_rotation) {
         m_turret = sys_rotation;
 
         addRequirements(sys_rotation);

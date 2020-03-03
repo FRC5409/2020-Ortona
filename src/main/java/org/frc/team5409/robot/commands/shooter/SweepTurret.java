@@ -15,14 +15,14 @@ import org.frc.team5409.robot.util.*;
  * 
  * @author Keith Davies
  */
-public final class SmoothSweep extends CommandBase {
+public final class SweepTurret extends CommandBase {
     private final ShooterTurret   m_turret;
 
     private final SimpleEquation  m_smooth_sweep, m_smooth_sweep_inverse;
 
     private       double          m_timer, m_smooth_sweep_toff;
 
-    public SmoothSweep(ShooterTurret sys_turret, ShooterFlywheel sys_flywheel) {
+    public SweepTurret(ShooterTurret sys_turret, ShooterFlywheel sys_flywheel) {
         m_turret = sys_turret;
 
         m_smooth_sweep_inverse = Constants.ShooterControl.shooter_smooth_sweep_inverse;
