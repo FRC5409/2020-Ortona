@@ -140,9 +140,8 @@ public final class ShooterFlywheel extends SubsystemBase implements Toggleable {
      */
     public boolean isTargetReached() {
         m_watchdog.feed();
-
-        SmartDashboard.putNumber("Flywheel velocity", getData(ShooterData.kFlywheelVelocity));
-        return (getData(ShooterData.kFlywheelVelocity) > m_target * Constants.ShooterControl.shooter_flywheel_target_thresh);
+        
+        return (Math.abs(getData(ShooterData.kFlywheelVelocity) - m_target) < Constants.ShooterControl.shooter_flywheel_target_thresh);
     }
 
     /**

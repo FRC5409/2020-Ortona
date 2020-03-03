@@ -20,8 +20,11 @@ public final class ShooterTurret extends SubsystemBase implements Toggleable {
      */
     public enum ResetSwitchType {
         kLeft(Constants.ShooterControl.shooter_turret_limit_left_angle),
+        
         kCenter(Constants.ShooterControl.shooter_turret_limit_center_angle),
+
         kRight(Constants.ShooterControl.shooter_turret_limit_right_angle),
+
         kNone(-1);
 
         ResetSwitchType(double angle) {
@@ -60,7 +63,6 @@ public final class ShooterTurret extends SubsystemBase implements Toggleable {
             mot_C05_shooter_turret.setSmartCurrentLimit(Constants.ShooterControl.shooter_turret_current_limit);
         mot_C05_shooter_turret.burnFlash();
 
-        // TODO determine limit switch polarity and orientation.
         dio_C05_turret_limit_left = mot_C05_shooter_turret.getReverseLimitSwitch(CANDigitalInput.LimitSwitchPolarity.kNormallyOpen);
             dio_C05_turret_limit_left.enableLimitSwitch(true);
             
@@ -74,7 +76,10 @@ public final class ShooterTurret extends SubsystemBase implements Toggleable {
 
         pid_C05_shooter_turret = mot_C05_shooter_turret.getPIDController();
             pid_C05_shooter_turret.setFeedbackDevice(enc_C05_shooter_turret);
-            pid_C05_shooter_turret.setOutputRange(-0.22, 0.22);
+            pid_C05_shooter_turret.setOutputRange(
+                -Constants.ShooterControl.shooter_turret_max_speed,
+                 Constants.ShooterControl.shooter_turret_max_speed
+            );
             pid_C05_shooter_turret.setP(Constants.ShooterControl.shooter_turret_pid.P);
             pid_C05_shooter_turret.setI(Constants.ShooterControl.shooter_turret_pid.I);
             pid_C05_shooter_turret.setD(Constants.ShooterControl.shooter_turret_pid.D);

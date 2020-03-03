@@ -98,8 +98,12 @@ public final class OperateShooter extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
+        m_shooter_flywheel.setSafety(true);
         m_shooter_flywheel.disable();
+
+        m_shooter_turret.setSafety(true);
         m_shooter_turret.disable();
+
         m_limelight.disable();
         
         m_indexer.moveIndexerMotor(0);
@@ -130,8 +134,8 @@ public final class OperateShooter extends CommandBase {
             SmartDashboard.putNumber("Predicted Velocity", m_rpm_curve.calculate(m_distance));
             SmartDashboard.putNumber("Robot Distance (ft)", m_distance);
 
-            m_shooter_flywheel.setVelocity( m_rpm_curve.calculate(m_distance));
-            //m_shooter_flywheel.setVelocity(SmartDashboard.getNumber("Target Velocity", 0));
+            //m_shooter_flywheel.setVelocity( m_rpm_curve.calculate(m_distance));
+            m_shooter_flywheel.setVelocity(SmartDashboard.getNumber("Target Velocity", 0));
         }
     }
 
@@ -202,8 +206,6 @@ public final class OperateShooter extends CommandBase {
      * @param time The time since the this state began execution.
      */
     private void internal_operateShooting(double time) {
-        SmartDashboard.putBoolean("Turret target reached", m_shooter_turret.isTargetReached());
-        SmartDashboard.putBoolean("Shooter target reached", m_shooter_flywheel.isTargetReached());
         if (m_shooter_turret.isTargetReached() && m_shooter_flywheel.isTargetReached()) {
             m_indexer.moveIndexerMotor(1);
         } else {
