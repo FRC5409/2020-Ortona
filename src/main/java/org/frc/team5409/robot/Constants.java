@@ -93,6 +93,8 @@ public final class Constants {
     // Shooter Flywheel Constants
         public static final double shooter_flywheel_target_thresh = 80;
 
+        public static final double shooter_flywheel_offset_increment = 100;
+
 
     // Smooth Sweep Constants (experimental)
         public static final double shooter_smooth_sweep_period = 1.5;

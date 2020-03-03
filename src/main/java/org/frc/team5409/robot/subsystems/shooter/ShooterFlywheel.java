@@ -13,7 +13,7 @@ import org.frc.team5409.robot.util.*;
  */
 public final class ShooterFlywheel extends SubsystemBase implements Toggleable {
     public enum ShooterData {
-        kFlywheelVelocity, kFlywheelCurrent, kFeederCurrent, kFlywheelTarget
+        kFlywheelVelocity, kFlywheelCurrent, kFeederCurrent, kFlywheelTarget, kFlywheelOffset
     }
 
     private       CANSparkMax      mot_C07_shooter_flywheel;
@@ -202,16 +202,15 @@ public final class ShooterFlywheel extends SubsystemBase implements Toggleable {
     }
 
     /**
-     * Sets the flywheel velocity offset.
+     * Shifts the flywheel velocity offset.
      * 
      * <p> The offset is applied to every
      * flywheel velocity target setpoint </p>
      * +
      * @param offset The velocity offset
      */
-    public void setVelocityOffset(double offset) {
-        if (m_enabled)
-            m_velocity_offset = offset;
+    public void shiftOffset(double shift) {
+        m_velocity_offset += shift;
     }
 
     /**
@@ -230,6 +229,7 @@ public final class ShooterFlywheel extends SubsystemBase implements Toggleable {
             case kFlywheelCurrent:  return mot_C07_shooter_flywheel.getOutputCurrent();
             case kFeederCurrent:    return mot_C18_shooter_feeder.getOutputCurrent();
             case kFlywheelTarget:   return m_target;
+            case kFlywheelOffset:   return m_velocity_offset;
         }
         return -1;
     }
