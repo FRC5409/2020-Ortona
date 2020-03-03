@@ -7,35 +7,48 @@
 
 package org.frc.team5409.robot.commands;
 
-import org.frc.team5409.robot.Constants.Indexer;
-import org.frc.team5409.robot.subsystems.Limelight;
-import org.frc.team5409.robot.subsystems.shooter.ShooterFlywheel;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
+import org.frc.team5409.robot.commands.shooter.OperateShooter;
+import org.frc.team5409.robot.subsystems.Indexer;
+import org.frc.team5409.robot.subsystems.Limelight;
+import org.frc.team5409.robot.subsystems.shooter.ShooterFlywheel;
+import org.frc.team5409.robot.subsystems.shooter.ShooterTurret;
 public class ShootAuto extends CommandBase {
-  private ShooterFlywheel m_turret;
-  private Indexer m_indexer;
-  private Limelight m_limelight;
-
+	private OperateShooter cmd_OperateShooter;
+  ShooterFlywheel shooterflywheel;
+  ShooterTurret shooterturret;
+  Limelight limelight;
+  Indexer indexer;
+  
   /**
    * Creates a new ShootAuto.
    */
-  public ShootAuto(ShooterFlywheel sys_flywheel, Indexer sys_indexer, Limelight sys_limelight) {
+  public ShootAuto(ShooterFlywheel sys_flywheel, ShooterTurret sys_rotation, Limelight sys_limelight, Indexer sys_indexer) {
+    shooterflywheel=sys_flywheel;
+    shooterturret=sys_rotation;
+    limelight= sys_limelight;
+    indexer= sys_indexer;
+
+    cmd_OperateShooter = new OperateShooter( shooterflywheel, shooterturret, limelight, indexer);
+
     // Use addRequirements() here to declare subsystem dependencies.
-    m_turret = sys_flywheel;
-    m_indexer = sys_indexer;
-    m_limelight = sys_limelight;
+    addRequirements(shooterflywheel,shooterturret,limelight, indexer);
+
+    
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    cmd_OperateShooter( shooterflywheel, shooterturret, limelight, indexer);
   }
 
   // Called once the command ends or is interrupted.
