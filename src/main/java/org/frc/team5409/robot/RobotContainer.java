@@ -10,6 +10,8 @@ package org.frc.team5409.robot;
 import java.util.List;
 
 import org.frc.team5409.robot.commands.*;
+import org.frc.team5409.robot.commands.Hanging.ExtendHang;
+import org.frc.team5409.robot.commands.Hanging.RetractHang;
 import org.frc.team5409.robot.commands.shooter.*;
 import org.frc.team5409.robot.commands.shooter.RotateTurret;
 import org.frc.team5409.robot.commands.shooter.logging.RunShooterFlywheel;
@@ -38,6 +40,7 @@ public class RobotContainer {
 	private final Indexer sys_indexer;
 	public final Intake subsys_intake;
 	public final DriveTrain subsys_driveTrain;
+	private final Hanging sys_hang;
 	
 	//commands
 	private IntakeIndexActive cmd_IntakeIndexActive;
@@ -47,13 +50,6 @@ public class RobotContainer {
 	public final DriveCommand cmd_drive;
 	public final DriveStraightAuto cmd_DriveStraightAuto;
 	public final IndexerReverse cmd_IndexerReverse; 
-
-	// public final RetractArmNeo cmd_RetractArmNeo;
-	// public final ExtendArmNeo cmd_ExtendArmNeo;
-	// public final UnlockPiston cmd_UnlockPiston;
-	// public final LockPiston cmd_LockPiston;
-	// public final Retract cmd_Retract;
-	// public final Extend cmd_Extend;
 
 	//joystick controllers
 	private final XboxController joy_main, joy_secondary;
@@ -82,14 +78,10 @@ public class RobotContainer {
 		subsys_driveTrain = new DriveTrain(); 
 
 		//WuTang's stuff
+		sys_hang = new Hanging();
+
 		cmd_drive = new DriveCommand(subsys_driveTrain, joy_main);
 		cmd_DriveStraightAuto = new DriveStraightAuto(subsys_driveTrain);
-		// cmd_RetractArmNeo = new RetractArmNeo(subsys_climb);
-		// cmd_ExtendArmNeo = new ExtendArmNeo(subsys_climb);
-		// cmd_UnlockPiston = new UnlockPiston(subsys_climb);
-		// cmd_LockPiston = new LockPiston(subsys_climb);
-		// cmd_Retract = new Retract(subsys_climb);
-		// cmd_Extend = new Extend(subsys_climb);
 
 		sys_shooter_turret = new ShooterTurret();
 		sys_shooter_flywheel = new ShooterFlywheel();
@@ -178,6 +170,10 @@ public class RobotContainer {
 		but_main_bmp_right.whenReleased(new SlowGearShift(subsys_driveTrain));
 
 		but_main_bmp_left.whileHeld(new IndexerReverse(sys_indexer)); 
+
+		//climb
+		but_main_back.whileHeld(new RetractHang(sys_hang));
+		but_main_start.whileHeld(new ExtendHang(sys_hang));
 	}
 
 	  /**
