@@ -3,7 +3,6 @@ package org.frc.team5409.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import org.frc.team5409.robot.subsystems.Indexer;
-import org.frc.team5409.robot.subsystems.shooter.ShooterTurret;
 
 public final class ReverseIndexer extends CommandBase {
     private final Indexer m_indexer;
