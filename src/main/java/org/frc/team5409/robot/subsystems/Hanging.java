@@ -47,8 +47,7 @@ public class Hanging extends SubsystemBase {
   public double rotations;
 
   //Time Of Flight
-  protected TimeOfFlight TOF_Hang;
-  public double range_Hang;
+  // protected TimeOfFlight TOF_Hang;
 
   public Hanging() {
     // Piston
@@ -63,11 +62,6 @@ public class Hanging extends SubsystemBase {
 
     mot_hanging_neo_Slave.setSmartCurrentLimit(40);    
     mot_hanging_neo_Master.setSmartCurrentLimit(40);
-
-    // mot_hanging_neo_Slave.getForwardLimitSwitch(LimitSwitchPolarity.kNormallyOpen).enableLimitSwitch(false);
-    // mot_hanging_neo_Slave.getReverseLimitSwitch(LimitSwitchPolarity.kNormallyOpen).enableLimitSwitch(false);
-    // mot_hanging_neo_Master.getForwardLimitSwitch(LimitSwitchPolarity.kNormallyOpen).enableLimitSwitch(false);
-    // mot_hanging_neo_Master.getReverseLimitSwitch(LimitSwitchPolarity.kNormallyOpen).enableLimitSwitch(false);
 
     mot_hanging_neo_Slave.setIdleMode(IdleMode.kCoast);
     mot_hanging_neo_Master.setIdleMode(IdleMode.kCoast);
@@ -85,10 +79,10 @@ public class Hanging extends SubsystemBase {
     mot_hanging_neo_Master.burnFlash();
 
     //Time Of Flight
-    TOF_Hang = new TimeOfFlight(Constants.Hanging.TOF_ID);     
-    TOF_Hang.setRangingMode(TimeOfFlight.RangingMode.Short, Constants.Hanging.TOF_SAMPLE_TIME);    
+    // TOF_Hang = new TimeOfFlight(Constants.Hanging.TOF_ID);     
+    // TOF_Hang.setRangingMode(TimeOfFlight.RangingMode.Short, Constants.Hanging.TOF_SAMPLE_TIME);    
 
-    setPid();
+    // setPid();
 
     // Limit Switch
     // limitSwitch = new DigitalInput(1);
@@ -117,7 +111,6 @@ public class Hanging extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     // adjustPid();
-    range_Hang = TOF_Hang.getRange();
   }
 
   public void adjustPid() {
@@ -159,25 +152,28 @@ public class Hanging extends SubsystemBase {
   }
 
 /**
- * ExtendArmNeo Command
+ * ControlArmNeo
  * Runs neo to move while hang retracts
  */
   public void controlArmNeo(double speed) {
-    // rotations = Constants.Hanging.RETRACT_NEO_POS;
-    // m_pidController_hanging.setReference(rotations, ControlType.kPosition);
     mot_hanging_neo_Master.set(speed);
   }
 
 /**
- * stopNeo
- * Stops the neo (sets the PID poisition to current position) once limit switch isSwitchSet
+ * setPiston
+ * sets the piston to lock/unlock the hang
  */
-  public void stopNeo() {
-    // rotations = enc1_hanging.getPosition();
-    // m_pidController_hanging.setReference(rotations, ControlType.kPosition);
-    // mot_hanging_neo_Slave.stopMotor();
-    mot_hanging_neo_Master.stopMotor();
-  }
+public void setPiston(Value value) {
+  dsl_hangSolenoid.set(value);
+}
+
+/**
+ * getEncoderAvgPosition
+ * gets the average value of the neo encoders
+ */
+public double getEncoderAvgPosition() {
+  return (enc1_hanging.getPosition() + enc2_hanging.getPosition()) / 2.0;
+}
 
 /**
  * isSwitchSet
@@ -187,18 +183,11 @@ public class Hanging extends SubsystemBase {
   //   return !limitSwitch.get();
   // }
 
- /**
- * lockPiston
- * extends the piston to lock the hang
- */
-  public void lockPiston() {
-    dsl_hangSolenoid.set(Value.kForward);
-  }
   /**
- * unlockPiston
- * unlocks the piston so the hang can shoot up
- */
-  public void unlockPiston() {
-    dsl_hangSolenoid.set(Value.kReverse);
-  }
+   * getTOF
+   * gets the time of flight sensor
+   */
+  // public double getTOF(){
+  //   return TOF_Hang.getRange();
+  // }
 }

@@ -261,11 +261,11 @@ public final class Constants {
         public static final int BACKWARD_CHANEL = 5;
 
         //Time Of Flight
-        public static final int TOF_ID = 4;
+        // public static final int TOF_ID = 4;
 
-        public static final double TOF_RANGE = 10;
+        // public static final double TOF_RANGE = 10;
         
-        public static final double TOF_SAMPLE_TIME = 24;
+        // public static final double TOF_SAMPLE_TIME = 24;
 
         // Gear Shift
 
