@@ -46,8 +46,7 @@ public class IntakeIndexActive extends CommandBase {
 
 	private double m_timer2;
 
-	private double m_timer,
-	  			   m_delay = 0.08;
+	private double m_timer, m_delay = 0.08;
 
 	/**
 	 * Creates a new IntakeIndexActive
@@ -68,76 +67,76 @@ public class IntakeIndexActive extends CommandBase {
 	// Called when the command is initially scheduled.
 	@Override
 	public void initialize() {
-		subsys_Intake.extend(1);
-		indexerRun = false;
-		ballAtPosition1 = false;
+		if (!(subsys_indexer.ballDetectionExit() && subsys_indexer.isRangeValidExit())) {
+			subsys_Intake.extend(1);
+		}
+		
+		//indexerRun = false;
+		//ballAtPosition1 = false;
 
-		String logs_path = "indexer/"+Long.toString(Instant.now().getEpochSecond());
-		indexerLogger = new Logger(logs_path+"/INDEXER_DATA.csv");
-		indexerEvents = new Logger(logs_path+"/INDEXER_EVENTS.csv");
+		String logs_path = "indexer/" + Long.toString(Instant.now().getEpochSecond());
+		indexerLogger = new Logger(logs_path + "/INDEXER_DATA.csv");
+		indexerEvents = new Logger(logs_path + "/INDEXER_EVENTS.csv");
 
-		m_timer2 = Timer.getFPGATimestamp();
-		m_triggered = false;
+		// m_timer2 = Timer.getFPGATimestamp();
+		// m_triggered = false;
 	}
 
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
 	public void execute() {
-		double time = Timer.getFPGATimestamp()-m_timer2;
+		//double time = Timer.getFPGATimestamp() - m_timer2;
 
-		TOF_Enter = subsys_indexer.ballDetectionEnter(); 
+		TOF_Enter = subsys_indexer.ballDetectionEnter();
 		TOF_Ball1 = subsys_indexer.ballDetectionBall1();
-		//TOF_Exit = subsys_indexer.ballDetectionExit();
+		// TOF_Exit = subsys_indexer.ballDetectionExit();
 
-		SmartDashboard.putBoolean("TOF_Ball1", TOF_Ball1); 
+		SmartDashboard.putBoolean("TOF_Ball1", TOF_Ball1);
 		SmartDashboard.putBoolean("TOF_Enter", TOF_Enter);
 		SmartDashboard.putBoolean("TOF_Exit", TOF_Exit);
 		// if time of flight sensor closest to the shooter is false run this
-		
+
 		// if statements to run the indexer motor
 		if (TOF_Enter) {
 			subsys_indexer.moveIndexerMotor(1);
-		// } else if (TOF_Enter) {
-		// 	subsys_indexer.moveIndexerMotor(1);
+			// } else if (TOF_Enter) {
+			// subsys_indexer.moveIndexerMotor(1);
 
-			//subsys_Intake.extend(0);
+			// subsys_Intake.extend(0);
 
 			// if (!m_triggered)
-			// 	indexerEvents.writeln("%f, INDEXER TRIGGERED", time);
-			
-			// 	m_triggered = true;
+			// indexerEvents.writeln("%f, INDEXER TRIGGERED", time);
 
-		}else if(TOF_Ball1 && !TOF_Enter){
-              subsys_indexer.moveIndexerMotor(0);
-		} 
-		else {
-			//
-			//subsys_indexer.moveIndexerMotor(0);
-			
+			// m_triggered = true;
+
+		} else if (TOF_Ball1 && !TOF_Enter) {
+
+			subsys_indexer.moveIndexerMotor(0);
+
+		} else {
+
+			// subsys_indexer.moveIndexerMotor(0);
+
 			// if (m_triggered)
-			// 	m_timer = Timer.getFPGATimestamp();
-			
+			// m_timer = Timer.getFPGATimestamp();
+
 			// m_triggered = false;
 
 			// if (Timer.getFPGATimestamp()-m_timer > m_delay)
-			// 	subsys_indexer.moveIndexerMotor(0);
+			// subsys_indexer.moveIndexerMotor(0);
 		}
 
 		// if (powerCellsInIndexer == 5) {
-		// 	subsys_Intake.retract();
-		// 	IndexerFull = true;
-		// 	SmartDashboard.putBoolean("Indexer Full", IndexerFull);
-		// 	powerCellsInIndexer = 0;
+		// subsys_Intake.retract();
+		// IndexerFull = true;
+		// SmartDashboard.putBoolean("Indexer Full", IndexerFull);
+		// powerCellsInIndexer = 0;
 		// }
 
-		indexerLogger.writeln("%f, %f, %f, %f",
-			time,
-			subsys_indexer.getRangeEnter(),
-			subsys_indexer.getRangeBall1(),
-			subsys_indexer.getRangeExit()
-		);
+		// indexerLogger.writeln("%f, %f, %f, %f", time, subsys_indexer.getRangeEnter(), subsys_indexer.getRangeBall1(),
+		// 		subsys_indexer.getRangeExit());
 
-	} 
+	}
 
 	// Called once the command ends or is interrupted.
 	@Override
@@ -153,8 +152,8 @@ public class IntakeIndexActive extends CommandBase {
 	@Override
 	public boolean isFinished() {
 
-		if(subsys_indexer.ballDetectionExit() && subsys_indexer.isRangeValidExit()){
-			return true; 
+		if (subsys_indexer.ballDetectionExit() && subsys_indexer.isRangeValidExit()) {
+			return true;
 		}
 		return false;
 	}

@@ -37,7 +37,7 @@ public class Indexer extends SubsystemBase {
   // sensor to detect balls
   protected TimeOfFlight TOF_Ball1;
 
-  protected Logger indexerLogger; 
+  protected Logger indexerLogger;
 
   // get the valid ranges of all three sensors
   protected boolean isRangeValidEnter;
@@ -82,35 +82,33 @@ public class Indexer extends SubsystemBase {
     TOF_Exit.setRangingMode(TimeOfFlight.RangingMode.Short, Constants.Indexer.sampleTime);
     TOF_Ball1.setRangingMode(TimeOfFlight.RangingMode.Short, Constants.Indexer.sampleTime);
 
-    indexerLogger = new Logger("indexer/"+Long.toString(Instant.now().getEpochSecond())+"/logging.csv");
+    indexerLogger = new Logger("indexer/" + Long.toString(Instant.now().getEpochSecond()) + "/logging.csv");
   }
 
-  //the measured distance in mm
+  // the measured distance in mm
   public double getRangeEnter() {
-  return TOF_Enter.getRange();
+    return TOF_Enter.getRange();
   }
 
   public double getRangeExit() {
-  return TOF_Exit.getRange();
+    return TOF_Exit.getRange();
   }
 
   public double getRangeBall1() {
-  return TOF_Ball1.getRange();
+    return TOF_Ball1.getRange();
   }
-
-  
 
   // ball detection functions
   public boolean ballDetectionEnter() {
     double range = TOF_Enter.getRange();
     if (range < Constants.Indexer.rangeEnter_2) {
-      // CWU remove first range > check
 
-      //if (range > Constants.Indexer.rangeEnter_1 && range < Constants.Indexer.rangeEnter_2) {
-     
-        // if (range == 115) {
-      //   getNumberOfPowerCellsEnter++;
-      //   // this could be a for loop
+      // if (range > Constants.Indexer.rangeEnter_1 && range <
+      // Constants.Indexer.rangeEnter_2) {
+
+      // if (range == 115) {
+      // getNumberOfPowerCellsEnter++;
+      // // this could be a for loop
       // }
 
       return true;
@@ -120,15 +118,16 @@ public class Indexer extends SubsystemBase {
 
   // function that returns how many power cells are in the indexer
   // public int getNumberOfPowerCellsEnter() {
-  //   return getNumberOfPowerCellsEnter;
+  // return getNumberOfPowerCellsEnter;
   // }
 
   // detects whether or not power cells are in range of ball1 sensor
   public boolean ballDetectionBall1() {
     double range = TOF_Ball1.getRange();
     if (range < Constants.Indexer.rangeBall1_2) {
-      //if (range < Constants.Indexer.rangeBall1_1 && range > Constants.Indexer.rangeBall1_2)
-      // CWU check range numbers
+      // if (range < Constants.Indexer.rangeBall1_1 && range >
+      // Constants.Indexer.rangeBall1_2)
+      
       return true;
     }
     return false;
@@ -139,7 +138,8 @@ public class Indexer extends SubsystemBase {
     double range = TOF_Exit.getRange();
     if (range < Constants.Indexer.rangeExit_2) {
 
-     // if (range < Constants.Indexer.rangeExit_1 && range > Constants.Indexer.rangeExit_2) {
+      // if (range < Constants.Indexer.rangeExit_1 && range >
+      // Constants.Indexer.rangeExit_2) {
 
       return true;
     }
@@ -188,8 +188,6 @@ public class Indexer extends SubsystemBase {
     SmartDashboard.putNumber("Number of Power Cells", getNumberOfPowerCellsEnter);
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand())
-
-    //test
 
   }
 
