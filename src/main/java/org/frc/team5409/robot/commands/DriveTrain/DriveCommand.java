@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package org.frc.team5409.robot.commands;
+package org.frc.team5409.robot.commands.DriveTrain;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.XboxController;
@@ -111,6 +111,13 @@ public class DriveCommand extends CommandBase {
       }
     } else { // If AntiTip is disabled, default to manual drive
         sys_driveTrain.arcadeDrive(rightTrigger, leftTrigger, lxAxis);
+    }
+
+    // Gearshift
+    if (m_joystick.getBumper(Hand.kRight)) {
+      sys_driveTrain.fastShift();
+    } else {
+      sys_driveTrain.slowShift();
     }
 
   }

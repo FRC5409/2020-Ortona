@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package org.frc.team5409.robot.commands;
+package org.frc.team5409.robot.commands.IntakeandIndexer;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import org.frc.team5409.robot.subsystems.Indexer;

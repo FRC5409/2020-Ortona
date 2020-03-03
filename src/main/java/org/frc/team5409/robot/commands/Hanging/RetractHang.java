@@ -7,9 +7,7 @@
 
 package org.frc.team5409.robot.commands.Hanging;
 
-import org.frc.team5409.robot.Constants;
 import org.frc.team5409.robot.subsystems.Hanging;
-
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 

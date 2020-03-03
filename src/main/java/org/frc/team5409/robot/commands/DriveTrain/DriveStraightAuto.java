@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package org.frc.team5409.robot.commands;
+package org.frc.team5409.robot.commands.DriveTrain;
 import org.frc.team5409.robot.subsystems.DriveTrain;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;

@@ -5,43 +5,32 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package org.frc.team5409.robot.commands;
+package org.frc.team5409.robot.commands.DriveTrain;
 
-import org.frc.team5409.robot.subsystems.Intake;
+import org.frc.team5409.robot.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-public class IntakeReverse extends CommandBase {
-  private Intake sys_intake;
+public class FastGearShift extends CommandBase {
+  private final DriveTrain sys_driveSubsystem;
 
   /**
-   * Creates a new IntakeReverse.
+   * Creates a new FastGearShift.
    */
-  public IntakeReverse(Intake subsystem) {
-    sys_intake = subsystem;
-    addRequirements(sys_intake);
-    // Use addRequirements() here to declare subsystem dependencies.
+  public FastGearShift(DriveTrain subsystem) {
+    sys_driveSubsystem = subsystem; 
+    addRequirements(sys_driveSubsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    sys_intake.extendIntake(-1);
-  }
-
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-  }
-
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {
-    sys_intake.retractIntake();
+    // Shifts to fast gear
+    sys_driveSubsystem.fastShift();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }

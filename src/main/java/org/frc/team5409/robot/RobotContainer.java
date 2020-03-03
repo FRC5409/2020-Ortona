@@ -12,11 +12,19 @@ import java.nio.file.Path;
 import java.util.Arrays;
 
 import org.frc.team5409.robot.commands.*;
+import org.frc.team5409.robot.commands.DriveTrain.DriveCommand;
+import org.frc.team5409.robot.commands.DriveTrain.FastGearShift;
+import org.frc.team5409.robot.commands.DriveTrain.SlowGearShift;
 import org.frc.team5409.robot.commands.Hanging.*;
-import org.frc.team5409.robot.commands.shooter.*;
+import org.frc.team5409.robot.commands.IntakeandIndexer.IndexerMove;
+import org.frc.team5409.robot.commands.IntakeandIndexer.IntakeForward;
+import org.frc.team5409.robot.commands.IntakeandIndexer.IntakeReverse;
+import org.frc.team5409.robot.commands.Trajectories.FirstPath;
+import org.frc.team5409.robot.commands.Trajectories.firstPath;
 import org.frc.team5409.robot.commands.shooter.logging.RunShooterFlywheel;
 import org.frc.team5409.robot.subsystems.*;
 import org.frc.team5409.robot.subsystems.shooter.*;
+import org.w3c.dom.CDATASection;
 
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.controller.RamseteController;
@@ -33,13 +41,15 @@ public class RobotContainer {
 
 	// Subsystems
 	private final Indexer sys_indexer;
-	public final Intake sys_intake;
-	public final DriveTrain sys_driveTrain;
-	public final Hanging sys_hanging;
+	private final Intake sys_intake;
+	private final DriveTrain sys_driveTrain;
+	private final Hanging sys_hanging;
+
+	// Commands
+	private final FirstPath cmd_firstPath;
 
 	// Joystick Controllers
 	private final XboxController joy_main, joy_secondary;
-
 	private final ShooterTurret sys_shooter_turret;
 	private final ShooterFlywheel sys_shooter_flywheel;
 
@@ -56,6 +66,7 @@ public class RobotContainer {
 	 * The container for the robot. Contains subsystems, OI devices, and commands.
 	 */
 	public RobotContainer() {
+		cmd_firstPath = new FirstPath();
 		//Joystick stuff
 		joy_main = new XboxController(0);
 		joy_secondary = new XboxController(1);
@@ -111,8 +122,8 @@ public class RobotContainer {
 		but_main_B.whileHeld(new IntakeReverse(sys_intake));
 		
 		// Gear Shift
-		but_main_bmp_right.whenPressed(new FastGearShift(sys_driveTrain));
-		but_main_bmp_right.whenReleased(new SlowGearShift(sys_driveTrain));
+		// but_main_bmp_right.whenPressed(new FastGearShift(sys_driveTrain));
+		// but_main_bmp_right.whenReleased(new SlowGearShift(sys_driveTrain));
 
 		// Hang Control
 		but_main_start.whenHeld(new ExtendHang(sys_hanging));
@@ -149,5 +160,10 @@ public class RobotContainer {
 			sys_driveTrain
 		);
 		return ramseteCommand.andThen(() -> sys_driveTrain.setOutputVoltage(0, 0));
+	}
+
+	public Command getOtherAutonomousCommand() {
+		return cmd_firstPath;
+
 	}
 }
