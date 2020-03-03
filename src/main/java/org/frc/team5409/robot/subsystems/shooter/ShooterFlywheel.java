@@ -1,6 +1,5 @@
 package org.frc.team5409.robot.subsystems.shooter;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.*;
 
@@ -25,6 +24,7 @@ public final class ShooterFlywheel extends SubsystemBase implements Toggleable {
     private       CANPIDController pid_C07_shooter_flywheel;
 
     private final Range            m_velocity_range;
+    private       double           m_velocity_offset;
 
     private       double           m_target;
     private       boolean          m_enabled, m_safety_enabled;
@@ -67,6 +67,7 @@ public final class ShooterFlywheel extends SubsystemBase implements Toggleable {
             pid_C07_shooter_flywheel.setFF(Constants.ShooterControl.shooter_flywheel_pid.F);
 
         m_velocity_range = Constants.ShooterControl.shooter_velocity_range;
+        m_velocity_offset = 0;
         
         m_enabled = false;
         m_safety_enabled = true;
@@ -117,7 +118,7 @@ public final class ShooterFlywheel extends SubsystemBase implements Toggleable {
         if (!m_enabled)
             return;
         
-        m_target = m_velocity_range.clamp(target);
+        m_target = m_velocity_range.clamp(target + m_velocity_offset);
         pid_C07_shooter_flywheel.setReference(m_target, ControlType.kVelocity);
        
         m_watchdog.feed();
@@ -198,6 +199,19 @@ public final class ShooterFlywheel extends SubsystemBase implements Toggleable {
             m_watchdog.feed();
 
         m_safety_enabled = state;
+    }
+
+    /**
+     * Sets the flywheel velocity offset.
+     * 
+     * <p> The offset is applied to every
+     * flywheel velocity target setpoint </p>
+     * +
+     * @param offset The velocity offset
+     */
+    public void setVelocityOffset(double offset) {
+        if (m_enabled)
+            m_velocity_offset = offset;
     }
 
     /**
