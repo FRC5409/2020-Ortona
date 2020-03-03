@@ -7,30 +7,25 @@
 
 package org.frc.team5409.robot.commands;
 
-import org.frc.team5409.robot.Constants.Indexer;
-import org.frc.team5409.robot.subsystems.Limelight;
-import org.frc.team5409.robot.subsystems.shooter.ShooterFlywheel;
-
+import org.frc.team5409.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-public class ShootAuto extends CommandBase {
-  private ShooterFlywheel m_turret;
-  private Indexer m_indexer;
-  private Limelight m_limelight;
+public class IntakeForward extends CommandBase {
+  private Intake sys_intake;
 
   /**
-   * Creates a new ShootAuto.
+   * Creates a new IntakeReverse.
    */
-  public ShootAuto(ShooterFlywheel sys_flywheel, Indexer sys_indexer, Limelight sys_limelight) {
+  public IntakeForward(Intake subsystem) {
+    sys_intake = subsystem;
+    addRequirements(sys_intake);
     // Use addRequirements() here to declare subsystem dependencies.
-    m_turret = sys_flywheel;
-    m_indexer = sys_indexer;
-    m_limelight = sys_limelight;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    sys_intake.extendIntake(0.75);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -41,6 +36,7 @@ public class ShootAuto extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    sys_intake.retractIntake();
   }
 
   // Returns true when the command should end.

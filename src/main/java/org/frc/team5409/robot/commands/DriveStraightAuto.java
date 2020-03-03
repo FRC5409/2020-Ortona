@@ -6,50 +6,45 @@
 /*----------------------------------------------------------------------------*/
 
 package org.frc.team5409.robot.commands;
-
-import org.frc.team5409.robot.Constants;
 import org.frc.team5409.robot.subsystems.DriveTrain;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class DriveStraightAuto extends CommandBase {
-  DriveTrain subsystem;
+  DriveTrain sys_driveTrain;
   /**
    * Creates a new DriveStraightAuto.
    */
-  public DriveStraightAuto(DriveTrain sub) {
+  public DriveStraightAuto(DriveTrain subsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
-    subsystem = sub;
-    addRequirements(subsystem);
+    sys_driveTrain = subsystem;
+    addRequirements(sys_driveTrain);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    subsystem.resetEncoders();
-    subsystem.setLeftMotors(0.5);
-    subsystem.setRightMotors(0.5);
+    sys_driveTrain.resetEncoders();
+    sys_driveTrain.setLeftMotors(0.5);
+    sys_driveTrain.setRightMotors(0.5);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (subsystem.getLeftEncoderPosition()*Constants.DriveTrain.distanceCalculate > 1) {
-      subsystem.setLeftMotors(0);
-      subsystem.setRightMotors(0);
-    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    subsystem.setRightMotors(0);
-    subsystem.setLeftMotors(0);
+    sys_driveTrain.setRightMotors(0);
+    sys_driveTrain.setLeftMotors(0);
   }
+
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return sys_driveTrain.getAvgEncoderDistance() > 2;
   }
 }

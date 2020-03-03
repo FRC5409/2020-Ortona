@@ -166,16 +166,16 @@ public final class RunShooterFlywheel extends CommandBase {
         }
 
         if (m_debounce3 && m_flywheel.isTargetReached()) {
-            m_indexer.moveIndexerMotor(1);
+            m_indexer.setIndexerMotor(1);
 
             if (!m_debounce2) {
                 m_log_events.writeln("%f, FLYWHEEL AT SPEED [%f], %f", time, velocity, velocity);
                 m_log_events.writeln("%f, INDEXER STARTED [0.8], 0.8", time);
             }
-            
+
             m_debounce2 = true;
         } else {
-            m_indexer.moveIndexerMotor(0);
+            m_indexer.setIndexerMotor(0);
 
             if (m_debounce2)
                 m_log_events.writeln(String.format("%f, INDEXER STOPPED [0], 0", time));
@@ -202,7 +202,7 @@ public final class RunShooterFlywheel extends CommandBase {
 
                 m_log_events.writeln("%f, FLYWHEEL STOPPED [0], 0", time);
             }
-                
+
             m_debounce3 = false;
         }
 
@@ -210,12 +210,14 @@ public final class RunShooterFlywheel extends CommandBase {
             if (!m_debounce4) {
                 if (m_trg_score.get()) {
                     m_log_events.writeln("%f, POWERCELL SCORED [%f], %f", time, m_distance, m_distance);
-                    m_log_powercells.writeln("1, %f, %f, %f, %f, %f", time, m_distance, m_target, m_predicted, velocity);
+                    m_log_powercells.writeln("1, %f, %f, %f, %f, %f", time, m_distance, m_target, m_predicted,
+                            velocity);
 
                     m_scored++;
                 } else if (m_trg_miss.get()) {
                     m_log_events.writeln("%f, POWERCELL MISSED [%f], %f", time, m_distance, m_distance);
-                    m_log_powercells.writeln("0, %f, %f, %f, %f, %f", time, m_distance, m_target, m_predicted, velocity);
+                    m_log_powercells.writeln("0, %f, %f, %f, %f, %f", time, m_distance, m_target, m_predicted,
+                            velocity);
 
                     m_missed++;
                 }
@@ -225,20 +227,17 @@ public final class RunShooterFlywheel extends CommandBase {
         } else
             m_debounce4 = false;
 
-        m_log_flywheel.writeln("%f, %f, %f, %f",
-            time, 
-            velocity,
-            m_flywheel.getData(ShooterFlywheel.ShooterData.kFlywheelCurrent),
-            m_flywheel.getData(ShooterFlywheel.ShooterData.kFeederCurrent)
-        );
+        m_log_flywheel.writeln("%f, %f, %f, %f", time, velocity,
+                m_flywheel.getData(ShooterFlywheel.ShooterData.kFlywheelCurrent),
+                m_flywheel.getData(ShooterFlywheel.ShooterData.kFeederCurrent));
 
-        SmartDashboard.putNumber(      "Real Velocity", velocity);
-        //SmartDashboard.putNumber(    "Target Velocity", m_target);
-        SmartDashboard.putNumber(    "Actual Velocity", m_flywheel.getVelocity());     
-        SmartDashboard.putNumber( "Predicted Velocity", m_predicted);
+        SmartDashboard.putNumber("Real Velocity", velocity);
+        // SmartDashboard.putNumber( "Target Velocity", m_target);
+        SmartDashboard.putNumber("Actual Velocity", m_flywheel.getVelocity());
+        SmartDashboard.putNumber("Predicted Velocity", m_predicted);
         SmartDashboard.putNumber("Robot Distance (ft)", m_distance);
-        SmartDashboard.putNumber(  "Scored Powercells", m_scored);
-        SmartDashboard.putNumber(  "Missed Powercells", m_missed);
+        SmartDashboard.putNumber("Scored Powercells", m_scored);
+        SmartDashboard.putNumber("Missed Powercells", m_missed);
         SmartDashboard.putNumber("    Number of shots", m_data.size());
     }
 
@@ -249,7 +248,7 @@ public final class RunShooterFlywheel extends CommandBase {
         m_limelight.disable();
         m_flywheel.disable();
 
-        m_indexer.moveIndexerMotor(0);
+        m_indexer.setIndexerMotor(0);
 
         if (m_debounce3)
             m_log_events.writeln("%f, FLYWHEEL STOPPED [0], 0", time);

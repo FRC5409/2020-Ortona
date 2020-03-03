@@ -99,18 +99,17 @@ public final class OperateShooter extends CommandBase {
         m_shooter_turret.disable();
         m_limelight.disable();
         
-        m_indexer.moveIndexerMotor(0);
+        m_indexer.setIndexerMotor(0);
     }
-    
+
     @Override
     public boolean isFinished() {
         return m_state == CommandState.kEnd;
     }
 
     /**
-     * Switches the internal state of the command and
-     * initialize vairables and subsystems for certain
-     * states if necessary.
+     * Switches the internal state of the command and initialize vairables and
+     * subsystems for certain states if necessary.
      */
     private void internal_switchState(CommandState state) {
         m_timer = Timer.getFPGATimestamp();
@@ -132,13 +131,14 @@ public final class OperateShooter extends CommandBase {
     /**
      * <h3>Operates the turret in the "Searching" state.</h3>
      * 
-     * <p> In this state, the turret waits for the limelight led's to
-     * turn on and checks to see if there are any targets. There's always
-     * a chance that the limelight may detect a target the first time it's
-     * led's turn since the robot should be generally facing it's target
-     * upon shooting, and this state checks for that possibility. If there
-     * is no target by the time the aqusition delay time runs, it switches
-     * over to the {@code kSweeping} state.</p>
+     * <p>
+     * In this state, the turret waits for the limelight led's to turn on and checks
+     * to see if there are any targets. There's always a chance that the limelight
+     * may detect a target the first time it's led's turn since the robot should be
+     * generally facing it's target upon shooting, and this state checks for that
+     * possibility. If there is no target by the time the aqusition delay time runs,
+     * it switches over to the {@code kSweeping} state.
+     * </p>
      * 
      * @param time The time since the this state began execution.
      */
@@ -153,22 +153,25 @@ public final class OperateShooter extends CommandBase {
     /**
      * <h3>Operates the turret in the "Sweeping" state.</h>
      * 
-     * <p>In this state, the turret sweeps about it's axis
-     * smoothly using a scaled cosine function. If at any point the
-     * limelight detects a target, it switches over to the {@code kShooting}
-     * state. If there is no target after "x" amount of sweeps, (See Constants)
-     * the command cancels itself. The reason for this is due to the fact
-     * that the limelight's led's may not be on for prolonged periods of time.</p>
+     * <p>
+     * In this state, the turret sweeps about it's axis smoothly using a scaled
+     * cosine function. If at any point the limelight detects a target, it switches
+     * over to the {@code kShooting} state. If there is no target after "x" amount
+     * of sweeps, (See Constants) the command cancels itself. The reason for this is
+     * due to the fact that the limelight's led's may not be on for prolonged
+     * periods of time.
+     * </p>
      * 
      * @param time The time since the this state began execution.
      */
     private void internal_operateSweeping(double time) {
         if (m_limelight.hasTarget() && m_limelight.getTargetType() == Limelight.TargetType.kOuterPort) {
             internal_switchState(CommandState.kAligning);
-        } else if (time / Constants.ShooterControl.shooter_smooth_sweep_period > Constants.ShooterControl.shooter_smooth_sweep_max_sweeps) {
+        } else if (time
+                / Constants.ShooterControl.shooter_smooth_sweep_period > Constants.ShooterControl.shooter_smooth_sweep_max_sweeps) {
             internal_switchState(CommandState.kEnd);
         } else {
-            m_shooter_turret.setRotation(m_smooth_sweep.calculate(time+m_smooth_sweep_toff));
+            m_shooter_turret.setRotation(m_smooth_sweep.calculate(time + m_smooth_sweep_toff));
         }
     }
 
@@ -176,10 +179,10 @@ public final class OperateShooter extends CommandBase {
         if (m_limelight.hasTarget() && m_limelight.getTargetType() == Limelight.TargetType.kOuterPort) {
             Vec2 target = m_limelight.getTarget();
 
-            m_shooter_turret.setRotation(m_shooter_turret.getRotation()+target.x);
+            m_shooter_turret.setRotation(m_shooter_turret.getRotation() + target.x);
             if (target.x < Constants.Vision.vision_aligned_thresh)
                 internal_switchState(CommandState.kShooting);
-            
+
             SmartDashboard.putNumber("Aligning offset", target.x);
         }
     }
@@ -187,11 +190,12 @@ public final class OperateShooter extends CommandBase {
     /**
      * <h3>Operates the turret in the "Shooting" state.</h>
      * 
-     * <p>In this state, the turret runs it's flywheel at a speed 
-     * porportional to the distance of the turret from the outer port
-     * and aligns the turret's rotation axis to the target.
-     * Once both systems have reached their respective targets,
-     * the indexer triggers, feeding powercells into the turret.</p>
+     * <p>
+     * In this state, the turret runs it's flywheel at a speed porportional to the
+     * distance of the turret from the outer port and aligns the turret's rotation
+     * axis to the target. Once both systems have reached their respective targets,
+     * the indexer triggers, feeding powercells into the turret.
+     * </p>
      * 
      * @param time The time since the this state began execution.
      */
@@ -199,9 +203,9 @@ public final class OperateShooter extends CommandBase {
         SmartDashboard.putBoolean("Turret target reached", m_shooter_turret.isTargetReached());
         SmartDashboard.putBoolean("Shooter target reached", m_shooter_flywheel.isTargetReached());
         if (m_shooter_turret.isTargetReached() && m_shooter_flywheel.isTargetReached()) {
-            m_indexer.moveIndexerMotor(1);
+            m_indexer.setIndexerMotor(1);
         } else {
-            m_indexer.moveIndexerMotor(0);
+            m_indexer.setIndexerMotor(0);
         }
     }
 }

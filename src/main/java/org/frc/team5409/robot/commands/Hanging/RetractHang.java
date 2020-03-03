@@ -10,28 +10,30 @@ package org.frc.team5409.robot.commands.Hanging;
 import org.frc.team5409.robot.Constants;
 import org.frc.team5409.robot.subsystems.Hanging;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-/**
- * ExtendArmNeo Command
- * Runs neo to move while hang extends
- */
-public class ExtendArmNeo extends CommandBase {
-  /**
-   * Creates a new ExtendNeo.
-   */
-  private final Hanging m_hanging;
 
-  public ExtendArmNeo(Hanging subsystem) {
+/**
+ * RetractArmNeo Command
+ * Runs neo to move while hang retracts
+ */
+public class RetractHang extends CommandBase {
+  /**
+   * Creates a new RetractNeo.
+   */
+  private final Hanging sys_hanging;
+
+  public RetractHang(Hanging subsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
-    m_hanging = subsystem;
-    addRequirements(m_hanging);
+    sys_hanging = subsystem;
+    addRequirements(sys_hanging);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_hanging.unlockPiston();
-    m_hanging.controlArmNeo(0.3);
+    sys_hanging.setPiston(Value.kForward);
+    sys_hanging.setHangMotor(-0.8);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -42,20 +44,12 @@ public class ExtendArmNeo extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_hanging.controlArmNeo(0);
+    sys_hanging.setHangMotor(0);
   }
-
-  public boolean finished = false;
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    // if ((m_hanging.enc1_hanging.getPosition() + m_hanging.enc2_hanging.getPosition())/2 >= Constants.Hanging.EXTEND_NEO_POS) {
-    //   finished = true;
-    // }
-    // if(m_hanging.isSwitchSet() == false){
-    // finished = true;
-    // }
-    return finished;
+    return sys_hanging.getEncoderAvgPosition() < 10;
   }
 }

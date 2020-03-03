@@ -20,12 +20,12 @@ public final class ReverseIndexer extends CommandBase {
 
     @Override
     public void initialize() {
-        m_indexer.moveIndexerMotor(-1);
+        m_indexer.setIndexerMotor(-1);
     }
 
     @Override
     public void end(boolean interrupted) {
-        m_indexer.moveIndexerMotor(0);
+        m_indexer.setIndexerMotor(0);
     }
     
     @Override

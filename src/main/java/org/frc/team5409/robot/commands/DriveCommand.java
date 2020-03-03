@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import org.frc.team5409.robot.subsystems.DriveTrain;
 
 public class DriveCommand extends CommandBase {
-  private final DriveTrain sys_driveSubsystem;
+  private final DriveTrain sys_driveTrain;
   public static boolean autoBalanceXMode = false;
   public static boolean autoBalanceYMode = false;
   public static double pitchAngleDegrees;
@@ -29,19 +29,19 @@ public class DriveCommand extends CommandBase {
   public double rightTrigger;
   public double lxAxis;
   public double lyAxis;
-  public double leftEncoderRate;
-  public double rightEncoderRate;
-  public double averageEncoderRate;
+  public double leftEncoderMetersPerSecond;
+  public double rightEncoderMetersPerSecond;
+  public double avgEncoderMetersPerSecond;
   XboxController m_joystick;
 
   /**
    * Creates a new DriveCommand.
    */
   public DriveCommand(DriveTrain subsystem, XboxController joystick) {
-    sys_driveSubsystem = subsystem;
+    sys_driveTrain = subsystem;
     m_joystick = joystick;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(sys_driveSubsystem);
+    addRequirements(sys_driveTrain);
   }
 
   // Called when the command is initially scheduled.
@@ -56,15 +56,16 @@ public class DriveCommand extends CommandBase {
     rightTrigger = m_joystick.getTriggerAxis(Hand.kRight);
     lxAxis = m_joystick.getX(Hand.kLeft);
     lyAxis = rightTrigger - leftTrigger;
-    pitchAngleDegrees = sys_driveSubsystem.getPitchAngle();
-    rollAngleDegrees = sys_driveSubsystem.getRollAngle();
-    leftEncoderRate = sys_driveSubsystem.getLeftEncoderRate();
-    rightEncoderRate = sys_driveSubsystem.getRightEncoderRate();
-    averageEncoderRate = (leftEncoderRate + rightEncoderRate)/2;
-    SmartDashboard.putNumber("Average Encoder Rate", averageEncoderRate);
+    pitchAngleDegrees = sys_driveTrain.getPitchAngle();
+    rollAngleDegrees = sys_driveTrain.getRollAngle();
+    leftEncoderMetersPerSecond = sys_driveTrain.getWheelSpeeds().leftMetersPerSecond;
+    rightEncoderMetersPerSecond = sys_driveTrain.getWheelSpeeds().rightMetersPerSecond;
+    avgEncoderMetersPerSecond = (leftEncoderMetersPerSecond + rightEncoderMetersPerSecond) / 2;
+
+    // SmartDashboard
+    SmartDashboard.putNumber("Average Encoder m/s", avgEncoderMetersPerSecond);
     SmartDashboard.putNumber("Pitch Angle Degrees", pitchAngleDegrees);
     SmartDashboard.putNumber("Roll Angle Degrees", rollAngleDegrees);
-
 
     // if(averageEncoderRate <= lowGearShiftThreshold){
     //   sys_driveSubsystem.slowShift();
@@ -74,8 +75,7 @@ public class DriveCommand extends CommandBase {
     // }
 
     // Detect the toggle value
-    if (sys_driveSubsystem.getAntiTip()) {
-      // Threshold detection to enable autoBalanceXMode
+    if (sys_driveTrain.getAntiTip()) { // Threshold detection to enable autoBalanceXMode
       if (!autoBalanceXMode && (Math.abs(pitchAngleDegrees) >= Math.abs(kOffBalanceAngleThresholdDegrees))) {
         autoBalanceXMode = true;
       }
@@ -104,13 +104,13 @@ public class DriveCommand extends CommandBase {
         lyAxis = Math.sin(rollAngleRadians) * -1;
       }
       try {
-        sys_driveSubsystem.arcadeDrive(lxAxis, lyAxis);
+        sys_driveTrain.arcadeDrive(lxAxis, lyAxis);
       } catch (RuntimeException ex) {
         String err_string = "Drive system error:  " + ex.getMessage();
         DriverStation.reportError(err_string, true);
       }
-    } else { //If AntiTip is disabled, default to manual drive
-        sys_driveSubsystem.manualDrive(rightTrigger, leftTrigger, lxAxis);
+    } else { // If AntiTip is disabled, default to manual drive
+        sys_driveTrain.arcadeDrive(rightTrigger, leftTrigger, lxAxis);
     }
 
   }
@@ -118,6 +118,7 @@ public class DriveCommand extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    sys_driveTrain.arcadeDrive(0, 0);
   }
 
   // Returns true when the command should end.

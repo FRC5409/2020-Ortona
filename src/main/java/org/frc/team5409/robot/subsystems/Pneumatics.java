@@ -17,7 +17,6 @@ public class Pneumatics extends SubsystemBase {
   Compressor compressor1;
   public Pneumatics() {
     compressor1 = new Compressor(0);
-    compressAir();
   }
 
   @Override

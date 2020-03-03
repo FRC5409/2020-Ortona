@@ -9,20 +9,22 @@ package org.frc.team5409.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.frc.team5409.robot.Constants;
 
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMax.ExternalFollower;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.kauailabs.navx.frc.AHRS;
@@ -30,89 +32,151 @@ import com.kauailabs.navx.frc.AHRS;
 public class DriveTrain extends SubsystemBase {
 
   private final AHRS m_navX;
-  private final CANSparkMax mot_leftDriveFront_sparkmax_C14;
-  private final CANSparkMax mot_rightDriveFront_sparkmax_C15;
-  private final CANSparkMax mot_leftDriveRear_sparkmax_C4;
-  private final CANSparkMax mot_rightDriveRear_sparkmax_C6;
-  private SpeedControllerGroup m_leftMotors;
-  private SpeedControllerGroup m_rightMotors;
+  private final CANSparkMax mot_leftDriveMaster;
+  private final CANSparkMax mot_rightDriveMaster;
+  private final CANSparkMax mot_leftDriveSlave;
+  private final CANSparkMax mot_rightDriveSlave;
   private final DifferentialDrive m_drive;
   private final CANEncoder m_leftEncoder;
   private final CANEncoder m_rightEncoder;
   private boolean m_antiTipToggle;
-  private DifferentialDriveOdometry m_odometry;
   private static DoubleSolenoid dsl_gearSolenoid;
+
+  // Aadil's Code
+  DifferentialDriveKinematics m_kinematics;
+  DifferentialDriveOdometry m_odometry;
+  SimpleMotorFeedforward m_feedforward;
+  PIDController m_leftPidController;
+  PIDController m_rightPidController;
 
   /**
    * Creates a new DriveTrain.
    */
   public DriveTrain() {
-    mot_leftDriveFront_sparkmax_C14 = new CANSparkMax(Constants.DriveTrain.kLeftDriveFront, MotorType.kBrushless);
-    
-    mot_leftDriveFront_sparkmax_C14.restoreFactoryDefaults();
-    mot_leftDriveFront_sparkmax_C14.setIdleMode(Constants.DriveTrain.idle);
-    mot_leftDriveFront_sparkmax_C14.setSmartCurrentLimit(40);
-    mot_leftDriveFront_sparkmax_C14.setInverted(true);
-    mot_leftDriveFront_sparkmax_C14.setOpenLoopRampRate(Constants.DriveTrain.loopRampRate);
-    mot_leftDriveFront_sparkmax_C14.burnFlash();
+    // Left Drive Master
+    mot_leftDriveMaster = new CANSparkMax(Constants.DriveTrain.kLeftDriveFront, MotorType.kBrushless);
+    mot_leftDriveMaster.restoreFactoryDefaults();
+    mot_leftDriveMaster.setIdleMode(IdleMode.kCoast);
+    mot_leftDriveMaster.setSmartCurrentLimit(60);
+    mot_leftDriveMaster.burnFlash();
 
-    mot_leftDriveRear_sparkmax_C4 = new CANSparkMax(Constants.DriveTrain.kLeftDriveRear, MotorType.kBrushless);
-    mot_leftDriveRear_sparkmax_C4.restoreFactoryDefaults();
-    mot_leftDriveRear_sparkmax_C4.setIdleMode(Constants.DriveTrain.idle);
-    mot_leftDriveRear_sparkmax_C4.setSmartCurrentLimit(40);
-    mot_leftDriveRear_sparkmax_C4.setInverted(true);
-    //follower fix
-    mot_leftDriveFront_sparkmax_C14.follow(ExternalFollower.kFollowerDisabled, 0);
+    // Left Drive Slave
+    mot_leftDriveSlave = new CANSparkMax(Constants.DriveTrain.kLeftDriveRear, MotorType.kBrushless);
+    mot_leftDriveSlave.restoreFactoryDefaults();
+    mot_leftDriveSlave.setIdleMode(IdleMode.kCoast);
+    mot_leftDriveSlave.setSmartCurrentLimit(60);
+    mot_leftDriveSlave.burnFlash();
 
-    mot_leftDriveRear_sparkmax_C4.follow(mot_leftDriveFront_sparkmax_C14);
-    mot_leftDriveRear_sparkmax_C4.setOpenLoopRampRate(Constants.DriveTrain.loopRampRate);
-    mot_leftDriveRear_sparkmax_C4.burnFlash();
+    // Left Slave follow Master
+    mot_leftDriveSlave.follow(mot_leftDriveMaster);
+    mot_leftDriveMaster.setInverted(true);
 
-    mot_rightDriveFront_sparkmax_C15 = new CANSparkMax(Constants.DriveTrain.kRightDriveFront, MotorType.kBrushless);
-    mot_rightDriveFront_sparkmax_C15.restoreFactoryDefaults();
-    mot_rightDriveFront_sparkmax_C15.setIdleMode(Constants.DriveTrain.idle);
-    mot_rightDriveFront_sparkmax_C15.setSmartCurrentLimit(40);
-    mot_rightDriveFront_sparkmax_C15.setOpenLoopRampRate(Constants.DriveTrain.loopRampRate);
-    mot_rightDriveFront_sparkmax_C15.burnFlash();
+    // Right Drive Master
+    mot_rightDriveMaster = new CANSparkMax(Constants.DriveTrain.kRightDriveFront, MotorType.kBrushless);
+    mot_rightDriveMaster.restoreFactoryDefaults();
+    mot_rightDriveMaster.setIdleMode(IdleMode.kCoast);
+    mot_rightDriveMaster.setSmartCurrentLimit(60);
+    mot_rightDriveMaster.burnFlash();
 
-    mot_rightDriveRear_sparkmax_C6 = new CANSparkMax(Constants.DriveTrain.kRightDriveRear, MotorType.kBrushless);
-    mot_rightDriveRear_sparkmax_C6.restoreFactoryDefaults();
-    mot_rightDriveRear_sparkmax_C6.setIdleMode(Constants.DriveTrain.idle);
-    mot_rightDriveRear_sparkmax_C6.setSmartCurrentLimit(40);
-    //follower fix
-    mot_rightDriveFront_sparkmax_C15.follow(ExternalFollower.kFollowerDisabled, 0);
+    // Right Drive Slave
+    mot_rightDriveSlave = new CANSparkMax(Constants.DriveTrain.kRightDriveRear, MotorType.kBrushless);
+    mot_rightDriveSlave.restoreFactoryDefaults();
+    mot_rightDriveSlave.setIdleMode(IdleMode.kCoast);
+    mot_rightDriveSlave.setSmartCurrentLimit(60);
+    mot_rightDriveSlave.burnFlash();
 
-    mot_rightDriveRear_sparkmax_C6.follow(mot_rightDriveFront_sparkmax_C15);
-    mot_rightDriveRear_sparkmax_C6.setOpenLoopRampRate(Constants.DriveTrain.loopRampRate);
-    mot_rightDriveRear_sparkmax_C6.burnFlash();
+    // Right Slave follow Master
+    mot_rightDriveSlave.follow(mot_rightDriveMaster);
+    mot_rightDriveSlave.setInverted(false);    
 
-    // Sets speed control group to the corisponding motor
-    
+    // Differential Drive
+    m_drive = new DifferentialDrive(mot_leftDriveMaster, mot_rightDriveMaster);
 
-    m_drive = new DifferentialDrive(mot_leftDriveFront_sparkmax_C14, mot_rightDriveFront_sparkmax_C15);
-
-    m_leftEncoder = mot_leftDriveFront_sparkmax_C14.getEncoder();
-    m_rightEncoder = mot_rightDriveFront_sparkmax_C15.getEncoder();
-
-    // Sets the distance per pulse for the encoders
-    // https://www.chiefdelphi.com/t/encoder-distance-per-pulse/156742
-
-    m_leftEncoder.setPositionConversionFactor(
-        (Constants.DriveTrain.neo_encoder_position) * Constants.DriveTrain.kEncoderDistancePerPulse);
-    m_rightEncoder.setPositionConversionFactor(
-        (Constants.DriveTrain.neo_encoder_position) * Constants.DriveTrain.kEncoderDistancePerPulse);
-
+    // CAN Encoder
+    m_leftEncoder = mot_leftDriveMaster.getEncoder();
+    m_rightEncoder = mot_rightDriveMaster.getEncoder();
     resetEncoders();
-    //m_odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
     
     dsl_gearSolenoid = new DoubleSolenoid(Constants.DriveTrain.kShiftSolenoid1, Constants.DriveTrain.kShiftSolenoid2);
 
     // Calibrate the gyro
     m_navX = new AHRS(SPI.Port.kMXP);
+    resetHeading();
+
     // Add NAVX calibration here
 
     // Set intial toggle value to false
     m_antiTipToggle = false;
+
+    // Aadil's Code
+    m_kinematics = new DifferentialDriveKinematics(Constants.DriveTrain.kTrackwidthMeters);
+
+    m_odometry = new DifferentialDriveOdometry(getHeading());
+
+    m_feedforward = new SimpleMotorFeedforward(0, 0, 0);
+    
+    m_leftPidController = new PIDController(0, 0, 0);
+    m_rightPidController = new PIDController(0, 0, 0);
+  }
+
+  /**
+   * Gets left encoder distance in meters
+   */
+  public double getLeftEncoderDistance() {
+    return m_leftEncoder.getPosition() * Constants.DriveTrain.kWheelCircumferenceMeters;
+  }
+
+  /**
+   * Gets right encoder distance in meters
+   */
+  public double getRightEncoderDistance() {
+    return m_rightEncoder.getPosition() * Constants.DriveTrain.kWheelCircumferenceMeters;
+  }
+
+  /**
+   * Gets average encoder distance in meters
+   */
+  public double getAvgEncoderDistance() {
+    return getLeftEncoderDistance() + getRightEncoderDistance() / 2;
+  }
+  public Rotation2d getHeading() {
+    return Rotation2d.fromDegrees(-m_navX.getAngle());
+  }
+
+  public DifferentialDriveKinematics getKinematics() {
+    return m_kinematics;
+  }
+
+  public DifferentialDriveWheelSpeeds getWheelSpeeds() {
+    return new DifferentialDriveWheelSpeeds(
+      mot_leftDriveMaster.getEncoder().getVelocity() / Constants.DriveTrain.gearRatio * Constants.DriveTrain.kWheelCircumferenceMeters / 60,
+      mot_rightDriveMaster.getEncoder().getVelocity() / Constants.DriveTrain.gearRatio * Constants.DriveTrain.kWheelCircumferenceMeters / 60
+      );
+  }
+
+  public SimpleMotorFeedforward getFeedforward() {
+    return m_feedforward;
+  }
+
+  public PIDController getLeftPIDController() {
+    return m_leftPidController;
+  }
+  
+  public PIDController getRightPIDController() {
+    return m_rightPidController;
+  }
+
+  public Pose2d getPose() {
+    return m_odometry.getPoseMeters();
+  }
+
+  // public Pose2d getPose() {
+  //   return pose;
+  // }
+
+  public void setOutputVoltage(double leftVolts, double rightVolts) {
+    mot_leftDriveMaster.setVoltage(leftVolts);
+    mot_rightDriveMaster.setVoltage(rightVolts);
   }
 
   @Override
@@ -120,11 +184,12 @@ public class DriveTrain extends SubsystemBase {
     // This method will be called once per scheduler run
 
     // Update the odometry in the periodic block
-    //m_odometry.update(Rotation2d.fromDegrees(getHeading()), m_leftEncoder.getPosition(), m_rightEncoder.getPosition());
+    m_odometry.update(getHeading(), getLeftEncoderDistance(), getRightEncoderDistance());
+    // pose = odometry.update(getHeading(), getLeftEncoderDistance(), getRightEncoderDistance());
 
     // Get the encoder positions and display in smart dashboard
-    SmartDashboard.putNumber("kleftencoder value", m_leftEncoder.getPosition());
-    SmartDashboard.putNumber("krightencoder value", m_rightEncoder.getPosition());
+    SmartDashboard.putNumber("kleftencoder value", getLeftEncoderPosition());
+    SmartDashboard.putNumber("krightencoder value", getRightEncoderPosition());
   }
 
   /**
@@ -183,77 +248,6 @@ public class DriveTrain extends SubsystemBase {
   }
 
   /**
-   * Method to get velocity of left encoder
-   */
-  public double getLeftEncoderRate() {
-    return m_leftEncoder.getVelocity();
-  }
-
-  /**
-   * Method to get velocity of right encoder
-   */
-  public double getRightEncoderRate() {
-    return m_rightEncoder.getVelocity();
-  }
-
-
-
-  public void arcadeDrive(double fwd, double rot) {
-    m_drive.arcadeDrive(fwd, rot);
-  }
-
-  /**
-   * Returns the currently-estimated pose of the robot.
-   *
-   * @return The pose.
-   */
- // public Pose2d getPose() {
-  //  return m_odometry.getPoseMeters();
-  //}
-
-  /**
-   * Returns the current wheel speeds of the robot.
-   *
-   * @return The current wheel speeds.
-   */
-  public DifferentialDriveWheelSpeeds getWheelSpeeds() {
-    return new DifferentialDriveWheelSpeeds(m_leftEncoder.getVelocity(), m_rightEncoder.getVelocity());
-  }
-
-  /**
-   * Resets the odometry to the specified pose.
-   *
-   * @param pose The pose to which to set the odometry.
-   */
-  //public void resetOdometry(Pose2d pose) {
-    //resetEncoders();
-   // m_odometry.resetPosition(pose, Rotation2d.fromDegrees(getHeading()));
- // }
-
-  /**
-   * Drives the robot using arcade controls.
-   *
-   * @param fwd the commanded forward movement
-   * @param rot the commanded rotation
-   */
-  public void manualDrive(final double acceleration, final double deceleration, final double turn) {
-    final double accelerate = acceleration - deceleration;
-    m_drive.arcadeDrive(turn, accelerate);
-  }
-
-  /**
-   * Controls the left and right sides of the drive directly with voltages.
-   *
-   * @param leftVolts  the commanded left output
-   * @param rightVolts the commanded right output
-   */
-  public void tankDriveVolts(double leftVolts, double rightVolts) {
-    m_leftMotors.setVoltage(leftVolts);
-    m_rightMotors.setVoltage(-rightVolts);
-    m_drive.feed();
-  }
-
-  /**
    * Resets the drive encoders to currently read a position of 0.
    */
   public void resetEncoders() {
@@ -262,110 +256,58 @@ public class DriveTrain extends SubsystemBase {
   }
 
   /**
-   * Gets the average distance of the two encoders.
+   * Resets the odometry to the specified pose.
    *
-   * @return the average of the two encoder readings
+   * @param pose The pose to which to set the odometry.
    */
-  public double getAverageEncoderDistance() {
-    return (m_leftEncoder.getPosition() + m_rightEncoder.getPosition()) / 2.0;
+  public void resetOdometry() {
+    resetEncoders();
+    resetHeading();
+    m_odometry.resetPosition(new Pose2d(), getHeading());
   }
 
   /**
-   * Gets the left drive encoder.
-   * 
-   * @return the left drive encoder
+   * Zeroes the heading of the robot.
    */
-  public CANEncoder getLeftEncoder() {
-    return m_leftEncoder;
+  public void resetHeading() {
+    m_navX.reset();
+  }
+
+  /**
+   * Allows for Basic Arcade Drive
+   * 
+   * @param acceleration
+   * @param deceleration
+   * @param turn
+   */
+  public void arcadeDrive(final double acceleration, final double deceleration, final double turn) {
+    final double accelerate = acceleration - deceleration;
+    m_drive.arcadeDrive(turn, accelerate);
+  }
+
+  /**
+   * Allows for Basic Arcade Drive
+   * 
+   * @param fwd
+   * @param rot
+   */
+  public void arcadeDrive(double fwd, double rot) {
+    m_drive.arcadeDrive(fwd, rot);
   }
 
   public double getLeftEncoderPosition() {
     return m_leftEncoder.getPosition();
   }
 
-  /**
-   * Gets the right drive encoder.
-   *
-   * @return the right drive encoder
-   */
-  public CANEncoder getRightEncoder() {
-    return m_rightEncoder;
-  }
-
   public double getRightEncoderPosition() {
     return m_rightEncoder.getPosition();
   }
 
-  /**
-   * Sets the max output of the drive. Useful for scaling the drive to drive more
-   * slowly.
-   *
-   * @param maxOutput the maximum output to which the drive will be constrained
-   */
-  public void setMaxOutput(double maxOutput) {
-    m_drive.setMaxOutput(maxOutput);
-  }
-
-  /**
-   * Zeroes the heading of the robot.
-   */
-  public void zeroHeading() {
-    m_navX.reset();
-  }
-
-  /**
-   * Returns the heading of the robot.
-   *
-   * @return the robot's heading in degrees, from -180 to 180
-   */
-  public double getHeading() {
-    return Math.IEEEremainder(m_navX.getAngle(), 360) * (Constants.DriveTrain.kGyroReversed ? -1.0 : 1.0);
-  }
-
-  /**
-   * Returns the turn rate of the robot.
-   *
-   * @return The turn rate of the robot, in degrees per second
-   */
-  public double getTurnRate() {
-    return m_navX.getRate() * (Constants.DriveTrain.kGyroReversed ? -1.0 : 1.0);
-  }
-
-  public void setIdleBrake() {
-    setMotorIdleMode(IdleMode.kBrake);
-  }
-
-  private void setMotorIdleMode(IdleMode idlemode) {
-    mot_rightDriveRear_sparkmax_C6.setIdleMode(idlemode);
-    mot_rightDriveFront_sparkmax_C15.setIdleMode(idlemode);
-    mot_leftDriveFront_sparkmax_C14.setIdleMode(idlemode);
-    mot_leftDriveRear_sparkmax_C4.setIdleMode(idlemode);
-  }
-
-  public void setIdleCoast() {
-    setMotorIdleMode(IdleMode.kCoast);
-  }
-
   public void setLeftMotors(double speed) {
-    m_leftMotors.set(speed);
+    mot_leftDriveMaster.set(speed);
   }
 
   public void setRightMotors(double speed) {
-    m_rightMotors.set(speed);
-  }
-
-  public void auto() {
-
-    if (m_leftEncoder.getPosition() * Constants.DriveTrain.distanceCalculate <= (1)) {
-      m_leftMotors.set(0.5);
-      m_rightMotors.set(0.5);
-
-    } else {
-
-      m_leftMotors.set(0);
-      m_rightMotors.set(0);
-
-    }
-
+    mot_rightDriveMaster.set(speed);
   }
 }

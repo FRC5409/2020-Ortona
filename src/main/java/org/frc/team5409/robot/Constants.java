@@ -7,6 +7,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import org.frc.team5409.robot.util.*;
 
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.wpilibj.util.Units;
 
 public final class Constants {
     public static final class Vision {
@@ -115,29 +116,15 @@ public final class Constants {
 
         public static final int TOF_Exit = 3; 
 
-        public static final int m_Indexer_neo550_C16 = 16; 
+        public static final int m_indexer_id = 16; 
 
-        public static final int currentLimit = 20; 
-
-        public static final int rangeEnter_1 =  25; 
-        
-        public static final int rangeEnter_2 = 175; 
-
-        public static final int rangeBall1_1 = 160; 
-
-        public static final int rangeBall1_2 = 115; 
-
-        public static final int rangeExit_1 = 140; 
-
-        public static final int rangeExit_2 = 90; 
+        public static final int currentLimit = 20;
 
     }
 
     public static final class Intake {
 
-        public static final int kIntakeMotor1 = 0;
-
-        public static final int kIntakeMotor2 = 0;
+        public static final int kIntakeMotor = 10;
 
         public static final int kRightIntakeSolenoid1 = 0;
 
@@ -147,39 +134,9 @@ public final class Constants {
 
         public static final int kLeftIntakeSolenoid2 = 0;
 
-		public void retract() {
-		}
     }
 
-    public static class Trajectory{
-        
-        public static final double ksVolts = 0;
-
-        public static final double kvVoltSecondsPerMeter = 0;
-        
-        public static final double kaVoltSecondsSquaredPerMeter = 0;
-
-        public static final double kMaxSpeedMetersPerSecond = 0;
-        
-        public static final double kMaxAccelerationMetersPerSecondSquare = 0;
-        
-        public static final double kRamseteB = 0;
-        
-        public static final double kRamseteZeta = 0;
-        
-        public static final double kPDriveVel = 0;
-
-        public static final double kTrackwidthMeters = 0;
-    
-        public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(
-            kTrackwidthMeters);
-    }
-
-    public static class DriveTrain{
-
-        public static final IdleMode idle = IdleMode.kCoast;
-
-        public static final double loopRampRate= 0.5;
+    public static class DriveTrain {
 
         public static final int kLeftDriveFront = 14;
 
@@ -199,18 +156,18 @@ public final class Constants {
         
         public static final double kaVoltSecondsSquaredPerMeter = 0;
 
-        public static final double kTrackwidthMeters = 0;
+        public static final double kTrackwidthMeters = Units.inchesToMeters(19.5);
 
-        public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(
-            kTrackwidthMeters);
+        // public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(
+        //     kTrackwidthMeters);
 
         public static final int kEncoderCPR = 0;
 
-        public static final double kWheelDiameterMeters = 0;
+        public static final double kWheelCircumferenceMeters = Units.inchesToMeters(Math.PI * 6);
 
-        public static final double kEncoderDistancePerPulse =
-                // Assumes the encoders are directly mounted on the wheel shafts
-                (kWheelDiameterMeters * Math.PI) / (double) kEncoderCPR;
+        // public static final double kEncoderDistancePerPulse =
+        //         // Assumes the encoders are directly mounted on the wheel shafts
+        //         (kWheelDiameterMeters * Math.PI) / (double) kEncoderCPR;
 
         // encoder port id
         public static final int[] kLeftEncoderPorts = new int[] { 0, 1 };
@@ -223,53 +180,26 @@ public final class Constants {
 
         public static final boolean kGyroReversed = true;
 
-        public static final double gearRatio = 0;
+        public static final double gearRatio = 18;
 
         public static final double neo_encoder_position = 42.0;
 
-        public static final double distanceCalculate = (Math.PI*kWheelDiameterMeters) / gearRatio;
+        //public static final double distanceCalculate = (Math.PI*kWheelDiameterMeters) / gearRatio;
     }
-    public static class Hanging{
+    public static class Hanging {
 
-        //PID Variables
-        public static final double kP = 0.1;
+        // Motor Variables
+        public static final int kID_motorSlave = 3;
 
-        public static final double kI = 1e-4;
+        public static final int kID_motorMaster = 11;
 
-        public static final double kD = 1;
+        public static final double kExtendPosition = 10;
 
-        public static final double kIz = 0;
+        public static final double kRetractPosition = 0;
 
-        public static final double kFF = 0;
+        // Piston
+        public static final int kForwardChannel = 4;
 
-        public static final double kMaxOutput = 0.1;
-
-        public static final double kMinOutput = -0.1;
-
-        //Neo Variables
-        public static final int NEO_SLAVE_ID = 3;
-
-        public static final int NEO_MASTER_ID = 11;
-
-        public static final double EXTEND_NEO_POS = 10;
-
-        public static final double RETRACT_NEO_POS = 0;
-
-        //Piston
-        public static final int FORWARD_CHANEL = 4;
-
-        public static final int BACKWARD_CHANEL = 5;
-
-        //Time Of Flight
-        public static final int TOF_ID = 4;
-
-        public static final double TOF_RANGE = 10;
-        
-        public static final double TOF_SAMPLE_TIME = 24;
-
-        // Gear Shift
-
-        public static final double shiftThreshF = 0; // Encoder pulse rate threshold for fast shift
-        public static final double shiftThreshS = 0; // Encoder pulse raet threshold for slow shift
+        public static final int kBackwardChannel = 5;
     }
 }
