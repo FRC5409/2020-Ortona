@@ -1,0 +1,12 @@
+[TIMESTAMP] [PACKET TYPE] [PACKET DATA]
+[Double   ] [Byte       ] [    ...    ]
+
+
+[0] - FLYWHEEL DATA PACKET [24 bytes]
+      [FLYWHEEL RPM] [FLYWHEEL CURRENT] [FEEDER CURRENT]
+      [0x0]          [0x8]              [0x10]
+
+[1] - EVENT DATA PACKET [9 bytes]
+      [EVENT TYPE] [EVENT METADATA]
+      [0x0]        [0x1]
+
