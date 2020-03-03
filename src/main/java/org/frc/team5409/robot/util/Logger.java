@@ -15,14 +15,13 @@ import java.io.IOException;
  */
 public final class Logger {
     private FileWriter m_writer;
-    private File       m_file;
 
-    private boolean    m_saved;
+    private boolean    m_writable;
 
     static {
-        File logger_dir = new File("home/lvuser/5409/logs/");
-        if (!logger_dir.exists())
-            logger_dir.mkdirs();
+        File dir = new File("home/lvuser/5409/logs/");
+        if (!dir.exists())
+            dir.mkdirs();
     }
 
     /**
@@ -32,22 +31,20 @@ public final class Logger {
      * @param path The path of the file.
      */
     public Logger(String path) {
-        m_file = new File("home/lvuser/5409/logs/", path);
-            m_file.getParentFile().mkdirs();
+        m_writable = true;
 
-        if (!m_file.exists()) try {
-            m_file.createNewFile();
+        try  {
+            File file = new File("home/lvuser/5409/logs/", path);
+                file.getParentFile().mkdirs();
+            
+            if (!file.exists())
+                file.createNewFile();
+
+            m_writer = new FileWriter(file);
         } catch (IOException e) {
-            throw new RuntimeException("Failed to create log file at \'"+m_file.getPath()+"\'.");
+            e.printStackTrace();
+            m_writable = false;
         }
-
-        try {
-            m_writer = new FileWriter(m_file);
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to create writer for log file at \'"+m_file.getPath()+"\'.");
-        }
-
-        m_saved = false;
     }
     
     /**
@@ -61,12 +58,14 @@ public final class Logger {
      *                          to the logger file.
      */
     public Logger write(String str) {
-        if (!m_saved) try {
-            m_writer.write(str);
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to write to log file at \'"+m_file.getPath()+"\'.");
+        if (m_writable) {
+            try {
+                m_writer.write(str);
+            } catch (IOException e) {
+                e.printStackTrace();
+                m_writable = false;
+            }
         }
-
         return this;
     }
 
@@ -125,12 +124,14 @@ public final class Logger {
      * will result in no changes. </p>
      */
     public void save() {
-        if (!m_saved) try {
-            m_writer.close();
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to save log file at \'"+m_file.getPath()+"\'.");
+        if (m_writable) {
+            try {
+                m_writer.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
-        m_saved = true;
+        m_writable = false;
     }
 }
