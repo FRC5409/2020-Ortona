@@ -100,14 +100,13 @@ public class IntakeIndexActive extends CommandBase {
 		} else if (TOF_Enter) {
 			subsys_indexer.moveIndexerMotor(1);
 
-			//subsys_Intake.extend(0);
-
 			if (!m_triggered)
 				indexerEvents.writeln("%f, INDEXER TRIGGERED", time);
 			
 			m_triggered = true;
 		} else {
-			//subsys_indexer.moveIndexerMotor(0);
+
+			subsys_Intake.extend(0);
 			
 			if (m_triggered)
 				m_timer = Timer.getFPGATimestamp();
