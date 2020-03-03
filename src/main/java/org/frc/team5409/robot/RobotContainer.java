@@ -46,6 +46,7 @@ public class RobotContainer {
 	private SlowGearShift cmd_SlowGearShift;
 	public final DriveCommand cmd_drive;
 	public final DriveStraightAuto cmd_DriveStraightAuto;
+	public final IndexerReverse cmd_IndexerReverse; 
 
 	// public final RetractArmNeo cmd_RetractArmNeo;
 	// public final ExtendArmNeo cmd_ExtendArmNeo;
@@ -97,6 +98,7 @@ public class RobotContainer {
 
 		// Liz's stuff
 		sys_indexer = new Indexer(); 
+		cmd_IndexerReverse = new IndexerReverse(sys_indexer);
 
 		// Sanad's stuff
 		subsys_intake = new Intake();
@@ -105,7 +107,7 @@ public class RobotContainer {
 		//subsys_shooter_flywheel = new ShooterFlywheel();
 		//subsys_shooter_turret = new ShooterTurret();
 
-		cmd_IntakeIndexActive = new IntakeIndexActive(sys_indexer, subsys_intake); //(subsys_intake);
+		cmd_IntakeIndexActive = new IntakeIndexActive(sys_indexer, subsys_intake);
 
 		//grp_configure_turret = new SequentialCommandGroup(new CalibrateShooter(subsys_shooter_turret, subsys_shooter_flywheel),
 		//		new RotateTurret(subsys_shooter_turret, 0));
@@ -150,7 +152,7 @@ public class RobotContainer {
 		but_main_A.whileActiveOnce(new OperateShooter(sys_shooter_flywheel, sys_shooter_turret, sys_limelight, sys_indexer))
 			      .whenInactive(new RotateTurret(sys_shooter_turret, 0));
 		//sys_shooter_flywheel.setDefaultCommand(new RunShooterFlywheel(sys_shooter_flywheel, sys_indexer, sys_limelight, joy_main, joy_secondary));
-		//but_main_B.whileActiveOnce(new ReverseIndexer(sys_indexer));
+		but_main_B.whileActiveOnce(new ReverseIntake(subsys_intake));
 		//sys_indexer.setDefaultCommand(new IntakeIndexActive(sys_indexer, subsys_intake));
 		configureBindings();
 	}
@@ -174,6 +176,8 @@ public class RobotContainer {
 		but_main_bmp_right.whenPressed(new FastGearShift(subsys_driveTrain));
 		// Shift gear to slow
 		but_main_bmp_right.whenReleased(new SlowGearShift(subsys_driveTrain));
+
+		but_main_bmp_left.whileHeld(new IndexerReverse(sys_indexer)); 
 	}
 
 	  /**

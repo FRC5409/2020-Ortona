@@ -51,7 +51,7 @@ public class DriveTrain extends SubsystemBase {
     
     mot_leftDriveFront_sparkmax_C14.restoreFactoryDefaults();
     mot_leftDriveFront_sparkmax_C14.setIdleMode(Constants.DriveTrain.idle);
-    mot_leftDriveFront_sparkmax_C14.setSmartCurrentLimit(40);
+    mot_leftDriveFront_sparkmax_C14.setSmartCurrentLimit(60);
     mot_leftDriveFront_sparkmax_C14.setInverted(true);
     mot_leftDriveFront_sparkmax_C14.setOpenLoopRampRate(Constants.DriveTrain.loopRampRate);
     mot_leftDriveFront_sparkmax_C14.burnFlash();
@@ -59,7 +59,7 @@ public class DriveTrain extends SubsystemBase {
     mot_leftDriveRear_sparkmax_C4 = new CANSparkMax(Constants.DriveTrain.kLeftDriveRear, MotorType.kBrushless);
     mot_leftDriveRear_sparkmax_C4.restoreFactoryDefaults();
     mot_leftDriveRear_sparkmax_C4.setIdleMode(Constants.DriveTrain.idle);
-    mot_leftDriveRear_sparkmax_C4.setSmartCurrentLimit(40);
+    mot_leftDriveRear_sparkmax_C4.setSmartCurrentLimit(60);
     mot_leftDriveRear_sparkmax_C4.setInverted(true);
     //follower fix
     mot_leftDriveFront_sparkmax_C14.follow(ExternalFollower.kFollowerDisabled, 0);
@@ -71,14 +71,14 @@ public class DriveTrain extends SubsystemBase {
     mot_rightDriveFront_sparkmax_C15 = new CANSparkMax(Constants.DriveTrain.kRightDriveFront, MotorType.kBrushless);
     mot_rightDriveFront_sparkmax_C15.restoreFactoryDefaults();
     mot_rightDriveFront_sparkmax_C15.setIdleMode(Constants.DriveTrain.idle);
-    mot_rightDriveFront_sparkmax_C15.setSmartCurrentLimit(40);
+    mot_rightDriveFront_sparkmax_C15.setSmartCurrentLimit(60);
     mot_rightDriveFront_sparkmax_C15.setOpenLoopRampRate(Constants.DriveTrain.loopRampRate);
     mot_rightDriveFront_sparkmax_C15.burnFlash();
 
     mot_rightDriveRear_sparkmax_C6 = new CANSparkMax(Constants.DriveTrain.kRightDriveRear, MotorType.kBrushless);
     mot_rightDriveRear_sparkmax_C6.restoreFactoryDefaults();
     mot_rightDriveRear_sparkmax_C6.setIdleMode(Constants.DriveTrain.idle);
-    mot_rightDriveRear_sparkmax_C6.setSmartCurrentLimit(40);
+    mot_rightDriveRear_sparkmax_C6.setSmartCurrentLimit(60);
     //follower fix
     mot_rightDriveFront_sparkmax_C15.follow(ExternalFollower.kFollowerDisabled, 0);
 

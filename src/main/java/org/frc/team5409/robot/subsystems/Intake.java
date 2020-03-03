@@ -60,6 +60,6 @@ public class Intake extends SubsystemBase {
   public void reverse() {
     // dsl_rightIntakeSolenoid.set(DoubleSolenoid.Value.kForward);
     // dsl_leftIntakeSolenoid.set(DoubleSolenoid.Value.kForward);
-    mot_intake_sparkMax_C12.set(-0.5);
+    mot_intake_sparkMax_C12.set(-1);
   }
 }

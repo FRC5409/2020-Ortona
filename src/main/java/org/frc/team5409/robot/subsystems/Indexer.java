@@ -119,14 +119,15 @@ public class Indexer extends SubsystemBase {
   }
 
   // function that returns how many power cells are in the indexer
-  public int getNumberOfPowerCellsEnter() {
-    return getNumberOfPowerCellsEnter;
-  }
+  // public int getNumberOfPowerCellsEnter() {
+  //   return getNumberOfPowerCellsEnter;
+  // }
 
   // detects whether or not power cells are in range of ball1 sensor
   public boolean ballDetectionBall1() {
     double range = TOF_Ball1.getRange();
-    if (range < Constants.Indexer.rangeBall1_1 && range > Constants.Indexer.rangeBall1_2) {
+    if (range < Constants.Indexer.rangeBall1_2) {
+      //if (range < Constants.Indexer.rangeBall1_1 && range > Constants.Indexer.rangeBall1_2)
       // CWU check range numbers
       return true;
     }

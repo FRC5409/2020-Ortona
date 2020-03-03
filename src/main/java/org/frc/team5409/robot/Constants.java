@@ -15,15 +15,15 @@ public final class Constants {
         
 
     // Robot configuration Constants
-        public static final double vision_limelight_height = 42.5d/12.0d;
+        public static final double vision_limelight_height = 42.75d/12.0d;
 
-        public static final double vision_limelight_pitch = 10.2;
+        public static final double vision_limelight_pitch = 13.15;
 
 
     // Timing Constants
         public static final double vision_acquisition_delay = 0.5;
 
-        public static final double vision_aligned_thresh = 0.2;
+        public static final double vision_aligned_thresh = 4.4;
     }
 
     public static final class ShooterControl {
@@ -65,10 +65,12 @@ public final class Constants {
         public static final SimpleEquation shooter_distance_rpm_curve = d -> {
             //d += (10.d/12.0d);
             //return 1.8*(d*d) - 26.8*(d) + 2929; //2nd POLY CURVE
-            return 1326*Math.log(d) - 784; // LOG CURVE
+            //return 1326*Math.log(d) - 784; // LOG CURVE
             //return 978*Math.pow(d, 0.393); // POWER SERIES CURVE
             //return 1506*Math.log(d) - 1492;
             //return 2191.7 + 51.59 * d;
+            return 1271*Math.log(d) - 948
+            ;
         };
 
         public static final String shooter_distance_rpm_curve_string = "1506 * ln(d + 0.83) - 1492";
@@ -121,15 +123,15 @@ public final class Constants {
 
         public static final int rangeEnter_1 =  40; 
         
-        public static final int rangeEnter_2 = 90; 
+        public static final int rangeEnter_2 = 105; 
 
         public static final int rangeBall1_1 = 160; 
 
-        public static final int rangeBall1_2 = 115; 
+        public static final int rangeBall1_2 = 150; 
 
         public static final int rangeExit_1 = 140; 
 
-        public static final int rangeExit_2 = 90;
+        public static final int rangeExit_2 = 180;
 
     }
 
