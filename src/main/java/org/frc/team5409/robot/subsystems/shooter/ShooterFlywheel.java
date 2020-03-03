@@ -140,7 +140,7 @@ public final class ShooterFlywheel extends SubsystemBase implements Toggleable {
      */
     public boolean isTargetReached() {
         m_watchdog.feed();
-        
+
         return (Math.abs(getData(ShooterData.kFlywheelVelocity) - m_target) < Constants.ShooterControl.shooter_flywheel_target_thresh);
     }
 
@@ -214,7 +214,7 @@ public final class ShooterFlywheel extends SubsystemBase implements Toggleable {
         switch (type) {
             case kFlywheelVelocity: return enc_C07_shooter_flywheel.getVelocity();
             case kFlywheelCurrent:  return mot_C07_shooter_flywheel.getOutputCurrent();
-            case kFeederCurrent:    return mot_C07_shooter_flywheel.getOutputCurrent();
+            case kFeederCurrent:    return mot_C18_shooter_feeder.getOutputCurrent();
             case kFlywheelTarget:   return m_target;
         }
         return -1;
