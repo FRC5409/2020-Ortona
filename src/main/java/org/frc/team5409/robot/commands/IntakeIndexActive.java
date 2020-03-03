@@ -112,7 +112,7 @@ public class IntakeIndexActive extends CommandBase {
 		} 
 		else {
 			//
-			subsys_indexer.moveIndexerMotor(0);
+			//subsys_indexer.moveIndexerMotor(0);
 			
 			// if (m_triggered)
 			// 	m_timer = Timer.getFPGATimestamp();
