@@ -25,9 +25,6 @@ public class IntakeIndexActive extends CommandBase {
 	boolean TOF_Exit;
 	boolean TOF_Ball1;
 
-	protected Logger indexerLogger, indexerEvents;
-	private boolean m_debounce;
-
 	protected boolean m_triggered;
 
 	// Makes Indexer Motor run
@@ -44,24 +41,18 @@ public class IntakeIndexActive extends CommandBase {
 	private final Intake subsys_Intake;
 	private final Indexer subsys_indexer;
 
-	private double m_timer2;
-
-	private double m_timer, m_delay = 0.08;
-
 	/**
 	 * Creates a new IntakeIndexActive
 	 */
 	public IntakeIndexActive(Indexer indexerSubsystem, Intake intakeSubsystem) {
 		subsys_indexer = indexerSubsystem;
 		subsys_Intake = intakeSubsystem;
-		addRequirements(indexerSubsystem, intakeSubsystem);
 
 		TOF_Enter = subsys_indexer.ballDetectionEnter();
 		TOF_Ball1 = subsys_indexer.ballDetectionBall1();
 		TOF_Exit = subsys_indexer.ballDetectionExit();
-
-		// powerCellsInIndexer = subsys_indexer.getNumberOfPowerCellsEnter();
-
+		
+		addRequirements(indexerSubsystem, intakeSubsystem);
 	}
 
 	// Called when the command is initially scheduled.
@@ -74,10 +65,6 @@ public class IntakeIndexActive extends CommandBase {
 		//indexerRun = false;
 		//ballAtPosition1 = false;
 
-		String logs_path = "indexer/" + Long.toString(Instant.now().getEpochSecond());
-		indexerLogger = new Logger(logs_path + "/INDEXER_DATA.csv");
-		indexerEvents = new Logger(logs_path + "/INDEXER_EVENTS.csv");
-
 		// m_timer2 = Timer.getFPGATimestamp();
 		// m_triggered = false;
 	}
@@ -85,11 +72,8 @@ public class IntakeIndexActive extends CommandBase {
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
 	public void execute() {
-		//double time = Timer.getFPGATimestamp() - m_timer2;
-
 		TOF_Enter = subsys_indexer.ballDetectionEnter();
 		TOF_Ball1 = subsys_indexer.ballDetectionBall1();
-		// TOF_Exit = subsys_indexer.ballDetectionExit();
 
 		SmartDashboard.putBoolean("TOF_Ball1", TOF_Ball1);
 		SmartDashboard.putBoolean("TOF_Enter", TOF_Enter);
@@ -99,43 +83,9 @@ public class IntakeIndexActive extends CommandBase {
 		// if statements to run the indexer motor
 		if (TOF_Enter) {
 			subsys_indexer.moveIndexerMotor(1);
-			// } else if (TOF_Enter) {
-			// subsys_indexer.moveIndexerMotor(1);
-
-			// subsys_Intake.extend(0);
-
-			// if (!m_triggered)
-			// indexerEvents.writeln("%f, INDEXER TRIGGERED", time);
-
-			// m_triggered = true;
-
 		} else if (TOF_Ball1 && !TOF_Enter) {
-
 			subsys_indexer.moveIndexerMotor(0);
-
-		} else {
-
-			// subsys_indexer.moveIndexerMotor(0);
-
-			// if (m_triggered)
-			// m_timer = Timer.getFPGATimestamp();
-
-			// m_triggered = false;
-
-			// if (Timer.getFPGATimestamp()-m_timer > m_delay)
-			// subsys_indexer.moveIndexerMotor(0);
 		}
-
-		// if (powerCellsInIndexer == 5) {
-		// subsys_Intake.retract();
-		// IndexerFull = true;
-		// SmartDashboard.putBoolean("Indexer Full", IndexerFull);
-		// powerCellsInIndexer = 0;
-		// }
-
-		// indexerLogger.writeln("%f, %f, %f, %f", time, subsys_indexer.getRangeEnter(), subsys_indexer.getRangeBall1(),
-		// 		subsys_indexer.getRangeExit());
-
 	}
 
 	// Called once the command ends or is interrupted.
@@ -144,17 +94,11 @@ public class IntakeIndexActive extends CommandBase {
 		subsys_indexer.moveIndexerMotor(0);
 		subsys_Intake.extend(0);
 		subsys_Intake.retract();
-		indexerLogger.save();
-		indexerEvents.save();
 	}
 
 	// Returns true when the command should end.
 	@Override
 	public boolean isFinished() {
-
-		if (subsys_indexer.ballDetectionExit() && subsys_indexer.isRangeValidExit()) {
-			return true;
-		}
-		return false;
+		return (subsys_indexer.ballDetectionExit() && subsys_indexer.isRangeValidExit());
 	}
 }
