@@ -17,13 +17,13 @@ public final class Constants {
     // Robot configuration Constants
         public static final double vision_limelight_height = 42.75d/12.0d;
 
-        public static final double vision_limelight_pitch = 13.15;
+        public static final double vision_limelight_pitch = 13.4;//13.15
 
 
     // Timing Constants
         public static final double vision_acquisition_delay = 0.5;
 
-        public static final double vision_aligned_thresh = 4.4;
+        public static final double vision_aligned_thresh = 0.45;
     }
 
     public static final class ShooterControl {
@@ -45,7 +45,7 @@ public final class Constants {
         public static final double shooter_turret_max_speed = 0.3;
 
         public static final PIDFConfig shooter_flywheel_pid = new PIDFConfig(
-            6e-5, 0, 0, 0.000231
+            7e-5, 0, 0, 0.00019851d
         );
 
 
@@ -71,8 +71,16 @@ public final class Constants {
             //return 978*Math.pow(d, 0.393); // POWER SERIES CURVE
             //return 1506*Math.log(d) - 1492;
             //return 2191.7 + 51.59 * d;
-            return 1271*Math.log(d) - 948
-            ;
+            
+            //=============================================
+            // NEW CURVES
+            //return 1271*Math.log(d) - 948;
+
+            //return 78*d + 1776;
+            //return 2044*Math.pow(Math.E,0.0241)*x
+            //return 1384*Math.log(d) - 762;
+            //return 565*Math.pow(d,0.589); 
+            return -0.512*(d*d*d) + 29.5*(d*d) - 463*d + 4726;
         };
 
         public static final String shooter_distance_rpm_curve_string = "1506 * ln(d + 0.83) - 1492";
@@ -91,7 +99,7 @@ public final class Constants {
 
 
     // Shooter Flywheel Constants
-        public static final double shooter_flywheel_target_thresh = 80;
+        public static final double shooter_flywheel_target_thresh = 170;
 
         public static final double shooter_flywheel_offset_increment = 100;
 

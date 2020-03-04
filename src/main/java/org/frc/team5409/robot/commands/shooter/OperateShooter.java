@@ -53,6 +53,8 @@ public final class OperateShooter extends CommandBase {
         m_smooth_sweep_inverse = Constants.ShooterControl.shooter_smooth_sweep_inverse;
         m_smooth_sweep = Constants.ShooterControl.shooter_smooth_sweep_func;
         m_rpm_curve = Constants.ShooterControl.shooter_distance_rpm_curve;
+
+        SmartDashboard.setDefaultNumber("Target Velocity", 1500);
     
         addRequirements(sys_flywheel, sys_rotation, sys_limelight, sys_indexer);
     }
@@ -134,8 +136,8 @@ public final class OperateShooter extends CommandBase {
             SmartDashboard.putNumber("Predicted Velocity", m_rpm_curve.calculate(m_distance));
             SmartDashboard.putNumber("Robot Distance (ft)", m_distance);
 
-            //m_shooter_flywheel.setVelocity( m_rpm_curve.calculate(m_distance));
-            m_shooter_flywheel.setVelocity(SmartDashboard.getNumber("Target Velocity", 0));
+            m_shooter_flywheel.setVelocity( m_rpm_curve.calculate(m_distance));
+            //m_shooter_flywheel.setVelocity(SmartDashboard.getNumber("Target Velocity", 0));
         }
     }
 

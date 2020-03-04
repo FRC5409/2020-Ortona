@@ -1,5 +1,6 @@
 package org.frc.team5409.robot.subsystems.shooter;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.*;
 
@@ -141,7 +142,7 @@ public final class ShooterFlywheel extends SubsystemBase implements Toggleable {
      */
     public boolean isTargetReached() {
         m_watchdog.feed();
-
+        SmartDashboard.putNumber("Velocity offset", Math.abs(getData(ShooterData.kFlywheelVelocity) - m_target));
         return (Math.abs(getData(ShooterData.kFlywheelVelocity) - m_target) < Constants.ShooterControl.shooter_flywheel_target_thresh);
     }
 
@@ -242,5 +243,7 @@ public final class ShooterFlywheel extends SubsystemBase implements Toggleable {
                 disable();
             }
         }
+
+        SmartDashboard.putNumber("Actual Velocity", enc_C07_shooter_flywheel.getVelocity());
     }
 }
