@@ -33,8 +33,8 @@ public class ShootAuto extends SequentialCommandGroup {;
                   ) {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
-    super(new OperateShooter(sys_flywheel, sys_rotation, sys_limelight, sys_indexer),
-          new DriveStraightAuto(sys_driveTrain));
+    super(new OperateShooter(sys_flywheel, sys_rotation, sys_limelight, sys_indexer).withTimeout(6),
+          new DriveStraightAuto(sys_driveTrain).withTimeout(2));
     //addCommand();
     //addCommand();
   }
