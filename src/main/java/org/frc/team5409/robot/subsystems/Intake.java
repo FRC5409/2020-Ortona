@@ -69,11 +69,19 @@ public class Intake extends SubsystemBase {
 	/**
 	 * method to raise intake up
 	 */
+<<<<<<< HEAD
 	public void solenoidsUp(){
 
 		dsl_rightIntakeSolenoid.set(DoubleSolenoid.Value.kReverse);
 		dsl_leftIntakeSolenoid.set(DoubleSolenoid.Value.kReverse);
 
+=======
+	public void retract() {
+		//dsl_rightIntakeSolenoid.set(DoubleSolenoid.Value.kReverse);
+		//dsl_leftIntakeSolenoid.set(DoubleSolenoid.Value.kReverse);
+		
+		mot_intake_sparkMax_C12.set(0);
+>>>>>>> Testing Day 5
 	}
 	/**
 	 * Method to reverse intake, in case of jamming

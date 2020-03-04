@@ -1,5 +1,6 @@
 package org.frc.team5409.robot.subsystems.shooter;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.*;
@@ -17,6 +18,18 @@ public final class ShooterFlywheel extends SubsystemBase implements Toggleable {
         kFlywheelVelocity, kFlywheelCurrent, kFeederCurrent, kFlywheelTarget, kFlywheelOffset
     }
 
+    private enum ShooterEvent {
+        kSubsystemEnabled(0x0), kSubsystemDisabled(0x1), kSafetyEnabled(0x2), kSafetyDisabled(0x3),
+        kWatchdogExpired(0x4), kFlywheelStarted(0x5), kFlywheelTargetChanged(0x6),
+        kFlywheelStopped(0x7), kFlywheelAtSpeed(0x8), kFeederStarted(0x9), kFeederStopped(0xA);
+
+        private ShooterEvent(int id) {
+            this.id = (byte) id;
+        }
+
+        public final byte id;
+    }
+
     private       CANSparkMax      mot_C07_shooter_flywheel;
     private       CANSparkMax      mot_C19_shooter_flywheel;
     private       CANSparkMax      mot_C18_shooter_feeder;
@@ -30,6 +43,8 @@ public final class ShooterFlywheel extends SubsystemBase implements Toggleable {
     private       double           m_target;
     private       boolean          m_enabled, m_safety_enabled;
     private       Watchdog         m_watchdog;
+
+    private       RawLogger        m_logger;
 
     /**
      * Constructs a Turret Flywheel subsystem.
@@ -74,6 +89,7 @@ public final class ShooterFlywheel extends SubsystemBase implements Toggleable {
         m_safety_enabled = true;
 
         m_watchdog = new Watchdog(Constants.ShooterControl.shooter_watchdog_expire_time);
+        m_logger = new RawLogger("flywheel/"+MatchData.getEventString()+".log");
     }
     
     /**
@@ -85,6 +101,8 @@ public final class ShooterFlywheel extends SubsystemBase implements Toggleable {
 
         m_enabled = true;
         m_watchdog.feed();
+
+        logger_writeEvent(ShooterEvent.kSubsystemEnabled, m_logger.getTimeSince());
     }
 
     /**
@@ -98,6 +116,13 @@ public final class ShooterFlywheel extends SubsystemBase implements Toggleable {
         mot_C18_shooter_feeder.disable();
 
         m_enabled = false;
+
+        logger_writeEvent(ShooterEvent.kSubsystemDisabled, m_logger.getTimeSince());
+
+        if (m_target != 0)
+            
+
+            logger_writeEvent(ShooterEvent.kSubsystemEnabled, m_logger.getTimeSince());
     }
 
     /**
@@ -118,7 +143,7 @@ public final class ShooterFlywheel extends SubsystemBase implements Toggleable {
     public void setVelocity(double target) {
         if (!m_enabled)
             return;
-        
+
         m_target = m_velocity_range.clamp(target + m_velocity_offset);
         pid_C07_shooter_flywheel.setReference(m_target, ControlType.kVelocity);
        
@@ -212,6 +237,8 @@ public final class ShooterFlywheel extends SubsystemBase implements Toggleable {
      */
     public void shiftOffset(double shift) {
         m_velocity_offset += shift;
+
+        SmartDashboard.putNumber("Flywheel Velocity Offset", m_velocity_offset);
     }
 
     /**
@@ -237,13 +264,28 @@ public final class ShooterFlywheel extends SubsystemBase implements Toggleable {
     
     @Override
     public void periodic() {
-        if (m_enabled && m_safety_enabled) {
-            m_watchdog.update();
-            if (m_watchdog.isExpired()) {
-                disable();
+        if (m_enabled) {
+            if (m_safety_enabled) {
+                m_watchdog.update();
+                if (m_watchdog.isExpired()) {
+                    disable();
+                }
             }
+            logger_writeData();
         }
 
         SmartDashboard.putNumber("Actual Velocity", enc_C07_shooter_flywheel.getVelocity());
+    }
+
+    private void logger_writeEvent(ShooterEvent event, double arg) {
+        //m_logger.write(1);
+        //m_logger.write(arg);
+    }
+
+    private void logger_writeData() {
+        /*m_logger.write(0);
+        m_logger.write(enc_C07_shooter_flywheel.getVelocity());
+        m_logger.write(mot_C07_shooter_flywheel.getOutputCurrent());
+        m_logger.write(mot_C18_shooter_feeder.getOutputCurrent());*/
     }
 }

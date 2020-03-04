@@ -137,7 +137,6 @@ public final class OperateShooter extends CommandBase {
             SmartDashboard.putNumber("Robot Distance (ft)", m_distance);
 
             m_shooter_flywheel.setVelocity( m_rpm_curve.calculate(m_distance));
-            //m_shooter_flywheel.setVelocity(SmartDashboard.getNumber("Target Velocity", 0));
         }
     }
 

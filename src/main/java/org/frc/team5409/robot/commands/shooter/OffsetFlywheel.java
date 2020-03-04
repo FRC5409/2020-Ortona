@@ -17,7 +17,7 @@ public final class OffsetFlywheel extends CommandBase {
             m_increment = Constants.ShooterControl.shooter_flywheel_offset_increment;
         else
             m_increment = -Constants.ShooterControl.shooter_flywheel_offset_increment;
-        //addRequirements(sys_flywheel);
+        addRequirements(sys_flywheel);
     }
 
     @Override

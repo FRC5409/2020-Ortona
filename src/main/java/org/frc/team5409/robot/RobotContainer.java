@@ -179,6 +179,9 @@ public class RobotContainer {
 		//climb
 		but_main_back.whileHeld(new RetractHang(sys_hang));
 		but_main_start.whileHeld(new ExtendHang(sys_hang));
+
+		but_secondary_bmp_right.whenPressed(new OffsetFlywheel(sys_shooter_flywheel, true));
+		but_secondary_bmp_left.whenPressed(new OffsetFlywheel(sys_shooter_flywheel, false));
 	}
 
 	  /**

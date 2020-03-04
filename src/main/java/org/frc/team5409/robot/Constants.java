@@ -45,7 +45,7 @@ public final class Constants {
         public static final double shooter_turret_max_speed = 0.3;
 
         public static final PIDFConfig shooter_flywheel_pid = new PIDFConfig(
-            7e-5, 0, 0, 0.00019851d
+            7e-5, 0, 0, 0.00018851d
         );
 
 
@@ -80,7 +80,9 @@ public final class Constants {
             //return 2044*Math.pow(Math.E,0.0241)*x
             //return 1384*Math.log(d) - 762;
             //return 565*Math.pow(d,0.589); 
-            return -0.512*(d*d*d) + 29.5*(d*d) - 463*d + 4726; //4726
+            //return -0.512*(d*d*d) + 29.5*(d*d) - 463*d + 4726
+            //return 0.615*(d*d*d) - 24.8*(d*d) + 378*d + 702;
+            return 0.581*(d*d*d) - 23.1*(d*d) + 350*d + 850;
         };
 
         public static final String shooter_distance_rpm_curve_string = "1506 * ln(d + 0.83) - 1492";
@@ -101,7 +103,7 @@ public final class Constants {
     // Shooter Flywheel Constants
         public static final double shooter_flywheel_target_thresh = 170;
 
-        public static final double shooter_flywheel_offset_increment = 100;
+        public static final double shooter_flywheel_offset_increment = 150;
 
 
     // Smooth Sweep Constants (experimental)
@@ -151,13 +153,13 @@ public final class Constants {
 
         public static final int kIntakeMotor = 12;
 
-        public static final int kRightIntakeSolenoid1 = 0;
+        public static final int kRightIntakeSolenoid1 = 1;
 
         public static final int kRightIntakeSolenoid2 = 0;
 
-        public static final int kLeftIntakeSolenoid1 = 0;
+        public static final int kLeftIntakeSolenoid1 = 3;
 
-        public static final int kLeftIntakeSolenoid2 = 0;
+        public static final int kLeftIntakeSolenoid2 = 2;
 
     }
 
