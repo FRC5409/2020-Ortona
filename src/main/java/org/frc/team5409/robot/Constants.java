@@ -80,7 +80,7 @@ public final class Constants {
             //return 2044*Math.pow(Math.E,0.0241)*x
             //return 1384*Math.log(d) - 762;
             //return 565*Math.pow(d,0.589); 
-            return -0.512*(d*d*d) + 29.5*(d*d) - 463*d + 4726;
+            return -0.512*(d*d*d) + 29.5*(d*d) - 463*d + 4726; //4726
         };
 
         public static final String shooter_distance_rpm_curve_string = "1506 * ln(d + 0.83) - 1492";
@@ -189,7 +189,7 @@ public final class Constants {
 
         public static final IdleMode idle = IdleMode.kCoast;
 
-        public static final double loopRampRate= 0.5;
+        public static final double loopRampRate= 0;
 
         public static final int kLeftDriveFront = 14;
 
