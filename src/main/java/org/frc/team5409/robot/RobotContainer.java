@@ -39,7 +39,7 @@ public class RobotContainer {
 	//private final ShooterTurret subsys_shooter_turret;
 	private final Indexer sys_indexer;
 	public final Intake subsys_intake;
-	public final DriveTrain subsys_driveTrain;
+	public final DriveTrain sys_driveTrain;
 	private final Hanging sys_hang;
 	
 	//commands
@@ -75,13 +75,13 @@ public class RobotContainer {
 		//Joystick stuff
 		joy_main = new XboxController(0);
 		joy_secondary = new XboxController(1);
-		subsys_driveTrain = new DriveTrain(); 
+		sys_driveTrain = new DriveTrain(); 
 
 		//WuTang's stuff
 		sys_hang = new Hanging();
 
-		cmd_drive = new DriveCommand(subsys_driveTrain, joy_main);
-		cmd_DriveStraightAuto = new DriveStraightAuto(subsys_driveTrain);
+		cmd_drive = new DriveCommand(sys_driveTrain, joy_main);
+		cmd_DriveStraightAuto = new DriveStraightAuto(sys_driveTrain);
 
 		sys_shooter_turret = new ShooterTurret();
 		sys_shooter_flywheel = new ShooterFlywheel();
@@ -100,6 +100,7 @@ public class RobotContainer {
 		//subsys_shooter_turret = new ShooterTurret();
 
 		cmd_IntakeIndexActive = new IntakeIndexActive(sys_indexer, subsys_intake);
+		
 
 		//grp_configure_turret = new SequentialCommandGroup(new CalibrateShooter(subsys_shooter_turret, subsys_shooter_flywheel),
 		//		new RotateTurret(subsys_shooter_turret, 0));
@@ -130,7 +131,7 @@ public class RobotContainer {
 		//configureBindings();
 
 
-		subsys_driveTrain.setDefaultCommand(new DriveCommand(subsys_driveTrain, joy_main));
+		sys_driveTrain.setDefaultCommand(new DriveCommand(sys_driveTrain, joy_main));
 
 		/*sys_indexer.setDefaultCommand(new IntakeIndexActive(sys_indexer, subsys_intake));
 		but_main_A.whenPressed(
@@ -162,12 +163,12 @@ public class RobotContainer {
 
 
 		// Toggle AntiTip
-	    but_secondary_Y.whenPressed(new AntiTipToggle(subsys_driveTrain));
+	    but_secondary_Y.whenPressed(new AntiTipToggle(sys_driveTrain));
 		
 		// Shift gear to fast
-		but_main_bmp_right.whenPressed(new FastGearShift(subsys_driveTrain));
+		but_main_bmp_right.whenPressed(new FastGearShift(sys_driveTrain));
 		// Shift gear to slow
-		but_main_bmp_right.whenReleased(new SlowGearShift(subsys_driveTrain));
+		but_main_bmp_right.whenReleased(new SlowGearShift(sys_driveTrain));
 
 		but_main_bmp_left.whileHeld(new IndexerReverse(sys_indexer)); 
 
@@ -234,6 +235,6 @@ public class RobotContainer {
 //   }
 
 	public Command getAutonomousCommand() {
-		return cmd_DriveStraightAuto;
+		return new shootAuto(sys_shooter_flywheel, sys_shooter_turret, sys_limelight, sys_indexer, sys_driveTrain);
 	}
 }

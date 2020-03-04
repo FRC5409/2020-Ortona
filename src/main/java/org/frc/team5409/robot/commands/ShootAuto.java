@@ -7,6 +7,7 @@
 
 // package org.frc.team5409.robot.commands;
 
+<<<<<<< HEAD
 // import edu.wpi.first.wpilibj2.command.CommandBase;
 
 // import org.frc.team5409.robot.commands.shooter.OperateShooter;
@@ -41,8 +42,19 @@
 //   // Called when the command is initially scheduled.
 //   @Override
 //   public void initialize() {
+=======
+import org.frc.team5409.robot.RobotContainer;
+import org.frc.team5409.robot.commands.shooter.OperateShooter;
+import org.frc.team5409.robot.subsystems.DriveTrain;
+import org.frc.team5409.robot.subsystems.Indexer;
+import org.frc.team5409.robot.subsystems.Limelight;
+import org.frc.team5409.robot.subsystems.shooter.ShooterFlywheel;
+import org.frc.team5409.robot.subsystems.shooter.ShooterTurret;
+>>>>>>> Karina and Aadil's work on auto
 
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
+<<<<<<< HEAD
 //   }
 
 //   // Called every time the scheduler runs while the command is scheduled.
@@ -62,3 +74,26 @@
 //     return false;
 //   }
 // }
+=======
+// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
+// information, see:
+// https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
+public class shootAuto extends SequentialCommandGroup {;
+  /**
+   * Creates a new shootAuto.
+   */
+  public shootAuto(ShooterFlywheel sys_flywheel, 
+                   ShooterTurret sys_rotation, 
+                   Limelight sys_limelight, 
+                   Indexer sys_indexer,
+                   DriveTrain sys_driveTrain
+                  ) {
+    // Add your commands in the super() call, e.g.
+    // super(new FooCommand(), new BarCommand());
+    super(new OperateShooter(sys_flywheel, sys_rotation, sys_limelight, sys_indexer),
+          new DriveStraightAuto(sys_driveTrain));
+    //addCommand();
+    //addCommand();
+  }
+}
+>>>>>>> Karina and Aadil's work on auto

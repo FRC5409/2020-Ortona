@@ -266,8 +266,9 @@ public class DriveTrain extends SubsystemBase {
    *
    * @return the average of the two encoder readings
    */
+  // CHANGED MIGHT BE FOR TRAJECTORY
   public double getAverageEncoderDistance() {
-    return (m_leftEncoder.getPosition() + m_rightEncoder.getPosition()) / 2.0;
+    return (m_leftEncoder.getPosition() * Constants.DriveTrain.distanceCalculate + m_rightEncoder.getPosition() * Constants.DriveTrain.distanceCalculate) / 2.0;
   }
 
   /**

@@ -34,10 +34,10 @@ public class DriveStraightAuto extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (subsystem.getLeftEncoderPosition()*Constants.DriveTrain.distanceCalculate > 1) {
-      subsystem.setLeftMotors(0);
-      subsystem.setRightMotors(0);
-    }
+    // if (subsystem.getAverageEncoderDistance() > 1) {
+    //   subsystem.setLeftMotors(0);
+    //   subsystem.setRightMotors(0);
+    // }
   }
 
   // Called once the command ends or is interrupted.
@@ -50,6 +50,6 @@ public class DriveStraightAuto extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return subsystem.getAverageEncoderDistance() > 1;
   }
 }
