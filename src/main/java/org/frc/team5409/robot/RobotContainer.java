@@ -235,6 +235,6 @@ public class RobotContainer {
 //   }
 
 	public Command getAutonomousCommand() {
-		return new shootAuto(sys_shooter_flywheel, sys_shooter_turret, sys_limelight, sys_indexer, sys_driveTrain);
+		return new ShootAuto(sys_shooter_flywheel, sys_shooter_turret, sys_limelight, sys_indexer, sys_driveTrain);
 	}
 }
