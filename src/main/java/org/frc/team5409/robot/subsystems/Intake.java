@@ -59,12 +59,9 @@ public class Intake extends SubsystemBase {
 
 	}
 
-	/**
-	 * Method to turn off intake motors
-	 */
-	public void intakeOff() {
+	public boolean isExtended(){
 
-		mot_intake_sparkMax_C12.set(0);
+		return (dsl_leftIntakeSolenoid.get() == DoubleSolenoid.Value.kForward) ;
 
 	}
 
@@ -81,12 +78,12 @@ public class Intake extends SubsystemBase {
 	/**
 	 * Method to reverse intake, in case of jamming
 	 */
-	public void reverse() {
+	public void reverse(double output) {
 
 		// dsl_rightIntakeSolenoid.set(DoubleSolenoid.Value.kForward);
 		// dsl_leftIntakeSolenoid.set(DoubleSolenoid.Value.kForward);
 
-		mot_intake_sparkMax_C12.set(-1);
+		mot_intake_sparkMax_C12.set(output);
 		
 	}
 }

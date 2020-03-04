@@ -30,19 +30,13 @@ public class IntakeIndexActive extends CommandBase {
 	// Makes Indexer Motor run
 	boolean indexerRun;
 
-	// Whether or not ball is at position 1
-	boolean ballAtPosition1;
-
-	// detection of the number of power cells in indexer
-	boolean IndexerFull;
-
-	int powerCellsInIndexer;
-
 	private final Intake subsys_Intake;
 	private final Indexer subsys_indexer;
 
 	/**
 	 * Creates a new IntakeIndexActive
+	 * 
+	 * Command to run the indexer
 	 */
 	public IntakeIndexActive(Indexer indexerSubsystem, Intake intakeSubsystem) {
 		subsys_indexer = indexerSubsystem;
@@ -58,13 +52,12 @@ public class IntakeIndexActive extends CommandBase {
 	// Called when the command is initially scheduled.
 	@Override
 	public void initialize() {
+
+		//safety to stop running the intake when the indexer is full
 		if (!(subsys_indexer.ballDetectionExit() && subsys_indexer.isRangeValidExit())) {
 			subsys_Intake.intakeOn(1);
 			subsys_Intake.solenoidsDown();
 		}
-		
-		//indexerRun = false;
-		//ballAtPosition1 = false;
 
 		// m_timer2 = Timer.getFPGATimestamp();
 		// m_triggered = false;
@@ -79,7 +72,6 @@ public class IntakeIndexActive extends CommandBase {
 		SmartDashboard.putBoolean("TOF_Ball1", TOF_Ball1);
 		SmartDashboard.putBoolean("TOF_Enter", TOF_Enter);
 		SmartDashboard.putBoolean("TOF_Exit", TOF_Exit);
-		// if time of flight sensor closest to the shooter is false run this
 
 		// if statements to run the indexer motor
 		if (TOF_Enter) {
@@ -94,7 +86,12 @@ public class IntakeIndexActive extends CommandBase {
 	public void end(boolean interrupted) {
 		subsys_indexer.moveIndexerMotor(0);
 		subsys_Intake.intakeOn(0);
-		subsys_Intake.solenoidsUp();
+
+		if(subsys_indexer.ballDetectionExit){
+
+			subsys_Intake.solenoidsUp();
+			
+		}
 	}
 
 	// Returns true when the command should end.

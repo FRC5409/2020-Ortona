@@ -25,6 +25,7 @@ import org.frc.team5409.robot.util.Logger;
  * @param <neo550CanSparkMax>
  * @author Elizabeth
  * 
+ * Subsystem that set up the indexer
  */
 public class Indexer extends SubsystemBase {
   // Put methods for controlling this subsystem
@@ -32,8 +33,10 @@ public class Indexer extends SubsystemBase {
 
   // sensor at entrance
   protected TimeOfFlight TOF_Enter;
+
   // sensor at exit
   protected TimeOfFlight TOF_Exit;
+
   // sensor to detect balls
   protected TimeOfFlight TOF_Ball1;
 
@@ -49,11 +52,7 @@ public class Indexer extends SubsystemBase {
   protected double getRangeExit;
   protected double getRangeBall1;
 
-  // number of power cells going through each sensor
-  public int getNumberOfPowerCellsEnter;
-
   // detection whether or not ball has passed through sensor
-
   public boolean ballDetectionEnter;
 
   public boolean ballDetectionBall1;
@@ -69,9 +68,7 @@ public class Indexer extends SubsystemBase {
 
     TOF_Enter = new TimeOfFlight(Constants.Indexer.TOF_Enter);
     TOF_Exit = new TimeOfFlight(Constants.Indexer.TOF_Exit);
-    TOF_Ball1 = new TimeOfFlight(Constants.Indexer.TOF_Ball1);
-
-    getNumberOfPowerCellsEnter = 0;
+    TOF_Ball1 = new TimeOfFlight(Constants.Indexer.TOF_Ball1); 
 
     m_Indexer_neo550_C16 = new CANSparkMax(Constants.Indexer.m_Indexer_neo550_C16, MotorType.kBrushless);
     m_Indexer_neo550_C16.setSmartCurrentLimit(Constants.Indexer.currentLimit);
@@ -105,11 +102,6 @@ public class Indexer extends SubsystemBase {
 
       // if (range > Constants.Indexer.rangeEnter_1 && range <
       // Constants.Indexer.rangeEnter_2) {
-
-      // if (range == 115) {
-      // getNumberOfPowerCellsEnter++;
-      // // this could be a for loop
-      // }
 
       return true;
     }
@@ -146,17 +138,18 @@ public class Indexer extends SubsystemBase {
     return false;
   }
 
-  // determines whether or not range is valid
+  /**
+   * methods that determine whether or not 
+   * the ranges of 
+   */
   public boolean isRangeValidEnter() {
     return TOF_Enter.isRangeValid();
   }
 
-  // determines whether or not range is valid
   public boolean isRangeValidExit() {
     return TOF_Exit.isRangeValid();
   }
 
-  // determines whether or not range is valid
   public boolean isRangeValidBall1() {
     return TOF_Ball1.isRangeValid();
   }
@@ -185,7 +178,6 @@ public class Indexer extends SubsystemBase {
     SmartDashboard.putBoolean("Is the range of the ExitSensor valid?", TOF_Exit.isRangeValid());
     SmartDashboard.putBoolean("Is the range of the Ball1Sensor valid?", TOF_Ball1.isRangeValid());
 
-    SmartDashboard.putNumber("Number of Power Cells", getNumberOfPowerCellsEnter);
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand())
 

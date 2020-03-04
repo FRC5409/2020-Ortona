@@ -160,7 +160,7 @@ public class RobotContainer {
 	    // Run intake while held
 		but_main_Y.whileHeld(new IntakeIndexActive(sys_indexer, subsys_intake));
 
-		but_main_X.whileHeld(new IntakeActivateSolenoids(subsys_intake)); 
+		but_main_X.whenPressed(new IntakeActivateSolenoids(subsys_intake)); 
 
 		// Reverse intake while held
 		but_main_B.whileHeld(new ReverseIntake(subsys_intake));

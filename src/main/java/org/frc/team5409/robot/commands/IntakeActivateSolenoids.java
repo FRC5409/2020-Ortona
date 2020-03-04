@@ -14,6 +14,8 @@ import org.frc.team5409.robot.subsystems.Intake;
 public class IntakeActivateSolenoids extends CommandBase {
   /**
    * Creates a new IntakeActivateSolenoids.
+   * 
+   * Command that runs the intake solenoids
    */
 
   private final Intake subsys_Intake;
@@ -23,34 +25,36 @@ public class IntakeActivateSolenoids extends CommandBase {
     subsys_Intake = intakeSubsystem; 
 
     addRequirements(intakeSubsystem);
-    // Use addRequirements() here to declare subsystem dependencies.
+    
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+
+    if(subsys_Intake.isExtended()){
+      subsys_Intake.solenoidsDown();
+    } else {
+      subsys_Intake.solenoidsUp();
+    }
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
 
-    subsys_Intake.solenoidsDown();
-
-    subsys_Intake.solenoidsUp();
-
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    subsys_Intake.solenoidsDown();
-    subsys_Intake.solenoidsUp();
+
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }
