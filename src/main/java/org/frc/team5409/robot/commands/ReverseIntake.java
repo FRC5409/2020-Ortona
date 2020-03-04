@@ -24,7 +24,7 @@ public class ReverseIntake extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    subsys_Intake.reverse();
+    subsys_Intake.intakeOn(-1);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
