@@ -50,6 +50,7 @@ public class RobotContainer {
 	public final DriveCommand cmd_drive;
 	public final DriveStraightAuto cmd_DriveStraightAuto;
 	public final IndexerReverse cmd_IndexerReverse; 
+	private final IntakeActivateSolenoids cmd_IntakeActivateSolenoids;
 
 	//joystick controllers
 	private final XboxController joy_main, joy_secondary;
@@ -94,6 +95,7 @@ public class RobotContainer {
 
 		// Sanad's stuff
 		subsys_intake = new Intake();
+		cmd_IntakeActivateSolenoids = new IntakeActivateSolenoids(subsys_intake); 
 		
 		// Keith's stuff
 		//subsys_shooter_flywheel = new ShooterFlywheel();
@@ -157,6 +159,8 @@ public class RobotContainer {
 
 	    // Run intake while held
 		but_main_Y.whileHeld(new IntakeIndexActive(sys_indexer, subsys_intake));
+
+		but_main_X.whileHeld(new IntakeActivateSolenoids(subsys_intake)); 
 
 		// Reverse intake while held
 		but_main_B.whileHeld(new ReverseIntake(subsys_intake));

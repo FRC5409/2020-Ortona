@@ -40,31 +40,53 @@ public class Intake extends SubsystemBase {
 	}
 
 	/**
-	 * Method to extend intake
+	 * Method to turn intake on
 	 */
-	public void extend(double output) {
+	public void intakeOn(double output) {
+
+		mot_intake_sparkMax_C12.set(output);
+
+	}
+
+
+	/**
+	 * method to put intake down
+	 */
+	public void solenoidsDown(){
+
 		dsl_rightIntakeSolenoid.set(DoubleSolenoid.Value.kForward);
 		dsl_leftIntakeSolenoid.set(DoubleSolenoid.Value.kForward);
 
-		mot_intake_sparkMax_C12.set(output);
 	}
 
 	/**
-	 * Method to retract intake
+	 * Method to turn off intake motors
 	 */
-	public void retract() {
+	public void intakeOff() {
+
+		mot_intake_sparkMax_C12.set(0);
+
+	}
+
+
+	/**
+	 * method to raise intake up
+	 */
+	public void solenoidsUp(){
+
 		dsl_rightIntakeSolenoid.set(DoubleSolenoid.Value.kReverse);
 		dsl_leftIntakeSolenoid.set(DoubleSolenoid.Value.kReverse);
-		
-		mot_intake_sparkMax_C12.set(0);
+
 	}
 	/**
 	 * Method to reverse intake, in case of jamming
 	 */
 	public void reverse() {
-		dsl_rightIntakeSolenoid.set(DoubleSolenoid.Value.kForward);
-		dsl_leftIntakeSolenoid.set(DoubleSolenoid.Value.kForward);
+
+		// dsl_rightIntakeSolenoid.set(DoubleSolenoid.Value.kForward);
+		// dsl_leftIntakeSolenoid.set(DoubleSolenoid.Value.kForward);
 
 		mot_intake_sparkMax_C12.set(-1);
+		
 	}
 }

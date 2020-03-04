@@ -59,7 +59,8 @@ public class IntakeIndexActive extends CommandBase {
 	@Override
 	public void initialize() {
 		if (!(subsys_indexer.ballDetectionExit() && subsys_indexer.isRangeValidExit())) {
-			subsys_Intake.extend(1);
+			subsys_Intake.intakeOn(1);
+			subsys_Intake.solenoidsDown();
 		}
 		
 		//indexerRun = false;
@@ -92,8 +93,8 @@ public class IntakeIndexActive extends CommandBase {
 	@Override
 	public void end(boolean interrupted) {
 		subsys_indexer.moveIndexerMotor(0);
-		subsys_Intake.extend(0);
-		subsys_Intake.retract();
+		subsys_Intake.intakeOn(0);
+		subsys_Intake.solenoidsUp();
 	}
 
 	// Returns true when the command should end.
@@ -101,4 +102,5 @@ public class IntakeIndexActive extends CommandBase {
 	public boolean isFinished() {
 		return (subsys_indexer.ballDetectionExit() && subsys_indexer.isRangeValidExit());
 	}
+
 }
