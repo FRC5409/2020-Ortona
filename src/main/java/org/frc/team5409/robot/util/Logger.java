@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import edu.wpi.first.wpilibj.Timer;
+
 /**
  * Simple logging utility. Useful for
  * recording data and information
@@ -15,8 +17,8 @@ import java.io.IOException;
  */
 public final class Logger {
     private FileWriter m_writer;
-
     private boolean    m_writable;
+    private double     m_timer;
 
     static {
         File dir = new File("home/lvuser/5409/logs/");
@@ -45,6 +47,8 @@ public final class Logger {
             e.printStackTrace();
             m_writable = false;
         }
+
+        m_timer = Timer.getFPGATimestamp();
     }
     
     /**
@@ -133,5 +137,17 @@ public final class Logger {
         }
 
         m_writable = false;
+    }
+
+    /**
+     * Get's the time since the logger was created.
+     * 
+     * <p> This is useful for log files that contain
+     * timestamped information. </p>
+     * 
+     * @return Time since 
+     */
+    public double getTimeSince() {
+        return Timer.getFPGATimestamp()-m_timer;
     }
 }

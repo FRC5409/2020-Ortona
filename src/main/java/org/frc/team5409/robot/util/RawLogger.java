@@ -1,9 +1,8 @@
 package org.frc.team5409.robot.util;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.FileOutputStream;
+import java.io.*;
+
+import edu.wpi.first.wpilibj.Timer;
 
 /**
  * Simple logging utility. Useful for
@@ -16,8 +15,8 @@ import java.io.FileOutputStream;
  */
 public final class RawLogger {
     private OutputStream m_writer;
-
     private boolean      m_writable;
+    private double       m_timer;
 
     static {
         File dir = new File("home/lvuser/5409/logs/raw/");
@@ -33,7 +32,6 @@ public final class RawLogger {
      */
     public RawLogger(String path) {
         m_writable = true;
-
         try  {
             File file = new File("home/lvuser/5409/logs/raw/", path);
                 file.getParentFile().mkdirs();
@@ -46,12 +44,15 @@ public final class RawLogger {
             e.printStackTrace();
             m_writable = false;
         }
+
+        m_timer = Timer.getFPGATimestamp();
     }
     
     public RawLogger write(byte data[]) {
         if (m_writable) {
             try {
                 m_writer.write(data);
+                m_writer.flush();
             } catch (IOException e) {
                 e.printStackTrace();
                 m_writable = false;
@@ -123,5 +124,17 @@ public final class RawLogger {
         }
 
         m_writable = false;
+    }
+
+    /**
+     * Get's the time since the logger was created.
+     * 
+     * <p> This is useful for log files that contain
+     * timestamped information. </p>
+     * 
+     * @return Time since 
+     */
+    public double getTimeSince() {
+        return Timer.getFPGATimestamp()-m_timer;
     }
 }
