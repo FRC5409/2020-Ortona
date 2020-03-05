@@ -162,6 +162,7 @@ public final class Constants {
         public static final int kLeftIntakeSolenoid1 = 3;
 
         public static final int kLeftIntakeSolenoid2 = 2;
+        public static final int velocityMaxIntakeJam = 1000;
 
     }
 
