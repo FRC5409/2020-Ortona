@@ -265,9 +265,9 @@ public final class Constants {
 
         public static final int NEO_MASTER_ID = 11;
 
-        public static final double EXTEND_NEO_POS = 10;
+        public static final double EXTEND_NEO_POS = 85;
 
-        public static final double RETRACT_NEO_POS = 0;
+        public static final double RETRACT_NEO_POS = -1000;
 
         //Piston
         public static final int FORWARD_CHANEL = 4;

@@ -60,8 +60,8 @@ public class Hanging extends SubsystemBase {
     mot_hanging_neo_Slave.restoreFactoryDefaults();
     mot_hanging_neo_Master.restoreFactoryDefaults();
 
-    mot_hanging_neo_Slave.setSmartCurrentLimit(40);    
-    mot_hanging_neo_Master.setSmartCurrentLimit(40);
+    mot_hanging_neo_Slave.setSmartCurrentLimit(60);    
+    mot_hanging_neo_Master.setSmartCurrentLimit(60);
 
     mot_hanging_neo_Slave.setIdleMode(IdleMode.kCoast);
     mot_hanging_neo_Master.setIdleMode(IdleMode.kCoast);

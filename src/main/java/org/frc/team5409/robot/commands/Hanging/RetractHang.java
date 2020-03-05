@@ -33,7 +33,7 @@ public class RetractHang extends CommandBase {
   @Override
   public void initialize() {
     m_hanging.setPiston(Value.kForward);
-    m_hanging.controlArmNeo(-0.8);
+    m_hanging.controlArmNeo(-1.0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -58,7 +58,7 @@ public class RetractHang extends CommandBase {
     // if (m_hanging.isSwitchSet()) {
     //   finished = true;
     // }
-    //return m_hanging.getEncoderAvgPosition() < Constants.Hanging.RETRACT_NEO_POS;
-      return false;
+    return m_hanging.getEncoderAvgPosition() < Constants.Hanging.RETRACT_NEO_POS;
+      // return false;
   }
 }

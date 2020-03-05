@@ -44,6 +44,7 @@ public class ExtendHang extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     m_hanging.controlArmNeo(0);
+    m_hanging.setPiston(Value.kForward);    
   }
 
   // Returns true when the command should end.
@@ -53,7 +54,7 @@ public class ExtendHang extends CommandBase {
     // if(m_hanging.isSwitchSet() == false){
     // finished = true;
     // }
-    //return m_hanging.getEncoderAvgPosition() > Constants.Hanging.EXTEND_NEO_POS;
-    return false;
+    return m_hanging.getEncoderAvgPosition() > Constants.Hanging.EXTEND_NEO_POS;
+    // return false;
   }
 }
