@@ -53,6 +53,7 @@ public class ExtendHang extends CommandBase {
     // if(m_hanging.isSwitchSet() == false){
     // finished = true;
     // }
-    return m_hanging.getEncoderAvgPosition() > Constants.Hanging.EXTEND_NEO_POS;
+    //return m_hanging.getEncoderAvgPosition() > Constants.Hanging.EXTEND_NEO_POS;
+    return false;
   }
 }
