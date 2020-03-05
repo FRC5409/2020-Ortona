@@ -1,0 +1,231 @@
+{
+  "tabPane": [
+    {
+      "title": "SmartDashboard",
+      "autoPopulate": true,
+      "autoPopulatePrefix": "SmartDashboard/",
+      "widgetPane": {
+        "gridSize": 128.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "tiles": {}
+      }
+    },
+    {
+      "title": "Robot Configuration",
+      "autoPopulate": false,
+      "autoPopulatePrefix": "RobotConfig/",
+      "widgetPane": {
+        "gridSize": 128.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "tiles": {
+          "0,0": {
+            "size": [
+              2,
+              4
+            ],
+            "content": {
+              "_type": "Subsystem Layout",
+              "_title": "Autonomous Configuration",
+              "Layout/Label position": "BOTTOM",
+              "_children": [
+                {
+                  "_type": "ComboBox Chooser",
+                  "_title": "Autonomous Pathway"
+                },
+                {
+                  "_type": "Toggle Switch",
+                  "_title": "Autonomous Enable"
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Robot Information",
+      "autoPopulate": false,
+      "autoPopulatePrefix": "RobotInfo",
+      "widgetPane": {
+        "gridSize": 128.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "tiles": {
+          "4,1": {
+            "size": [
+              5,
+              5
+            ],
+            "content": {
+              "_type": "Camera Stream",
+              "_title": "Camera Stream",
+              "Crosshair/Show crosshair": true,
+              "Crosshair/Crosshair color": "#FFFF4DFF",
+              "Controls/Show controls": true,
+              "Controls/Rotation": "NONE",
+              "compression": -1.0,
+              "fps": -1,
+              "imageWidth": -1,
+              "imageHeight": -1
+            }
+          },
+          "0,0": {
+            "size": [
+              2,
+              3
+            ],
+            "content": {
+              "_type": "List Layout",
+              "_title": "Autonomous Information",
+              "Layout/Label position": "BOTTOM",
+              "_children": [
+                {
+                  "_type": "Text View",
+                  "_title": "Autonomous Path Type"
+                },
+                {
+                  "_type": "Grid Layout",
+                  "_title": "Autonomous State",
+                  "Layout/Number of columns": 2,
+                  "Layout/Number of rows": 1,
+                  "Layout/Label position": "BOTTOM",
+                  "_children": {
+                    "0,0": {
+                      "_type": "Boolean Box",
+                      "_title": "Shooting State",
+                      "Colors/Color when true": "#FFDE14FF",
+                      "Colors/Color when false": "#333333FF"
+                    },
+                    "1,0": {
+                      "_type": "Boolean Box",
+                      "_title": "Driving State",
+                      "Colors/Color when true": "#FFDE15FF",
+                      "Colors/Color when false": "#333333FF"
+                    }
+                  }
+                },
+                {
+                  "_type": "Boolean Box",
+                  "_title": "Autonomous Finished",
+                  "Colors/Color when true": "#FFDE14FF",
+                  "Colors/Color when false": "#333333FF"
+                }
+              ]
+            }
+          },
+          "11,0": {
+            "size": [
+              2,
+              6
+            ],
+            "content": {
+              "_type": "List Layout",
+              "_title": "Shooter Information",
+              "Layout/Label position": "BOTTOM",
+              "_children": [
+                {
+                  "_type": "Simple Dial",
+                  "_title": "Flywheel Velocity",
+                  "Range/Min": 0.0,
+                  "Range/Max": 5400.0,
+                  "Visuals/Show value": true
+                },
+                {
+                  "_type": "Gyro",
+                  "_title": "Turret Angle",
+                  "Visuals/Major tick spacing": 45.0,
+                  "Visuals/Starting angle": 180.0,
+                  "Visuals/Show tick mark ring": true
+                },
+                {
+                  "_type": "Grid Layout",
+                  "_title": "Shooter Target Information",
+                  "Layout/Number of columns": 2,
+                  "Layout/Number of rows": 2,
+                  "Layout/Label position": "BOTTOM",
+                  "_children": {
+                    "0,1": {
+                      "_type": "Boolean Box",
+                      "_title": "Vel. Reached",
+                      "Colors/Color when true": "#FFDE14FF",
+                      "Colors/Color when false": "#333333FF"
+                    },
+                    "1,0": {
+                      "_type": "Text View",
+                      "_title": "Rotation Target"
+                    },
+                    "0,0": {
+                      "_type": "Text View",
+                      "_title": "Velocity Target"
+                    },
+                    "1,1": {
+                      "_type": "Boolean Box",
+                      "_title": "Rot. Reached",
+                      "Colors/Color when true": "#FFDE14FF",
+                      "Colors/Color when false": "#333333FF"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "4,0": {
+            "size": [
+              5,
+              1
+            ],
+            "content": {
+              "_type": "Basic FMS Info",
+              "_title": "District Event FMS Information"
+            }
+          },
+          "0,3": {
+            "size": [
+              2,
+              3
+            ],
+            "content": {
+              "_type": "List Layout",
+              "_title": "Indexer Information",
+              "Layout/Label position": "BOTTOM",
+              "_children": [
+                {
+                  "_type": "Grid Layout",
+                  "_title": "Indexer State",
+                  "Layout/Number of columns": 2,
+                  "Layout/Number of rows": 1,
+                  "Layout/Label position": "BOTTOM",
+                  "_children": {
+                    "1,0": {
+                      "_type": "Boolean Box",
+                      "_title": "Indexer Full",
+                      "Colors/Color when true": "#FFDE14FF",
+                      "Colors/Color when false": "#333333FF"
+                    },
+                    "0,0": {
+                      "_type": "Boolean Box",
+                      "_title": "Indexer Running",
+                      "Colors/Color when true": "#FFDE14FF",
+                      "Colors/Color when false": "#333333FF"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  ],
+  "windowGeometry": {
+    "x": -8.0,
+    "y": -8.0,
+    "width": 1932.0,
+    "height": 1176.0
+  }
+}
