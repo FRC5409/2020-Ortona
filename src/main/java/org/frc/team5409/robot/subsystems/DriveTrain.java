@@ -108,7 +108,7 @@ public class DriveTrain extends SubsystemBase {
     // Calibrate the gyro
     m_navX = new AHRS(SPI.Port.kMXP);
     // Add NAVX calibration here
-
+    
     // Set intial toggle value to false
     m_antiTipToggle = false;
   }

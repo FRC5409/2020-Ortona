@@ -7,7 +7,7 @@
 
 package org.frc.team5409.robot.subsystems;
 
-import com.playingwithfusion.TimeOfFlight;
+// import com.playingwithfusion.TimeOfFlight;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
@@ -111,6 +111,9 @@ public class Hanging extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     // adjustPid();
+    SmartDashboard.putNumber("Encoder 1", enc1_hanging.getPosition());
+    SmartDashboard.putNumber("Encoder 2", enc2_hanging.getPosition());
+    SmartDashboard.putNumber("Average Encoder Value", getEncoderAvgPosition());
   }
 
   public void adjustPid() {
