@@ -1,7 +1,7 @@
 package org.frc.team5409.robot.subsystems.shooter;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.*;
 
@@ -90,6 +90,12 @@ public final class ShooterFlywheel extends SubsystemBase implements Toggleable {
 
         m_watchdog = new Watchdog(Constants.ShooterControl.shooter_watchdog_expire_time);
         m_logger = new RawLogger("flywheel/"+MatchData.getEventString()+".log");
+    
+        var parent = Shuffleboard.getTab("Robot Information").getLayout("Shooter Information");
+            parent.addNumber("Flywheel Velocity", () -> { return enc_C07_shooter_flywheel.getVelocity(); });
+            var child = parent.getLayout("Shooter Target Information");
+                child.addNumber("Velocity Target", () -> { return m_target; });
+                child.addBoolean("Vel. Reached", () -> { return isTargetReached(); } );
     }
     
     /**
@@ -242,26 +248,14 @@ public final class ShooterFlywheel extends SubsystemBase implements Toggleable {
     }
 
     /**
-     * Get's various types of data from the shooter
-     * flywheel subsystem.
+     * Get's the flywheel motor current output.
      * 
-     * @param type The type of Shooter data.
-     * 
-     * @return     The requested type of data.
+     * @return The current output.
      */
-    public double getData(ShooterData type) {
-        m_watchdog.feed();
-
-        switch (type) {
-            case kFlywheelVelocity: return enc_C07_shooter_flywheel.getVelocity();
-            case kFlywheelCurrent:  return mot_C07_shooter_flywheel.getOutputCurrent();
-            case kFeederCurrent:    return mot_C18_shooter_feeder.getOutputCurrent();
-            case kFlywheelTarget:   return m_target;
-            case kFlywheelOffset:   return m_velocity_offset;
-        }
-        return -1;
+    public double getOutputCurrent() {
+        return mot_C07_shooter_flywheel.getOutputCurrent();
     }
-    
+     
     @Override
     public void periodic() {
         if (m_enabled) {
