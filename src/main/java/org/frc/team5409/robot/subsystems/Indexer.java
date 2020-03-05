@@ -9,15 +9,14 @@ package org.frc.team5409.robot.subsystems;
 
 import java.time.Instant;
 
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.playingwithfusion.TimeOfFlight;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMax.IdleMode;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.frc.team5409.robot.Constants;
-import org.frc.team5409.robot.util.Logger;
 
 /**
  * Add your docs here.
@@ -28,159 +27,146 @@ import org.frc.team5409.robot.util.Logger;
  * Subsystem that set up the indexer
  */
 public class Indexer extends SubsystemBase {
-  // Put methods for controlling this subsystem
-  // here. Call these from Commands.
+	// Put methods for controlling this subsystem
+	// here. Call these from Commands.
+	// sensor at entrance
+	protected TimeOfFlight TOF_Enter;
 
-  // sensor at entrance
-  protected TimeOfFlight TOF_Enter;
+	// sensor at exit
+	protected TimeOfFlight TOF_Exit;
 
-  // sensor at exit
-  protected TimeOfFlight TOF_Exit;
+	// sensor to detect balls
+	protected TimeOfFlight TOF_Ball1;
 
-  // sensor to detect balls
-  protected TimeOfFlight TOF_Ball1;
+	// get the valid ranges of all three sensors
+	protected boolean isRangeValidEnter;
+	protected boolean isRangeValidExit;
+	protected boolean isRangeValidBall1;
 
-  protected Logger indexerLogger;
+	// getting ranges of all three sensors
+	protected double getRangeEnter;
+	protected double getRangeExit;
+	protected double getRangeBall1;
 
-  // get the valid ranges of all three sensors
-  protected boolean isRangeValidEnter;
-  protected boolean isRangeValidExit;
-  protected boolean isRangeValidBall1;
+	protected final CANSparkMax m_Indexer_neo550_C16;
 
-  // getting ranges of all three sensors
-  protected double getRangeEnter;
-  protected double getRangeExit;
-  protected double getRangeBall1;
+	protected double m_output;
 
-  // detection whether or not ball has passed through sensor
-  public boolean ballDetectionEnter;
+	// boolean to detect whether or not indexer is full
+	boolean IndexerFull;
 
-  public boolean ballDetectionBall1;
+	public Indexer() {
 
-  public boolean ballDetectionExit;
+		TOF_Enter = new TimeOfFlight(Constants.Indexer.TOF_Enter);
+		TOF_Exit = new TimeOfFlight(Constants.Indexer.TOF_Exit);
+		TOF_Ball1 = new TimeOfFlight(Constants.Indexer.TOF_Ball1); 
 
-  protected final CANSparkMax m_Indexer_neo550_C16;
+		m_Indexer_neo550_C16 = new CANSparkMax(Constants.Indexer.m_Indexer_neo550_C16, MotorType.kBrushless);
+		m_Indexer_neo550_C16.setSmartCurrentLimit(Constants.Indexer.currentLimit);
+		m_Indexer_neo550_C16.setIdleMode(IdleMode.kBrake);
+		m_Indexer_neo550_C16.burnFlash();
 
-  // boolean to detect whether or not indexer is full
-  boolean IndexerFull;
+		TOF_Enter.setRangingMode(TimeOfFlight.RangingMode.Short, Constants.Indexer.sampleTime);
+		TOF_Exit.setRangingMode(TimeOfFlight.RangingMode.Short, Constants.Indexer.sampleTime);
+		TOF_Ball1.setRangingMode(TimeOfFlight.RangingMode.Short, Constants.Indexer.sampleTime);
 
-  public Indexer() {
+		m_output = 0;
 
-    TOF_Enter = new TimeOfFlight(Constants.Indexer.TOF_Enter);
-    TOF_Exit = new TimeOfFlight(Constants.Indexer.TOF_Exit);
-    TOF_Ball1 = new TimeOfFlight(Constants.Indexer.TOF_Ball1); 
+		var parent = Shuffleboard.getTab("Robot Information")
+								 .getLayout("Indexer Information")
+							     .getLayout("Indexer State");
+        	parent.addBoolean("Indexer Active", () -> { return m_output != 0; });
+        	parent.addBoolean("Indexer Full", () -> { return ballDetectionExit(); });
+	}
 
-    m_Indexer_neo550_C16 = new CANSparkMax(Constants.Indexer.m_Indexer_neo550_C16, MotorType.kBrushless);
-    m_Indexer_neo550_C16.setSmartCurrentLimit(Constants.Indexer.currentLimit);
-    m_Indexer_neo550_C16.setIdleMode(IdleMode.kBrake);
-    m_Indexer_neo550_C16.burnFlash();
+	// the measured distance in mm
+	public double getRangeEnter() {
+		return TOF_Enter.getRange();
+	}
 
-    TOF_Enter.setRangingMode(TimeOfFlight.RangingMode.Short, Constants.Indexer.sampleTime);
-    TOF_Exit.setRangingMode(TimeOfFlight.RangingMode.Short, Constants.Indexer.sampleTime);
-    TOF_Ball1.setRangingMode(TimeOfFlight.RangingMode.Short, Constants.Indexer.sampleTime);
+	public double getRangeExit() {
+		return TOF_Exit.getRange();
+	}
 
-    indexerLogger = new Logger("indexer/" + Long.toString(Instant.now().getEpochSecond()) + "/logging.csv");
-  }
+	public double getRangeBall1() {
+		return TOF_Ball1.getRange();
+	}
 
-  // the measured distance in mm
-  public double getRangeEnter() {
-    return TOF_Enter.getRange();
-  }
+	// ball detection functions
+	public boolean ballDetectionEnter() {
+		double range = TOF_Enter.getRange();
+		if (range < Constants.Indexer.rangeEnter_2) {
 
-  public double getRangeExit() {
-    return TOF_Exit.getRange();
-  }
+		// if (range > Constants.Indexer.rangeEnter_1 && range <
+		// Constants.Indexer.rangeEnter_2) {
 
-  public double getRangeBall1() {
-    return TOF_Ball1.getRange();
-  }
+		return true;
+		}
+		return false;
+	}
 
-  // ball detection functions
-  public boolean ballDetectionEnter() {
-    double range = TOF_Enter.getRange();
-    if (range < Constants.Indexer.rangeEnter_2) {
+	// function that returns how many power cells are in the indexer
+	// public int getNumberOfPowerCellsEnter() {
+	// return getNumberOfPowerCellsEnter;
+	// }
 
-      // if (range > Constants.Indexer.rangeEnter_1 && range <
-      // Constants.Indexer.rangeEnter_2) {
+	// detects whether or not power cells are in range of ball1 sensor
+	public boolean ballDetectionBall1() {
+		double range = TOF_Ball1.getRange();
+		if (range < Constants.Indexer.rangeBall1_2) {
+		// if (range < Constants.Indexer.rangeBall1_1 && range >
+		// Constants.Indexer.rangeBall1_2)
+		
+		return true;
+		}
+		return false;
+	}
 
-      return true;
-    }
-    return false;
-  }
+	// detects whether or not power cells are in range of exit sensor
+	public boolean ballDetectionExit() {
+		double range = TOF_Exit.getRange();
+		if (range < Constants.Indexer.rangeExit_2) {
 
-  // function that returns how many power cells are in the indexer
-  // public int getNumberOfPowerCellsEnter() {
-  // return getNumberOfPowerCellsEnter;
-  // }
+		// if (range < Constants.Indexer.rangeExit_1 && range >
+		// Constants.Indexer.rangeExit_2) {
 
-  // detects whether or not power cells are in range of ball1 sensor
-  public boolean ballDetectionBall1() {
-    double range = TOF_Ball1.getRange();
-    if (range < Constants.Indexer.rangeBall1_2) {
-      // if (range < Constants.Indexer.rangeBall1_1 && range >
-      // Constants.Indexer.rangeBall1_2)
-      
-      return true;
-    }
-    return false;
-  }
+		return true;
+		}
+		return false;
+	}
 
-  // detects whether or not power cells are in range of exit sensor
-  public boolean ballDetectionExit() {
-    double range = TOF_Exit.getRange();
-    if (range < Constants.Indexer.rangeExit_2) {
+	/**
+	 * methods that determine whether or not 
+	 * the ranges of 
+	 */
+	public boolean isRangeValidEnter() {
+		return TOF_Enter.isRangeValid();
+	}
 
-      // if (range < Constants.Indexer.rangeExit_1 && range >
-      // Constants.Indexer.rangeExit_2) {
+	public boolean isRangeValidExit() {
+		return TOF_Exit.isRangeValid();
+	}
 
-      return true;
-    }
-    return false;
-  }
+	public boolean isRangeValidBall1() {
+		return TOF_Ball1.isRangeValid();
+	}
 
-  /**
-   * methods that determine whether or not 
-   * the ranges of 
-   */
-  public boolean isRangeValidEnter() {
-    return TOF_Enter.isRangeValid();
-  }
+	// set ranging mode (short)
+	public void setRangingMode(TimeOfFlight.RangingMode rangeModeIn, double sampleTime) {
+		if (sampleTime > 24) { // Error Checking for sample time <24
+			sampleTime = 24;
+			TOF_Enter.setRangingMode(rangeModeIn, sampleTime);
+		}
+	}
 
-  public boolean isRangeValidExit() {
-    return TOF_Exit.isRangeValid();
-  }
+	// sets up motor
+	public void moveIndexerMotor(double output) {
+		m_output = output
+		m_Indexer_neo550_C16.set(output);
+	}
 
-  public boolean isRangeValidBall1() {
-    return TOF_Ball1.isRangeValid();
-  }
-
-  // set ranging mode (short)
-  public void setRangingMode(TimeOfFlight.RangingMode rangeModeIn, double sampleTime) {
-    if (sampleTime > 24) { // Error Checking for sample time <24
-      sampleTime = 24;
-      TOF_Enter.setRangingMode(rangeModeIn, sampleTime);
-    } else if (sampleTime > 24) {
-    }
-  }
-
-  // sets up motor
-  public void moveIndexerMotor(double output) {
-    m_Indexer_neo550_C16.set(output);
-  }
-
-  @Override
-  public void periodic() {
-    SmartDashboard.putNumber("Range of EnterSensor", TOF_Enter.getRange());
-    SmartDashboard.putNumber("Range of ExitSensor", TOF_Exit.getRange());
-    SmartDashboard.putNumber("Range of Ball1", TOF_Ball1.getRange());
-
-    SmartDashboard.putBoolean("Is the range of the EnterSensor valid?", TOF_Enter.isRangeValid());
-    SmartDashboard.putBoolean("Is the range of the ExitSensor valid?", TOF_Exit.isRangeValid());
-    SmartDashboard.putBoolean("Is the range of the Ball1Sensor valid?", TOF_Ball1.isRangeValid());
-
-    // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand())
-
-  }
+	@Override
+	public void periodic() {
+	}
 
 }

@@ -89,7 +89,7 @@ public class IntakeIndexActive extends CommandBase {
 		subsys_indexer.moveIndexerMotor(0);
 		subsys_Intake.intakeOn(0);
 
-		if(subsys_indexer.ballDetectionExit){
+		if(subsys_indexer.ballDetectionExit()){
 
 			subsys_Intake.solenoidsUp();
 			
