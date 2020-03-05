@@ -21,14 +21,19 @@ public class DriveStraightAuto extends CommandBase {
     // Use addRequirements() here to declare subsystem dependencies.
     subsystem = sub;
     addRequirements(subsystem);
+  
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+
+    
     subsystem.resetEncoders();
-    subsystem.setLeftMotors(0.5);
-    subsystem.setRightMotors(0.5);
+    subsystem.setLeftMotors(0.2);
+    subsystem.setRightMotors(0.2);
+
+    
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -45,11 +50,13 @@ public class DriveStraightAuto extends CommandBase {
   public void end(boolean interrupted) {
     subsystem.setRightMotors(0);
     subsystem.setLeftMotors(0);
+    
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return subsystem.getAverageEncoderDistance() > 1;
+
+    return false;
   }
 }
