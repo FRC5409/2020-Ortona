@@ -95,6 +95,7 @@ public final class ShooterFlywheel extends SubsystemBase implements Toggleable {
             parent.addNumber("Flywheel Velocity", () -> { return enc_C07_shooter_flywheel.getVelocity(); });
             var child = parent.getLayout("Shooter Target Information");
                 child.addNumber("Velocity Target", () -> { return m_target; });
+                child.addNumber("Velocity Offset", () -> { return m_velocity_offset; });
                 child.addBoolean("Vel. Reached", () -> { return isTargetReached(); } );
     }
     
@@ -162,7 +163,7 @@ public final class ShooterFlywheel extends SubsystemBase implements Toggleable {
      * @return The flywheel velocity.
      */
     public double getVelocity() {
-        return getData(ShooterData.kFlywheelVelocity);
+        return enc_C07_shooter_flywheel.getVelocity();
     }
 
     /**
@@ -173,8 +174,7 @@ public final class ShooterFlywheel extends SubsystemBase implements Toggleable {
      */
     public boolean isTargetReached() {
         m_watchdog.feed();
-        SmartDashboard.putNumber("Velocity offset", Math.abs(getData(ShooterData.kFlywheelVelocity) - m_target));
-        return (Math.abs(getData(ShooterData.kFlywheelVelocity) - m_target) < Constants.ShooterControl.shooter_flywheel_target_thresh);
+        return (Math.abs(enc_C07_shooter_flywheel.getVelocity() - m_target) < Constants.ShooterControl.shooter_flywheel_target_thresh);
     }
 
     /**
