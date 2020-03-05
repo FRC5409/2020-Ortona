@@ -61,9 +61,9 @@ public class DriveCommand extends CommandBase {
     leftEncoderRate = sys_driveSubsystem.getLeftEncoderRate();
     rightEncoderRate = sys_driveSubsystem.getRightEncoderRate();
     averageEncoderRate = (leftEncoderRate + rightEncoderRate)/2;
-    SmartDashboard.putNumber("Average Encoder Rate", averageEncoderRate);
-    SmartDashboard.putNumber("Pitch Angle Degrees", pitchAngleDegrees);
-    SmartDashboard.putNumber("Roll Angle Degrees", rollAngleDegrees);
+    // SmartDashboard.putNumber("Average Encoder Rate", averageEncoderRate);
+    // SmartDashboard.putNumber("Pitch Angle Degrees", pitchAngleDegrees);
+    // SmartDashboard.putNumber("Roll Angle Degrees", rollAngleDegrees);
 
 
     // if(averageEncoderRate <= lowGearShiftThreshold){

@@ -9,7 +9,190 @@
         "showGrid": true,
         "hgap": 16.0,
         "vgap": 16.0,
-        "tiles": {}
+        "tiles": {
+          "0,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Target Velocity",
+              "_title": "Target Velocity"
+            }
+          },
+          "1,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Average Encoder Value",
+              "_title": "Average Encoder Value"
+            }
+          },
+          "2,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/limelight-gwss_Interface",
+              "_title": "limelight-gwss_Interface"
+            }
+          },
+          "3,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Actual Velocity",
+              "_title": "Actual Velocity"
+            }
+          },
+          "4,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Range of Ball1",
+              "_title": "Range of Ball1"
+            }
+          },
+          "5,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/limelight-gwss_Stream",
+              "_title": "limelight-gwss_Stream"
+            }
+          },
+          "6,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/krightencoder value",
+              "_title": "krightencoder value"
+            }
+          },
+          "7,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/kleftencoder value",
+              "_title": "kleftencoder value"
+            }
+          },
+          "8,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/limelight-gwss_PipelineName",
+              "_title": "limelight-gwss_PipelineName"
+            }
+          },
+          "9,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Range of EnterSensor",
+              "_title": "Range of EnterSensor"
+            }
+          },
+          "10,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Is the range of the Ball1Sensor valid?",
+              "_title": "Is the range of the Ball1Sensor valid?",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "0,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Is the range of the EnterSensor valid?",
+              "_title": "Is the range of the EnterSensor valid?",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "1,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Is the range of the ExitSensor valid?",
+              "_title": "Is the range of the ExitSensor valid?",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "2,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Encoder 1",
+              "_title": "Encoder 1"
+            }
+          },
+          "3,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Encoder 2",
+              "_title": "Encoder 2"
+            }
+          },
+          "4,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Range of ExitSensor",
+              "_title": "Range of ExitSensor"
+            }
+          }
+        }
       }
     },
     {
@@ -51,15 +234,15 @@
       "autoPopulate": false,
       "autoPopulatePrefix": "RobotInfo",
       "widgetPane": {
-        "gridSize": 128.0,
+        "gridSize": 32.0,
         "showGrid": true,
         "hgap": 16.0,
         "vgap": 16.0,
         "tiles": {
-          "4,1": {
+          "8,3": {
             "size": [
-              5,
-              5
+              11,
+              8
             ],
             "content": {
               "_type": "Camera Stream",
@@ -76,8 +259,8 @@
           },
           "0,0": {
             "size": [
-              2,
-              3
+              5,
+              8
             ],
             "content": {
               "_type": "List Layout",
@@ -118,10 +301,10 @@
               ]
             }
           },
-          "11,0": {
+          "22,0": {
             "size": [
-              2,
-              6
+              6,
+              13
             ],
             "content": {
               "_type": "List Layout",
@@ -140,7 +323,8 @@
                   "_title": "Turret Angle",
                   "Visuals/Major tick spacing": 45.0,
                   "Visuals/Starting angle": 180.0,
-                  "Visuals/Show tick mark ring": true
+                  "Visuals/Show tick mark ring": true,
+                  "Visuals/Counter clockwise": false
                 },
                 {
                   "_type": "Grid Layout",
@@ -174,20 +358,20 @@
               ]
             }
           },
-          "4,0": {
+          "8,0": {
             "size": [
-              5,
-              1
+              11,
+              3
             ],
             "content": {
               "_type": "Basic FMS Info",
               "_title": "District Event FMS Information"
             }
           },
-          "0,3": {
+          "0,8": {
             "size": [
-              2,
-              3
+              5,
+              5
             ],
             "content": {
               "_type": "List Layout",
@@ -225,7 +409,7 @@
   "windowGeometry": {
     "x": -8.0,
     "y": -8.0,
-    "width": 1932.0,
-    "height": 1176.0
+    "width": 1382.0,
+    "height": 744.0
   }
 }
