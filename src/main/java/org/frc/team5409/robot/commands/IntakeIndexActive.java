@@ -73,6 +73,8 @@ public class IntakeIndexActive extends CommandBase {
 		SmartDashboard.putBoolean("TOF_Enter", TOF_Enter);
 		SmartDashboard.putBoolean("TOF_Exit", TOF_Exit);
 
+		SmartDashboard.putBoolean("IntakeNotJammed" subsys_Intake.isIntakeNotJammed); 
+
 		// if statements to run the indexer motor
 		if (TOF_Enter) {
 			subsys_indexer.moveIndexerMotor(1);
