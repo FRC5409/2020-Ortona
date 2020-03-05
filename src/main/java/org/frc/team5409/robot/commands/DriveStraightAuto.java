@@ -14,12 +14,17 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class DriveStraightAuto extends CommandBase {
   DriveTrain subsystem;
+  int sign;
+  double leftSpeed;
+  double rightSpeed;
   /**
    * Creates a new DriveStraightAuto.
    */
-  public DriveStraightAuto(DriveTrain sub) {
+  public DriveStraightAuto(DriveTrain sub, double leftS, double rightS) {
     // Use addRequirements() here to declare subsystem dependencies.
     subsystem = sub;
+    leftSpeed = leftS;
+    rightSpeed = rightS;
     addRequirements(subsystem);
   
   }
@@ -30,8 +35,6 @@ public class DriveStraightAuto extends CommandBase {
 
     
     subsystem.resetEncoders();
-    subsystem.setLeftMotors(0.2);
-    subsystem.setRightMotors(0.2);
 
     
   }
@@ -43,6 +46,9 @@ public class DriveStraightAuto extends CommandBase {
     //   subsystem.setLeftMotors(0);
     //   subsystem.setRightMotors(0);
     // }
+    
+    subsystem.setLeftMotors(leftSpeed);
+    subsystem.setRightMotors(rightSpeed);
   }
 
   // Called once the command ends or is interrupted.

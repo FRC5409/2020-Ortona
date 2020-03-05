@@ -23,7 +23,7 @@ public final class Constants {
     // Timing Constants
         public static final double vision_acquisition_delay = 0.5;
 
-        public static final double vision_aligned_thresh = 0.45;
+        public static final double vision_aligned_thresh = 3.5;
     }
 
     public static final class ShooterControl {
@@ -81,8 +81,10 @@ public final class Constants {
             //return 1384*Math.log(d) - 762;
             //return 565*Math.pow(d,0.589); 
             //return -0.512*(d*d*d) + 29.5*(d*d) - 463*d + 4726
+
             //return 0.615*(d*d*d) - 24.8*(d*d) + 378*d + 702;
-            return 0.581*(d*d*d) - 23.1*(d*d) + 350*d + 850;
+            //return 0.581*(d*d*d) - 23.1*(d*d) + 350*d + 850;
+            return 0.177*(d*d*d) - 5.34*(d*d) + 109*d + 1885;
         };
 
         public static final String shooter_distance_rpm_curve_string = "1506 * ln(d + 0.83) - 1492";

@@ -38,7 +38,7 @@ public class RobotContainer {
 	//private final ShooterFlywheel subsys_shooter_flywheel;
 	//private final ShooterTurret subsys_shooter_turret;
 	private final Indexer sys_indexer;
-	public final Intake subsys_intake;
+	public final Intake sys_intake;
 	public final DriveTrain sys_driveTrain;
 	private final Hanging sys_hang;
 	
@@ -48,7 +48,7 @@ public class RobotContainer {
 	private FastGearShift cmd_FastGearShift;
 	private SlowGearShift cmd_SlowGearShift;
 	public final DriveCommand cmd_drive;
-	public final DriveStraightAuto cmd_DriveStraightAuto;
+	public DriveStraightAuto cmd_DriveStraightAuto;
 	public final IndexerReverse cmd_IndexerReverse; 
 	private final IntakeActivateSolenoids cmd_IntakeActivateSolenoids;
 
@@ -82,7 +82,7 @@ public class RobotContainer {
 		sys_hang = new Hanging();
 
 		cmd_drive = new DriveCommand(sys_driveTrain, joy_main);
-		cmd_DriveStraightAuto = new DriveStraightAuto(sys_driveTrain);
+		//cmd_DriveStraightAuto = new DriveStraightAuto(sys_driveTrain);
 
 		sys_shooter_turret = new ShooterTurret();
 		sys_shooter_flywheel = new ShooterFlywheel();
@@ -94,14 +94,14 @@ public class RobotContainer {
 		cmd_IndexerReverse = new IndexerReverse(sys_indexer);
 
 		// Sanad's stuff
-		subsys_intake = new Intake();
-		cmd_IntakeActivateSolenoids = new IntakeActivateSolenoids(subsys_intake); 
+		sys_intake = new Intake();
+		cmd_IntakeActivateSolenoids = new IntakeActivateSolenoids(sys_intake); 
 		
 		// Keith's stuff
 		//subsys_shooter_flywheel = new ShooterFlywheel();
 		//subsys_shooter_turret = new ShooterTurret();
 
-		cmd_IntakeIndexActive = new IntakeIndexActive(sys_indexer, subsys_intake);
+		cmd_IntakeIndexActive = new IntakeIndexActive(sys_indexer, sys_intake);
 		
 
 		//grp_configure_turret = new SequentialCommandGroup(new CalibrateShooter(subsys_shooter_turret, subsys_shooter_flywheel),
@@ -147,7 +147,7 @@ public class RobotContainer {
 		but_main_A.whileActiveOnce(new OperateShooter(sys_shooter_flywheel, sys_shooter_turret, sys_limelight, sys_indexer))
 			      .whenInactive(new RotateTurret(sys_shooter_turret, 0));
 		//sys_shooter_flywheel.setDefaultCommand(new RunShooterFlywheel(sys_shooter_flywheel, sys_indexer, sys_limelight, joy_main, joy_secondary));
-		but_main_B.whileActiveOnce(new ReverseIntake(subsys_intake));
+		but_main_B.whileActiveOnce(new ReverseIntake(sys_intake));
 		//sys_indexer.setDefaultCommand(new IntakeIndexActive(sys_indexer, subsys_intake));
 		configureBindings();
 	}
@@ -158,12 +158,12 @@ public class RobotContainer {
 		//but_main_A.cancelWhenPressed(cmd_IndexActive);
 
 	    // Run intake while held
-		but_main_Y.whileHeld(new IntakeIndexActive(sys_indexer, subsys_intake));
+		but_main_Y.whileHeld(new IntakeIndexActive(sys_indexer, sys_intake));
 
-		but_main_X.whenPressed(new IntakeActivateSolenoids(subsys_intake)); 
+		but_main_X.whenPressed(new IntakeActivateSolenoids(sys_intake)); 
 
 		// Reverse intake while held
-		but_main_B.whileHeld(new ReverseIntake(subsys_intake));
+		but_main_B.whileHeld(new ReverseIntake(sys_intake));
 
 
 		// Toggle AntiTip
@@ -242,6 +242,7 @@ public class RobotContainer {
 //   }
 
 	public Command getAutonomousCommand() {
-		return new ShootAuto(sys_shooter_flywheel, sys_shooter_turret, sys_limelight, sys_indexer, sys_driveTrain);
+		return new ShootAuto(sys_shooter_flywheel, sys_shooter_turret, sys_limelight, sys_indexer, sys_driveTrain, sys_intake);
+		//return new shootAuto();
 	}
 }

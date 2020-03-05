@@ -34,8 +34,6 @@ public class DriveTrain extends SubsystemBase {
   private final CANSparkMax mot_rightDriveFront_sparkmax_C15;
   private final CANSparkMax mot_leftDriveRear_sparkmax_C4;
   private final CANSparkMax mot_rightDriveRear_sparkmax_C6;
-  private SpeedControllerGroup m_leftMotors;
-  private SpeedControllerGroup m_rightMotors;
   private final DifferentialDrive m_drive;
   private final CANEncoder m_leftEncoder;
   private final CANEncoder m_rightEncoder;
@@ -248,8 +246,8 @@ public class DriveTrain extends SubsystemBase {
    * @param rightVolts the commanded right output
    */
   public void tankDriveVolts(double leftVolts, double rightVolts) {
-    m_leftMotors.setVoltage(leftVolts);
-    m_rightMotors.setVoltage(-rightVolts);
+    mot_leftDriveFront_sparkmax_C14.setVoltage(leftVolts);
+    mot_rightDriveFront_sparkmax_C15.setVoltage(-rightVolts);
     m_drive.feed();
   }
 
@@ -348,25 +346,11 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public void setLeftMotors(double speed) {
-    m_leftMotors.set(speed);
+    mot_leftDriveFront_sparkmax_C14.set(speed);
   }
 
   public void setRightMotors(double speed) {
-    m_rightMotors.set(speed);
+    mot_rightDriveFront_sparkmax_C15.set(speed);
   }
 
-  public void auto() {
-
-    if (m_leftEncoder.getPosition() * Constants.DriveTrain.distanceCalculate <= (1)) {
-      m_leftMotors.set(0.5);
-      m_rightMotors.set(0.5);
-
-    } else {
-
-      m_leftMotors.set(0);
-      m_rightMotors.set(0);
-
-    }
-
-  }
 }

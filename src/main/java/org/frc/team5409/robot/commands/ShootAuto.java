@@ -7,14 +7,11 @@
 
 package org.frc.team5409.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.*;
 import org.frc.team5409.robot.RobotContainer;
-import org.frc.team5409.robot.commands.shooter.OperateShooter;
-import org.frc.team5409.robot.subsystems.DriveTrain;
-import org.frc.team5409.robot.subsystems.Indexer;
-import org.frc.team5409.robot.subsystems.Limelight;
-import org.frc.team5409.robot.subsystems.shooter.ShooterFlywheel;
-import org.frc.team5409.robot.subsystems.shooter.ShooterTurret;
+import org.frc.team5409.robot.commands.shooter.*;
+import org.frc.team5409.robot.subsystems.*;
+import org.frc.team5409.robot.subsystems.shooter.*;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
@@ -29,12 +26,22 @@ public class ShootAuto extends SequentialCommandGroup {;
                    ShooterTurret sys_rotation, 
                    Limelight sys_limelight, 
                    Indexer sys_indexer,
-                   DriveTrain sys_driveTrain
+                   DriveTrain sys_driveTrain,
+                   Intake sys_intake
                   ) {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
-    super(new OperateShooter(sys_flywheel, sys_rotation, sys_limelight, sys_indexer).withTimeout(6),
-          new DriveStraightAuto(sys_driveTrain).withTimeout(2));
+    super(
+      new OperateShooter(sys_flywheel, sys_rotation, sys_limelight, sys_indexer).withTimeout(3.5),
+      new ParallelCommandGroup(
+        new DriveStraightAuto(sys_driveTrain, 0.75, 0.75),
+        new RotateTurret(sys_rotation, 0),
+        new IntakeIndexActive(sys_indexer, sys_intake)
+      ).withTimeout(3),
+      new DriveStraightAuto(sys_driveTrain, -0.8, -0.8).withTimeout(2.5),
+      new DriveStraightAuto(sys_driveTrain, 0.1, 0.1).withTimeout(1),
+      new OperateShooter(sys_flywheel, sys_rotation, sys_limelight, sys_indexer).withTimeout(6)
+    );
     //addCommand();
     //addCommand();
   }
