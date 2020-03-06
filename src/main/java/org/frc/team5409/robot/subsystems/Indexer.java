@@ -12,6 +12,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.playingwithfusion.TimeOfFlight;
 import com.revrobotics.CANSparkMax;
 
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.frc.team5409.robot.Constants;
@@ -71,8 +72,8 @@ public class Indexer extends SubsystemBase {
 		m_output = 0;
 
 		var parent = Shuffleboard.getTab("Robot Information")
-								 .getLayout("Indexer Information")
-							     .getLayout("Indexer State");
+								 .getLayout("Indexer Information", BuiltInLayouts.kList)
+							     .getLayout("Indexer State", BuiltInLayouts.kGrid);
         	parent.addBoolean("Indexer Active", () -> { return m_output != 0; });
         	parent.addBoolean("Indexer Full", () -> { return ballDetectionExit(); });
 	}

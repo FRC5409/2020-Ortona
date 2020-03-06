@@ -1,5 +1,6 @@
 package org.frc.team5409.robot.subsystems.shooter;
 
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -95,11 +96,11 @@ public final class ShooterTurret extends SubsystemBase implements Toggleable {
 
         m_watchdog = new Watchdog(Constants.ShooterControl.shooter_watchdog_expire_time);
 
-        var parent = Shuffleboard.getTab("Robot Information").getLayout("Shooter Information");
-        parent.addNumber("Turret Angle", this::getRotation);
-        var child = parent.getLayout("Shooter Target Information");
-            child.addNumber("Rotation Target", () -> { return m_target; });
-            child.addBoolean("Rot. Reached", this::isTargetReached);
+        var parent = Shuffleboard.getTab("Robot Information").getLayout("Shooter Information", BuiltInLayouts.kList);
+            parent.addNumber("Turret Angle", this::getRotation);
+            var child = parent.getLayout("Shooter Target Information", BuiltInLayouts.kGrid);
+                child.addNumber("Rotation Target", () -> { return m_target; });
+                child.addBoolean("Rot. Reached", this::isTargetReached);
     }
  
     /**

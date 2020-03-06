@@ -1,6 +1,7 @@
 package org.frc.team5409.robot.commands.autonomous;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.*;
 
@@ -11,7 +12,7 @@ import org.frc.team5409.robot.commands.*;
 
 public class SimpleAuto extends SequentialCommandGroup {
     private enum AutonomousState {
-        kShooting, kDriving, kIntaking, kFinished
+        kShooting, kDriving, kFinished
     }
     
     private boolean m_shooting, m_driving, m_finished;
@@ -26,23 +27,18 @@ public class SimpleAuto extends SequentialCommandGroup {
             new ParallelCommandGroup(
                 internal_decorate(new DriveStraightAuto(sys_driveTrain, 0.75, 0.75), AutonomousState.kDriving),
                 internal_decorate(new RotateTurret(sys_rotation, 0), AutonomousState.kShooting)
-            ).withTimeout(1),
-
-            internal_decorate(new DriveStraightAuto(sys_driveTrain, -0.8, -0.8), AutonomousState.kDriving).withTimeout(2.5),
-            internal_decorate(new DriveStraightAuto(sys_driveTrain, 0.1, 0.1), AutonomousState.kDriving).withTimeout(1),
-
-            internal_decorate(new OperateShooter(sys_flywheel, sys_rotation, sys_limelight, sys_indexer), AutonomousState.kShooting).withTimeout(6)
+            ).withTimeout(1)
         );
         
         m_shooting = false;
         m_driving = false;
         m_finished = false;
 
-        var parent = Shuffleboard.getTab("Robot Information").getLayout("Autonomous Information");
+        /*var parent = Shuffleboard.getTab("Robot Information").getLayout("Autonomous Information", BuiltInLayouts.kList);
             parent.addBoolean("Autonomous Finished", () -> { return m_finished; });
-            var child = parent.getLayout("Autonomous State");
+            var child = parent.getLayout("Autonomous State", BuiltInLayouts.kGrid);
                 child.addBoolean("Shooting State", () -> { return m_shooting; });
-                child.addBoolean("Driving State", () -> { return m_driving; });
+                child.addBoolean("Driving State", () -> { return m_driving; });*/
     }
 
     private Command internal_decorate(Command cmd, AutonomousState state) {

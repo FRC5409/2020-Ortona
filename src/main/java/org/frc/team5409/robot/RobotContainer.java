@@ -12,8 +12,9 @@ import java.util.List;
 import org.frc.team5409.robot.commands.*;
 import org.frc.team5409.robot.commands.Hanging.ExtendHang;
 import org.frc.team5409.robot.commands.Hanging.RetractHang;
+import org.frc.team5409.robot.commands.autonomous.ComplexAuto;
+import org.frc.team5409.robot.commands.autonomous.SimpleAuto;
 import org.frc.team5409.robot.commands.shooter.*;
-import org.frc.team5409.robot.commands.shooter.RotateTurret;
 import org.frc.team5409.robot.subsystems.*;
 import org.frc.team5409.robot.subsystems.shooter.*;
 
@@ -23,6 +24,9 @@ import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
@@ -58,6 +62,8 @@ public class RobotContainer {
 	private final ShooterFlywheel sys_shooter_flywheel;
 
 	private final Limelight sys_limelight;
+
+	private SendableChooser<Command> auto_command;
 
 	//buttons
 	private final JoystickButton but_main_A, but_main_B, but_main_X, but_main_Y, but_main_sck_left, but_main_sck_right,
@@ -150,6 +156,7 @@ public class RobotContainer {
 		but_main_B.whileActiveOnce(new ReverseIntake(sys_intake));
 		//sys_indexer.setDefaultCommand(new IntakeIndexActive(sys_indexer, subsys_intake));
 		configureBindings();
+		configureDashboard();
 	}
 
 	
@@ -184,6 +191,22 @@ public class RobotContainer {
 
 		but_secondary_bmp_right.whenPressed(new OffsetFlywheel(sys_shooter_flywheel, true));
 		but_secondary_bmp_left.whenPressed(new OffsetFlywheel(sys_shooter_flywheel, false));
+
+		but_secondary_X.whenPressed(new ResetFlywheelOffset(sys_shooter_flywheel));
+	}
+
+	public void configureDashboard() {
+		auto_command = new SendableChooser<>();
+			auto_command.setDefaultOption("Simple Auto", new SimpleAuto(
+				sys_shooter_flywheel, sys_shooter_turret, sys_limelight, sys_indexer, sys_driveTrain));
+			auto_command.addOption("Complex Auto", new ComplexAuto(
+				sys_shooter_flywheel, sys_shooter_turret, sys_limelight,
+				sys_indexer, sys_driveTrain, sys_intake
+			));
+
+		Shuffleboard.getTab("Robot Configuration")
+					.getLayout("Autonomous Configuration", BuiltInLayouts.kList)
+					.add("Autonomous State", auto_command);
 	}
 
 	  /**
@@ -244,7 +267,8 @@ public class RobotContainer {
 //   }
 
 	public Command getAutonomousCommand() {
-		return new ShootAuto(sys_shooter_flywheel, sys_shooter_turret, sys_limelight, sys_indexer, sys_driveTrain, sys_intake);
+		//return new ShootAuto(sys_shooter_flywheel, sys_shooter_turret, sys_limelight, sys_indexer, sys_driveTrain, sys_intake);
 		//return new shootAuto();
+		return auto_command.getSelected();
 	}
 }

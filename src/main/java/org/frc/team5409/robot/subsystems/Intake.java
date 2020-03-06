@@ -7,6 +7,7 @@
 
 package org.frc.team5409.robot.subsystems;
 
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.CANSparkMax.IdleMode;
@@ -37,7 +38,7 @@ public class Intake extends SubsystemBase {
 
 		intakeEncoder = mot_intake_sparkMax_C12.getEncoder();
 
-		Shuffleboard.getTab("Robot Information").getLayout("Intake Information")
+		Shuffleboard.getTab("Robot Information").getLayout("Intake Information", BuiltInLayouts.kList)
 				    .addBoolean("Intake Jammed", this::isIntakeJammed);
 	}
 

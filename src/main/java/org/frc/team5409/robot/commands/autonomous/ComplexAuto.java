@@ -1,6 +1,7 @@
 package org.frc.team5409.robot.commands.autonomous;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.*;
 
@@ -40,9 +41,9 @@ public class ComplexAuto extends SequentialCommandGroup {
         m_intaking = false;
         m_finished = false;
 
-        var parent = Shuffleboard.getTab("Robot Information").getLayout("Autonomous Information");
+        var parent = Shuffleboard.getTab("Robot Information").getLayout("Autonomous Information", BuiltInLayouts.kList);
             parent.addBoolean("Autonomous Finished", () -> { return m_finished; });
-            var child = parent.getLayout("Autonomous State");
+            var child = parent.getLayout("Autonomous State", BuiltInLayouts.kGrid);
                 child.addBoolean("Shooting State", () -> { return m_shooting; });
                 child.addBoolean("Driving State", () -> { return m_driving; });
                 child.addBoolean("Intaking State", () -> { return m_intaking; });
