@@ -32,7 +32,7 @@ public class ExtendHang extends CommandBase {
   @Override
   public void initialize() {
     m_hanging.setPiston(Value.kReverse);
-    m_hanging.controlArmNeo(0.8);
+    m_hanging.controlArmNeo(0.1);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -55,6 +55,6 @@ public class ExtendHang extends CommandBase {
     // finished = true;
     // }
     return m_hanging.getEncoderAvgPosition() > Constants.Hanging.EXTEND_NEO_POS;
-    // return false;
+    //return false;
   }
 }

@@ -10,20 +10,20 @@ import org.frc.team5409.robot.commands.shooter.*;
 import org.frc.team5409.robot.subsystems.*;
 import org.frc.team5409.robot.commands.*;
 
-public class SimpleAuto extends SequentialCommandGroup {
+public class SimpleAutoBackwards extends SequentialCommandGroup {
     private enum AutonomousState {
         kShooting, kDriving, kFinished
     }
-    
+
     private boolean m_shooting, m_driving, m_finished;
 
     /**
      * Creates a new shootAuto.
      */
-    public SimpleAuto(ShooterFlywheel sys_flywheel, ShooterTurret sys_rotation, Limelight sys_limelight, Indexer sys_indexer, DriveTrain sys_driveTrain) {
+    public SimpleAutoBackwards(ShooterFlywheel sys_flywheel, ShooterTurret sys_rotation, Limelight sys_limelight,
+            Indexer sys_indexer, DriveTrain sys_driveTrain) {
         addCommands(
-            internal_decorate(new OperateShooter(sys_flywheel, sys_rotation, sys_limelight, sys_indexer), AutonomousState.kShooting).withTimeout(3.5),
-
+            internal_decorate(new OperateShooter(sys_flywheel, sys_rotation, sys_limelight, sys_indexer), AutonomousState.kShooting).withTimeout(7),
             new ParallelCommandGroup(
                 internal_decorate(new DriveStraightAuto(sys_driveTrain, 0.75, 0.75), AutonomousState.kDriving),
                 internal_decorate(new RotateTurret(sys_rotation, 0), AutonomousState.kShooting)

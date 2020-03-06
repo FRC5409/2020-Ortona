@@ -58,7 +58,7 @@ public class RetractHang extends CommandBase {
     // if (m_hanging.isSwitchSet()) {
     //   finished = true;
     // }
-    return m_hanging.getEncoderAvgPosition() < Constants.Hanging.RETRACT_NEO_POS;
-      // return false;
+    //return m_hanging.getEncoderAvgPosition() < Constants.Hanging.RETRACT_NEO_POS;
+    return false;
   }
 }

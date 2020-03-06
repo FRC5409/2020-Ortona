@@ -13,7 +13,8 @@ import org.frc.team5409.robot.commands.*;
 import org.frc.team5409.robot.commands.Hanging.ExtendHang;
 import org.frc.team5409.robot.commands.Hanging.RetractHang;
 import org.frc.team5409.robot.commands.autonomous.ComplexAuto;
-import org.frc.team5409.robot.commands.autonomous.SimpleAuto;
+import org.frc.team5409.robot.commands.autonomous.SimpleAutoBackwards;
+import org.frc.team5409.robot.commands.autonomous.SimpleAutoForwards;
 import org.frc.team5409.robot.commands.shooter.*;
 import org.frc.team5409.robot.subsystems.*;
 import org.frc.team5409.robot.subsystems.shooter.*;
@@ -37,25 +38,25 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 public class RobotContainer {
 
-	//subsystems
-	//private final ShooterFlywheel subsys_shooter_flywheel;
-	//private final ShooterTurret subsys_shooter_turret;
+	// subsystems
+	// private final ShooterFlywheel subsys_shooter_flywheel;
+	// private final ShooterTurret subsys_shooter_turret;
 	private final Indexer sys_indexer;
 	public final Intake sys_intake;
 	public final DriveTrain sys_driveTrain;
 	private final Hanging sys_hang;
-	
-	//commands
+
+	// commands
 	private IntakeIndexActive cmd_IntakeIndexActive;
 	private AntiTipToggle cmd_AntiTipToggle;
 	private FastGearShift cmd_FastGearShift;
 	private SlowGearShift cmd_SlowGearShift;
 	public final DriveCommand cmd_drive;
 	public DriveStraightAuto cmd_DriveStraightAuto;
-	public final IndexerReverse cmd_IndexerReverse; 
+	public final IndexerReverse cmd_IndexerReverse;
 	private final IntakeActivateSolenoids cmd_IntakeActivateSolenoids;
 
-	//joystick controllers
+	// joystick controllers
 	private final XboxController joy_main, joy_secondary;
 
 	private final ShooterTurret sys_shooter_turret;
@@ -65,29 +66,28 @@ public class RobotContainer {
 
 	private SendableChooser<Command> auto_command;
 
-	//buttons
+	// buttons
 	private final JoystickButton but_main_A, but_main_B, but_main_X, but_main_Y, but_main_sck_left, but_main_sck_right,
-			but_main_bmp_left, but_main_bmp_right,but_main_start,but_main_back;
+			but_main_bmp_left, but_main_bmp_right, but_main_start, but_main_back;
 
 	private final JoystickButton but_secondary_A, but_secondary_B, but_secondary_X, but_secondary_Y,
-			but_secondary_sck_left, but_secondary_sck_right, but_secondary_bmp_left, but_secondary_bmp_right, but_secondary_start, but_secondary_back;;
-
-	
+			but_secondary_sck_left, but_secondary_sck_right, but_secondary_bmp_left, but_secondary_bmp_right,
+			but_secondary_start, but_secondary_back;;
 
 	/**
 	 * The container for the robot. Contains subsystems, OI devices, and commands.
 	 */
 	public RobotContainer() {
-		//Joystick stuff
+		// Joystick stuff
 		joy_main = new XboxController(0);
 		joy_secondary = new XboxController(1);
-		sys_driveTrain = new DriveTrain(); 
+		sys_driveTrain = new DriveTrain();
 
-		//WuTang's stuff
+		// WuTang's stuff
 		sys_hang = new Hanging();
 
 		cmd_drive = new DriveCommand(sys_driveTrain, joy_main);
-		//cmd_DriveStraightAuto = new DriveStraightAuto(sys_driveTrain);
+		// cmd_DriveStraightAuto = new DriveStraightAuto(sys_driveTrain);
 
 		sys_shooter_turret = new ShooterTurret();
 		sys_shooter_flywheel = new ShooterFlywheel();
@@ -95,24 +95,24 @@ public class RobotContainer {
 		sys_limelight = new Limelight();
 
 		// Liz's stuff
-		sys_indexer = new Indexer(); 
+		sys_indexer = new Indexer();
 		cmd_IndexerReverse = new IndexerReverse(sys_indexer);
 
 		// Sanad's stuff
 		sys_intake = new Intake();
-		cmd_IntakeActivateSolenoids = new IntakeActivateSolenoids(sys_intake); 
-		
+		cmd_IntakeActivateSolenoids = new IntakeActivateSolenoids(sys_intake);
+
 		// Keith's stuff
-		//subsys_shooter_flywheel = new ShooterFlywheel();
-		//subsys_shooter_turret = new ShooterTurret();
+		// subsys_shooter_flywheel = new ShooterFlywheel();
+		// subsys_shooter_turret = new ShooterTurret();
 
 		cmd_IntakeIndexActive = new IntakeIndexActive(sys_indexer, sys_intake);
-		
 
-		//grp_configure_turret = new SequentialCommandGroup(new CalibrateShooter(subsys_shooter_turret, subsys_shooter_flywheel),
-		//		new RotateTurret(subsys_shooter_turret, 0));
+		// grp_configure_turret = new SequentialCommandGroup(new
+		// CalibrateShooter(subsys_shooter_turret, subsys_shooter_flywheel),
+		// new RotateTurret(subsys_shooter_turret, 0));
 
-		//Buttons
+		// Buttons
 		but_main_A = new JoystickButton(joy_main, XboxController.Button.kA.value);
 		but_main_B = new JoystickButton(joy_main, XboxController.Button.kB.value);
 		but_main_X = new JoystickButton(joy_main, XboxController.Button.kX.value);
@@ -123,7 +123,6 @@ public class RobotContainer {
 		but_main_bmp_right = new JoystickButton(joy_main, XboxController.Button.kBumperRight.value);
 		but_main_start = new JoystickButton(joy_main, XboxController.Button.kStart.value);
 		but_main_back = new JoystickButton(joy_main, XboxController.Button.kBack.value);
-	
 
 		but_secondary_A = new JoystickButton(joy_secondary, XboxController.Button.kA.value);
 		but_secondary_B = new JoystickButton(joy_secondary, XboxController.Button.kB.value);
@@ -136,54 +135,56 @@ public class RobotContainer {
 		but_secondary_start = new JoystickButton(joy_secondary, XboxController.Button.kStart.value);
 		but_secondary_back = new JoystickButton(joy_secondary, XboxController.Button.kBack.value);
 
-		//configureBindings();
-
+		// configureBindings();
 
 		sys_driveTrain.setDefaultCommand(new DriveCommand(sys_driveTrain, joy_main));
 
-		/*sys_indexer.setDefaultCommand(new IntakeIndexActive(sys_indexer, subsys_intake));
-		but_main_A.whenPressed(
-			new SequentialCommandGroup(
-				new CalibrateShooter(sys_shooter_turret, sys_shooter_flywheel),
-				new RotateTurret(sys_shooter_turret, 0)
-			)		
-		);*/
+		/*
+		 * sys_indexer.setDefaultCommand(new IntakeIndexActive(sys_indexer,
+		 * subsys_intake)); but_main_A.whenPressed( new SequentialCommandGroup( new
+		 * CalibrateShooter(sys_shooter_turret, sys_shooter_flywheel), new
+		 * RotateTurret(sys_shooter_turret, 0) ) );
+		 */
 
-		//but_main_Y.whileActiveOnce(new SmoothSweep(sys_shooter_turret, sys_shooter_flywheel));
-		but_main_A.whileActiveOnce(new OperateShooter(sys_shooter_flywheel, sys_shooter_turret, sys_limelight, sys_indexer))
-			      .whenInactive(new RotateTurret(sys_shooter_turret, 0));
-		//sys_shooter_flywheel.setDefaultCommand(new RunShooterFlywheel(sys_shooter_flywheel, sys_indexer, sys_limelight, joy_main, joy_secondary));
+		// but_main_Y.whileActiveOnce(new SmoothSweep(sys_shooter_turret,
+		// sys_shooter_flywheel));
+		but_main_A
+				.whileActiveOnce(
+						new OperateShooter(sys_shooter_flywheel, sys_shooter_turret, sys_limelight, sys_indexer))
+				.whenInactive(new RotateTurret(sys_shooter_turret, 0));
+		// sys_shooter_flywheel.setDefaultCommand(new
+		// RunShooterFlywheel(sys_shooter_flywheel, sys_indexer, sys_limelight,
+		// joy_main, joy_secondary));
 		but_main_B.whileActiveOnce(new ReverseIntake(sys_intake));
-		//sys_indexer.setDefaultCommand(new IntakeIndexActive(sys_indexer, subsys_intake));
+		// sys_indexer.setDefaultCommand(new IntakeIndexActive(sys_indexer,
+		// subsys_intake));
 		configureBindings();
 		configureDashboard();
 	}
 
-	
 	private void configureBindings() {
-		//but_main_A.whileActiveOnce(cmd_turret_run);
-		//but_main_A.cancelWhenPressed(cmd_IndexActive);
+		// but_main_A.whileActiveOnce(cmd_turret_run);
+		// but_main_A.cancelWhenPressed(cmd_IndexActive);
 
-	    // Run intake while held
+		// Run intake while held
 		but_main_Y.whileHeld(new IntakeIndexActive(sys_indexer, sys_intake));
 
-		but_main_X.whenPressed(new IntakeActivateSolenoids(sys_intake)); 
+		but_main_X.whenPressed(new IntakeActivateSolenoids(sys_intake));
 
 		// Reverse intake while held
 		but_main_B.whileHeld(new ReverseIntake(sys_intake));
 
-
 		// Toggle AntiTip
-	    but_secondary_Y.whenPressed(new AntiTipToggle(sys_driveTrain));
-		
+		but_secondary_Y.whenPressed(new AntiTipToggle(sys_driveTrain));
+
 		// Shift gear to fast
 		but_main_bmp_right.whenPressed(new FastGearShift(sys_driveTrain));
 		// Shift gear to slow
 		but_main_bmp_right.whenReleased(new SlowGearShift(sys_driveTrain));
 
-		but_main_bmp_left.whileHeld(new IndexerReverse(sys_indexer)); 
+		but_main_bmp_left.whileHeld(new IndexerReverse(sys_indexer));
 
-		//climb
+		// climb
 		but_secondary_back.whileHeld(new RetractHang(sys_hang));
 		but_secondary_start.whenPressed(new ExtendHang(sys_hang));
 		but_main_back.whileHeld(new RetractHang(sys_hang));
@@ -197,12 +198,16 @@ public class RobotContainer {
 
 	public void configureDashboard() {
 		auto_command = new SendableChooser<>();
-			auto_command.setDefaultOption("Simple Auto", new SimpleAuto(
-				sys_shooter_flywheel, sys_shooter_turret, sys_limelight, sys_indexer, sys_driveTrain));
-			auto_command.addOption("Complex Auto", new ComplexAuto(
-				sys_shooter_flywheel, sys_shooter_turret, sys_limelight,
-				sys_indexer, sys_driveTrain, sys_intake
-			));
+		auto_command.setDefaultOption("Simple Auto Backwards", new SimpleAutoBackwards(
+			sys_shooter_flywheel, sys_shooter_turret, sys_limelight, sys_indexer, sys_driveTrain
+		));
+		auto_command.addOption("Simple Auto Forwards", new SimpleAutoForwards(
+			sys_shooter_flywheel, sys_shooter_turret, sys_limelight, sys_indexer, sys_driveTrain
+		));
+		auto_command.addOption("Complex Auto", new ComplexAuto(
+			sys_shooter_flywheel, sys_shooter_turret, sys_limelight,
+			sys_indexer, sys_driveTrain, sys_intake
+		));
 
 		Shuffleboard.getTab("Robot Configuration")
 					.getLayout("Autonomous Configuration", BuiltInLayouts.kList)
