@@ -58,23 +58,11 @@ public class IntakeIndexActive extends CommandBase {
 			subsys_Intake.intakeOn(1);
 			subsys_Intake.solenoidsDown();
 		}
-
-		// m_timer2 = Timer.getFPGATimestamp();
-		// m_triggered = false;
 	}
 
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
 	public void execute() {
-		TOF_Enter = subsys_indexer.ballDetectionEnter();
-		TOF_Ball1 = subsys_indexer.ballDetectionBall1();
-
-		SmartDashboard.putBoolean("TOF_Ball1", TOF_Ball1);
-		SmartDashboard.putBoolean("TOF_Enter", TOF_Enter);
-		SmartDashboard.putBoolean("TOF_Exit", TOF_Exit);
-
-		SmartDashboard.putBoolean("IntakeNotJammed", subsys_Intake.isIntakeNotJammed()); 
-
 		// if statements to run the indexer motor
 		if (TOF_Enter) {
 			subsys_indexer.moveIndexerMotor(1);

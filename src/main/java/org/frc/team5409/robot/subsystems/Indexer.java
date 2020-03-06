@@ -7,8 +7,6 @@
 
 package org.frc.team5409.robot.subsystems;
 
-import java.time.Instant;
-
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.playingwithfusion.TimeOfFlight;
@@ -161,7 +159,7 @@ public class Indexer extends SubsystemBase {
 
 	// sets up motor
 	public void moveIndexerMotor(double output) {
-		m_output = output
+		m_output = output;
 		m_Indexer_neo550_C16.set(output);
 	}
 

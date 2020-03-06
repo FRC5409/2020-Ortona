@@ -239,28 +239,10 @@
         "hgap": 16.0,
         "vgap": 16.0,
         "tiles": {
-          "8,3": {
-            "size": [
-              11,
-              8
-            ],
-            "content": {
-              "_type": "Camera Stream",
-              "_title": "Camera Stream",
-              "Crosshair/Show crosshair": true,
-              "Crosshair/Crosshair color": "#FFFF4DFF",
-              "Controls/Show controls": true,
-              "Controls/Rotation": "NONE",
-              "compression": -1.0,
-              "fps": -1,
-              "imageWidth": -1,
-              "imageHeight": -1
-            }
-          },
           "0,0": {
             "size": [
-              5,
-              8
+              7,
+              13
             ],
             "content": {
               "_type": "List Layout",
@@ -274,7 +256,7 @@
                 {
                   "_type": "Grid Layout",
                   "_title": "Autonomous State",
-                  "Layout/Number of columns": 2,
+                  "Layout/Number of columns": 3,
                   "Layout/Number of rows": 1,
                   "Layout/Label position": "BOTTOM",
                   "_children": {
@@ -289,6 +271,12 @@
                       "_title": "Driving State",
                       "Colors/Color when true": "#FFDE15FF",
                       "Colors/Color when false": "#333333FF"
+                    },
+                    "2,0": {
+                      "_type": "Boolean Box",
+                      "_title": "Intaking State",
+                      "Colors/Color when true": "#7CFC00FF",
+                      "Colors/Color when false": "#8B0000FF"
                     }
                   }
                 },
@@ -301,9 +289,9 @@
               ]
             }
           },
-          "22,0": {
+          "20,0": {
             "size": [
-              6,
+              8,
               13
             ],
             "content": {
@@ -323,8 +311,7 @@
                   "_title": "Turret Angle",
                   "Visuals/Major tick spacing": 45.0,
                   "Visuals/Starting angle": 180.0,
-                  "Visuals/Show tick mark ring": true,
-                  "Visuals/Counter clockwise": false
+                  "Visuals/Show tick mark ring": true
                 },
                 {
                   "_type": "Grid Layout",
@@ -368,10 +355,10 @@
               "_title": "District Event FMS Information"
             }
           },
-          "0,8": {
+          "8,3": {
             "size": [
               5,
-              5
+              10
             ],
             "content": {
               "_type": "List Layout",
@@ -393,11 +380,47 @@
                     },
                     "0,0": {
                       "_type": "Boolean Box",
-                      "_title": "Indexer Running",
+                      "_title": "Indexer Active",
                       "Colors/Color when true": "#FFDE14FF",
                       "Colors/Color when false": "#333333FF"
                     }
                   }
+                }
+              ]
+            }
+          },
+          "14,3": {
+            "size": [
+              5,
+              5
+            ],
+            "content": {
+              "_type": "List Layout",
+              "_title": "Intake Information",
+              "Layout/Label position": "BOTTOM",
+              "_children": [
+                {
+                  "_type": "Boolean Box",
+                  "_title": "Intake Jammed",
+                  "Colors/Color when true": "#7CFC00FF",
+                  "Colors/Color when false": "#8B0000FF"
+                }
+              ]
+            }
+          },
+          "14,8": {
+            "size": [
+              5,
+              5
+            ],
+            "content": {
+              "_type": "List Layout",
+              "_title": "General Information",
+              "Layout/Label position": "BOTTOM",
+              "_children": [
+                {
+                  "_type": "Text View",
+                  "_title": "Velocity Offset"
                 }
               ]
             }
@@ -409,7 +432,7 @@
   "windowGeometry": {
     "x": -8.0,
     "y": -8.0,
-    "width": 1382.0,
-    "height": 744.0
+    "width": 1936.0,
+    "height": 1176.0
   }
 }

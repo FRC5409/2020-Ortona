@@ -7,39 +7,39 @@
 
 package org.frc.team5409.robot.subsystems;
 
-import com.revrobotics.CANEncoder;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMax.IdleMode;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import org.frc.team5409.robot.Constants;
+import com.revrobotics.CANSparkMax.IdleMode;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANEncoder;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import org.frc.team5409.robot.Constants;
 
 public class Intake extends SubsystemBase {
-  private CANSparkMax mot_intake_sparkMax_C12;
-  private final CANEncoder intakeEncoder;
-  private DoubleSolenoid dsl_rightIntakeSolenoid;	
+	private CANSparkMax mot_intake_sparkMax_C12;
+	private final CANEncoder intakeEncoder;
+	private DoubleSolenoid dsl_rightIntakeSolenoid;	
 	private DoubleSolenoid dsl_leftIntakeSolenoid;
 
-  /**
-   * Creates a new Intake.
-   */
-  public Intake() {
-    mot_intake_sparkMax_C12 = new CANSparkMax(Constants.Intake.kIntakeMotor, MotorType.kBrushless);	
-    mot_intake_sparkMax_C12.setSmartCurrentLimit(20); 	
-    mot_intake_sparkMax_C12.setIdleMode(IdleMode.kBrake);	
-    mot_intake_sparkMax_C12.burnFlash();  	
+	/**
+	 * Creates a new Intake.
+	 */
+	public Intake() {
+		mot_intake_sparkMax_C12 = new CANSparkMax(Constants.Intake.kIntakeMotor, MotorType.kBrushless);	
+			mot_intake_sparkMax_C12.setSmartCurrentLimit(20); 	
+			mot_intake_sparkMax_C12.setIdleMode(IdleMode.kBrake);	
+		mot_intake_sparkMax_C12.burnFlash();  	
 
-    dsl_rightIntakeSolenoid = new DoubleSolenoid(Constants.Intake.kRightIntakeSolenoid1, Constants.Intake.kRightIntakeSolenoid2);	
-    dsl_leftIntakeSolenoid = new DoubleSolenoid(Constants.Intake.kLeftIntakeSolenoid1, Constants.Intake.kLeftIntakeSolenoid2);
+		dsl_rightIntakeSolenoid = new DoubleSolenoid(Constants.Intake.kRightIntakeSolenoid1, Constants.Intake.kRightIntakeSolenoid2);	
+		dsl_leftIntakeSolenoid = new DoubleSolenoid(Constants.Intake.kLeftIntakeSolenoid1, Constants.Intake.kLeftIntakeSolenoid2);
 
-    intakeEncoder = mot_intake_sparkMax_C12.getEncoder();
-  }
+		intakeEncoder = mot_intake_sparkMax_C12.getEncoder();
 
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-  }
+		Shuffleboard.getTab("Robot Information").getLayout("Intake Information")
+				    .addBoolean("Intake Jammed", this::isIntakeJammed);
+	}
 
 	/**	
 	 * Method to turn intake on	
@@ -90,7 +90,7 @@ public class Intake extends SubsystemBase {
 
 	}
 
-  public boolean isIntakeNotJammed() {
-    return (intakeEncoder.getVelocity() >= Constants.Intake.velocityMaxIntakeJam);
-  }
+	public boolean isIntakeJammed() {
+		return !(intakeEncoder.getVelocity() >= Constants.Intake.velocityMaxIntakeJam);
+	}
 }

@@ -89,14 +89,14 @@ public final class ShooterFlywheel extends SubsystemBase implements Toggleable {
         m_safety_enabled = true;
 
         m_watchdog = new Watchdog(Constants.ShooterControl.shooter_watchdog_expire_time);
-        m_logger = new RawLogger("flywheel/"+MatchData.getEventString()+".log");
+        //m_logger = new RawLogger("flywheel/"+MatchData.getEventString()+".log");
     
         var parent = Shuffleboard.getTab("Robot Information").getLayout("Shooter Information");
-            parent.addNumber("Flywheel Velocity", () -> { return enc_C07_shooter_flywheel.getVelocity(); });
+            parent.addNumber("Flywheel Velocity", this::getVelocity);
             var child = parent.getLayout("Shooter Target Information");
                 child.addNumber("Velocity Target", () -> { return m_target; });
                 child.addNumber("Velocity Offset", () -> { return m_velocity_offset; });
-                child.addBoolean("Vel. Reached", () -> { return isTargetReached(); } );
+                child.addBoolean("Vel. Reached", this::isTargetReached);
     }
     
     /**
@@ -243,8 +243,6 @@ public final class ShooterFlywheel extends SubsystemBase implements Toggleable {
      */
     public void shiftOffset(double shift) {
         m_velocity_offset += shift;
-
-        SmartDashboard.putNumber("Flywheel Velocity Offset", m_velocity_offset);
     }
 
     /**
@@ -267,8 +265,6 @@ public final class ShooterFlywheel extends SubsystemBase implements Toggleable {
             }
             logger_writeData();
         }
-
-        SmartDashboard.putNumber("Actual Velocity", enc_C07_shooter_flywheel.getVelocity());
     }
 
     private void logger_writeEvent(ShooterEvent event, double arg) {
