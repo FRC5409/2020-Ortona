@@ -113,7 +113,7 @@ public final class ShooterFlywheel extends SubsystemBase implements Toggleable {
         m_enabled = true;
         m_watchdog.feed();
 
-        logger_writeEvent(ShooterEvent.kSubsystemEnabled, m_logger.getTimeSince());
+        //logger_writeEvent(ShooterEvent.kSubsystemEnabled, m_logger.getTimeSince());
     }
 
     /**
@@ -128,12 +128,12 @@ public final class ShooterFlywheel extends SubsystemBase implements Toggleable {
 
         m_enabled = false;
 
-        logger_writeEvent(ShooterEvent.kSubsystemDisabled, m_logger.getTimeSince());
+        //logger_writeEvent(ShooterEvent.kSubsystemDisabled, m_logger.getTimeSince());
 
-        if (m_target != 0)
+        //if (m_target != 0)
             
 
-            logger_writeEvent(ShooterEvent.kSubsystemEnabled, m_logger.getTimeSince());
+            //logger_writeEvent(ShooterEvent.kSubsystemEnabled, m_logger.getTimeSince());
     }
 
     /**

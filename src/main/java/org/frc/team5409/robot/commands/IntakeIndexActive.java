@@ -41,10 +41,6 @@ public class IntakeIndexActive extends CommandBase {
 	public IntakeIndexActive(Indexer indexerSubsystem, Intake intakeSubsystem) {
 		subsys_indexer = indexerSubsystem;
 		subsys_Intake = intakeSubsystem;
-
-		TOF_Enter = subsys_indexer.ballDetectionEnter();
-		TOF_Ball1 = subsys_indexer.ballDetectionBall1();
-		TOF_Exit = subsys_indexer.ballDetectionExit();
 		
 		addRequirements(indexerSubsystem, intakeSubsystem);
 	}
@@ -63,6 +59,10 @@ public class IntakeIndexActive extends CommandBase {
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
 	public void execute() {
+		TOF_Enter = subsys_indexer.ballDetectionEnter();
+		TOF_Ball1 = subsys_indexer.ballDetectionBall1();
+		TOF_Exit = subsys_indexer.ballDetectionExit();
+
 		// if statements to run the indexer motor
 		if (TOF_Enter) {
 			subsys_indexer.moveIndexerMotor(1);
