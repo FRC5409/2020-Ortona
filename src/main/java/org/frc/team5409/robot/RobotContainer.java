@@ -64,7 +64,7 @@ public class RobotContainer {
 			but_main_bmp_left, but_main_bmp_right,but_main_start,but_main_back;
 
 	private final JoystickButton but_secondary_A, but_secondary_B, but_secondary_X, but_secondary_Y,
-			but_secondary_sck_left, but_secondary_sck_right, but_secondary_bmp_left, but_secondary_bmp_right;
+			but_secondary_sck_left, but_secondary_sck_right, but_secondary_bmp_left, but_secondary_bmp_right, but_secondary_start, but_secondary_back;;
 
 	
 
@@ -111,7 +111,6 @@ public class RobotContainer {
 		but_main_B = new JoystickButton(joy_main, XboxController.Button.kB.value);
 		but_main_X = new JoystickButton(joy_main, XboxController.Button.kX.value);
 		but_main_Y = new JoystickButton(joy_main, XboxController.Button.kY.value);
-
 		but_main_sck_left = new JoystickButton(joy_main, XboxController.Button.kStickLeft.value);
 		but_main_sck_right = new JoystickButton(joy_main, XboxController.Button.kStickRight.value);
 		but_main_bmp_left = new JoystickButton(joy_main, XboxController.Button.kBumperLeft.value);
@@ -128,6 +127,8 @@ public class RobotContainer {
 		but_secondary_sck_right = new JoystickButton(joy_secondary, XboxController.Button.kStickRight.value);
 		but_secondary_bmp_left = new JoystickButton(joy_secondary, XboxController.Button.kBumperLeft.value);
 		but_secondary_bmp_right = new JoystickButton(joy_secondary, XboxController.Button.kBumperRight.value);
+		but_secondary_start = new JoystickButton(joy_secondary, XboxController.Button.kStart.value);
+		but_secondary_back = new JoystickButton(joy_secondary, XboxController.Button.kBack.value);
 
 		//configureBindings();
 
@@ -176,6 +177,8 @@ public class RobotContainer {
 		but_main_bmp_left.whileHeld(new IndexerReverse(sys_indexer)); 
 
 		//climb
+		but_secondary_back.whileHeld(new RetractHang(sys_hang));
+		but_secondary_start.whenPressed(new ExtendHang(sys_hang));
 		but_main_back.whileHeld(new RetractHang(sys_hang));
 		but_main_start.whenPressed(new ExtendHang(sys_hang));
 

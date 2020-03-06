@@ -126,15 +126,6 @@ public final class OperateShooter extends CommandBase {
         if (state == CommandState.kSweeping) {
             m_smooth_sweep_toff = m_smooth_sweep_inverse.calculate(m_shooter_turret.getRotation());
         } else if (state == CommandState.kShooting) {
-            Vec2 target = m_limelight.getTarget();
-            m_limelight.disable();
-
-            m_distance = m_port_height / Math.tan(Math.toRadians(target.y + Constants.Vision.vision_limelight_pitch));
-
-            SmartDashboard.putNumber("Predicted Velocity", m_rpm_curve.calculate(m_distance));
-            SmartDashboard.putNumber("Robot Distance (ft)", m_distance);
-
-            m_shooter_flywheel.setVelocity( m_rpm_curve.calculate(m_distance));
         }
     }
 
@@ -205,6 +196,19 @@ public final class OperateShooter extends CommandBase {
      * @param time The time since the this state began execution.
      */
     private void internal_operateShooting(double time) {
+        if (m_limelight.hasTarget() && m_limelight.getTargetType() == Limelight.TargetType.kOuterPort) {
+            Vec2 target = m_limelight.getTarget();
+
+            m_distance = m_port_height / Math.tan(Math.toRadians(target.y + Constants.Vision.vision_limelight_pitch));
+
+            m_shooter_flywheel.setVelocity( m_rpm_curve.calculate(m_distance));
+            m_shooter_turret.setRotation(m_shooter_turret.getRotation()+target.x);
+
+            SmartDashboard.putNumber("Predicted Velocity", m_rpm_curve.calculate(m_distance));
+            SmartDashboard.putNumber("Robot Distance (ft)", m_distance);
+            SmartDashboard.putNumber("Aligning offset", target.x);
+        }
+
         if (m_shooter_turret.isTargetReached() && m_shooter_flywheel.isTargetReached()) {
             m_indexer.moveIndexerMotor(1);
         } else {
