@@ -146,7 +146,7 @@ public final class ShooterTurret extends SubsystemBase implements Toggleable {
 
         m_target = m_turret_range.clamp(target);
         pid_C05_shooter_turret.setReference(target, ControlType.kPosition);
-
+        
         m_watchdog.feed();
     }
     

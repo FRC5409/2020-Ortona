@@ -1,5 +1,7 @@
 package org.frc.team5409.robot;
 
+import java.util.function.Function;
+
 //import com.revrobotics.CANError;
 import com.revrobotics.CANSparkMax.IdleMode;
 
@@ -28,7 +30,7 @@ public final class Constants {
 
     public static final class ShooterControl {
     // General Configurations
-        public static final double shooter_watchdog_expire_time = 0.8;
+        public static final double shooter_watchdog_expire_time = 5;
 
         public static final int shooter_turret_current_limit = 25;
 
@@ -42,7 +44,7 @@ public final class Constants {
             0.03d, 0, 0, 0
         );
 
-        public static final double shooter_turret_max_speed = 0.3;
+        public static final double shooter_turret_max_speed = 0.42;
 
         public static final PIDFConfig shooter_flywheel_pid = new PIDFConfig(
             7e-5, 0, 0, 0.00018851d
@@ -123,6 +125,11 @@ public final class Constants {
 
         public static final double shooter_smooth_sweep_max_sweeps = 2;
 
+
+    // Velocity Leniency Constants
+        public static final SimpleEquation shooter_rpm_leniency_func = d -> {
+            return -4.6153846153846d*d + 226.153846153842d;
+        };
     }
 
     public static final class Indexer {

@@ -75,4 +75,15 @@ public final class Range {
     public double clamp(double value) {
         return clamp(min, value, max);
     }
+
+    /**
+     * Checks to see if the value is within
+     * this range.
+     * 
+     * @return Whether or not the value fit's
+     *         within this range.
+     */
+    public boolean isWithin(double value) {
+        return !(value < min || value > max);
+    } 
 }
