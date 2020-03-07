@@ -13,11 +13,13 @@ import org.frc.team5409.robot.commands.*;
 import org.frc.team5409.robot.commands.Hanging.ExtendHang;
 import org.frc.team5409.robot.commands.Hanging.RetractHang;
 import org.frc.team5409.robot.commands.autonomous.ComplexAuto;
-import org.frc.team5409.robot.commands.autonomous.SimpleAutoBackwards;
-import org.frc.team5409.robot.commands.autonomous.SimpleAutoForwards;
+import org.frc.team5409.robot.commands.autonomous.SimpleAutoBackward;
+import org.frc.team5409.robot.commands.autonomous.SimpleAutoForward;
 import org.frc.team5409.robot.commands.shooter.*;
 import org.frc.team5409.robot.subsystems.*;
 import org.frc.team5409.robot.subsystems.shooter.*;
+import org.frc.team5409.robot.util.*;
+import org.frc.team5409.robot.util.AutoCommand.AutonomousState;
 
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.controller.RamseteController;
@@ -198,20 +200,36 @@ public class RobotContainer {
 
 	public void configureDashboard() {
 		auto_command = new SendableChooser<>();
-		auto_command.setDefaultOption("Simple Auto Backwards", new SimpleAutoBackwards(
+
+		auto_command.setDefaultOption("Simple Auto Backward", new SimpleAutoBackward(
 			sys_shooter_flywheel, sys_shooter_turret, sys_limelight, sys_indexer, sys_driveTrain
 		));
-		auto_command.addOption("Simple Auto Forwards", new SimpleAutoForwards(
+		auto_command.addOption("Simple Auto Forward", new SimpleAutoForward(
 			sys_shooter_flywheel, sys_shooter_turret, sys_limelight, sys_indexer, sys_driveTrain
 		));
 		auto_command.addOption("Complex Auto", new ComplexAuto(
 			sys_shooter_flywheel, sys_shooter_turret, sys_limelight,
 			sys_indexer, sys_driveTrain, sys_intake
 		));
+/*
+		var robot_config = Shuffleboard.getTab("Robot Configuration");
+			var auto_config = robot_config.getLayout("Autonomous Configuration", BuiltInLayouts.kList);
+				auto_config.withPosition(0, 0);
+				auto_config.withSize(2, 4);
+					auto_config.add("Autonomous State", auto_command);
 
-		Shuffleboard.getTab("Robot Configuration")
-					.getLayout("Autonomous Configuration", BuiltInLayouts.kList)
-					.add("Autonomous State", auto_command);
+		var robot_info = Shuffleboard.getTab("Robot Information");
+			var auto_info = robot_config.getLayout("Autonomous Information", BuiltInLayouts.kList);
+				auto_info.withPosition(0, 0);
+				auto_info.withSize(7, 13);
+				var auto_state = auto_info.getLayout("Autonomous State", BuiltInLayouts.kGrid);
+					auto_state.addBoolean("Shooting State", () -> { return ((AutoCommand) auto_command.getSelected()).getState(AutonomousState.kShooting); });
+					auto_state.addBoolean("Driving State", () -> { return ((AutoCommand) auto_command.getSelected()).getState(AutonomousState.kDriving); });
+					auto_state.addBoolean("Intaking State", () -> { return ((AutoCommand) auto_command.getSelected()).getState(AutonomousState.kIntaking); });
+				auto_info.addBoolean("Autonomous Finished", () -> { return ((AutoCommand) auto_command.getSelected()).getState(AutonomousState.kFinished); });
+			
+			var shooter_info = robot_config.getLayout("Shooter Information")*/
+
 	}
 
 	  /**
@@ -230,7 +248,7 @@ public class RobotContainer {
 //     // Create config for trajectory
 //     final TrajectoryConfig config = new TrajectoryConfig(Constants.Trajectory.kMaxSpeedMetersPerSecond,
 //         Constants.Trajectory.kMaxAccelerationMetersPerSecondSquare)
-
+//';'
 //             // Add kinematics to ensure max speed is actually obeyed
 //             .setKinematics(Constants.Trajectory.kDriveKinematics)
 

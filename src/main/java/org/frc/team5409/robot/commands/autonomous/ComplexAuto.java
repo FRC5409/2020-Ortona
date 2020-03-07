@@ -6,15 +6,12 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.*;
 
 import org.frc.team5409.robot.subsystems.shooter.*;
+import org.frc.team5409.robot.util.AutoCommand;
 import org.frc.team5409.robot.commands.shooter.*;
 import org.frc.team5409.robot.subsystems.*;
 import org.frc.team5409.robot.commands.*;
 
-public class ComplexAuto extends SequentialCommandGroup {
-    private enum AutonomousState {
-        kShooting, kDriving, kIntaking, kFinished
-    }
-    
+public class ComplexAuto extends SequentialCommandGroup implements AutoCommand {
     private boolean m_shooting, m_driving, m_intaking, m_finished;
 
     /**
@@ -67,5 +64,16 @@ public class ComplexAuto extends SequentialCommandGroup {
     public void end(boolean interrupted) {
         internal_setState(AutonomousState.kFinished, true);
         super.end(interrupted);
+    }
+
+    @Override
+    public boolean getState(AutonomousState state) {
+        switch (state) {
+            case kDriving: return m_driving;
+            case kShooting: return m_shooting;
+            case kIntaking: return m_intaking;
+            case kFinished: return m_finished;
+        }
+        return false;
     }
 }

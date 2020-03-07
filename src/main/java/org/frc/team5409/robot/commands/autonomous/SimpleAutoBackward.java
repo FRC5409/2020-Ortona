@@ -6,26 +6,22 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.*;
 
 import org.frc.team5409.robot.subsystems.shooter.*;
+import org.frc.team5409.robot.util.AutoCommand;
 import org.frc.team5409.robot.commands.shooter.*;
 import org.frc.team5409.robot.subsystems.*;
 import org.frc.team5409.robot.commands.*;
 
-public class SimpleAutoForwards extends SequentialCommandGroup {
-    private enum AutonomousState {
-        kShooting, kDriving, kFinished
-    }
-
+public class SimpleAutoBackward extends SequentialCommandGroup implements AutoCommand {
     private boolean m_shooting, m_driving, m_finished;
 
     /**
      * Creates a new shootAuto.
      */
-    public SimpleAutoForwards(ShooterFlywheel sys_flywheel, ShooterTurret sys_rotation, Limelight sys_limelight,
-            Indexer sys_indexer, DriveTrain sys_driveTrain) {
+    public SimpleAutoBackward(ShooterFlywheel sys_flywheel, ShooterTurret sys_rotation, Limelight sys_limelight, Indexer sys_indexer, DriveTrain sys_driveTrain) {
         addCommands(
             internal_decorate(new OperateShooter(sys_flywheel, sys_rotation, sys_limelight, sys_indexer), AutonomousState.kShooting).withTimeout(7),
             new ParallelCommandGroup(
-                internal_decorate(new DriveStraightAuto(sys_driveTrain, -0.75, -0.75), AutonomousState.kDriving),
+                internal_decorate(new DriveStraightAuto(sys_driveTrain, 0.75, 0.75), AutonomousState.kDriving),
                 internal_decorate(new RotateTurret(sys_rotation, 0), AutonomousState.kShooting)
             ).withTimeout(1)
         );
@@ -58,5 +54,16 @@ public class SimpleAutoForwards extends SequentialCommandGroup {
     public void end(boolean interrupted) {
         internal_setState(AutonomousState.kFinished, true);
         super.end(interrupted);
+    }
+
+    @Override
+    public boolean getState(AutonomousState state) {
+        switch (state) {
+            case kDriving: return m_driving;
+            case kShooting: return m_shooting;
+            case kIntaking: return false;
+            case kFinished: return m_finished;
+        }
+        return false;
     }
 }

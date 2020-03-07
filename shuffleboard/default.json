@@ -109,7 +109,7 @@
               "_title": "limelight-gwss_PipelineName"
             }
           },
-          "9,0": {
+          "5,1": {
             "size": [
               1,
               1
@@ -197,7 +197,7 @@
     },
     {
       "title": "Robot Configuration",
-      "autoPopulate": false,
+      "autoPopulate": true,
       "autoPopulatePrefix": "RobotConfig/",
       "widgetPane": {
         "gridSize": 128.0,
@@ -218,10 +218,6 @@
                 {
                   "_type": "ComboBox Chooser",
                   "_title": "Autonomous Pathway"
-                },
-                {
-                  "_type": "Toggle Switch",
-                  "_title": "Autonomous Enable"
                 }
               ]
             }
@@ -231,7 +227,7 @@
     },
     {
       "title": "Robot Information",
-      "autoPopulate": false,
+      "autoPopulate": true,
       "autoPopulatePrefix": "RobotInfo",
       "widgetPane": {
         "gridSize": 32.0,
@@ -311,7 +307,8 @@
                   "_title": "Turret Angle",
                   "Visuals/Major tick spacing": 45.0,
                   "Visuals/Starting angle": 180.0,
-                  "Visuals/Show tick mark ring": true
+                  "Visuals/Show tick mark ring": true,
+                  "Visuals/Counter clockwise": false
                 },
                 {
                   "_type": "Grid Layout",
@@ -432,7 +429,7 @@
   "windowGeometry": {
     "x": -8.0,
     "y": -8.0,
-    "width": 1936.0,
-    "height": 1176.0
+    "width": 1386.0,
+    "height": 788.0
   }
 }

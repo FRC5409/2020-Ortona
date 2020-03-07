@@ -82,6 +82,8 @@ public final class Constants {
             //return 565*Math.pow(d,0.589); 
             //return -0.512*(d*d*d) + 29.5*(d*d) - 463*d + 4726
 
+            //=============================================
+            // REALLY GOOD CURVES
             //return 0.615*(d*d*d) - 24.8*(d*d) + 378*d + 702;
             //return 0.581*(d*d*d) - 23.1*(d*d) + 350*d + 850;
             return 0.177*(d*d*d) - 5.34*(d*d) + 109*d + 1885;
@@ -268,7 +270,7 @@ public final class Constants {
 
         public static final double EXTEND_NEO_POS = 50;
 
-        public static final double RETRACT_NEO_POS = -1000;
+        public static final double RETRACT_NEO_POS = -10;
 
         //Piston
         public static final int FORWARD_CHANEL = 4;

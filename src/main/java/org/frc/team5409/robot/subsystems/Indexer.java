@@ -14,6 +14,7 @@ import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.frc.team5409.robot.Constants;
 
@@ -166,6 +167,12 @@ public class Indexer extends SubsystemBase {
 
 	@Override
 	public void periodic() {
+		SmartDashboard.putNumber("TOF_ENTER", TOF_Enter.getRange());
+    	SmartDashboard.putNumber("TOF_BALL1", TOF_Ball1.getRange());
+		SmartDashboard.putNumber("TOF_EXIT", TOF_Exit.getRange());
+		SmartDashboard.putBoolean("TOF_ENTER_INRANGE", ballDetectionEnter());
+    	SmartDashboard.putBoolean("TOF_BALL1_INRANGE", ballDetectionBall1());
+    	SmartDashboard.putBoolean("TOF_EXIT_INRANGE", ballDetectionExit());
 	}
 
 }

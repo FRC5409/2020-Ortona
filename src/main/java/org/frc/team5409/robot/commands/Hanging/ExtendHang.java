@@ -31,13 +31,15 @@ public class ExtendHang extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    m_hanging.setMotorsCoast();
     m_hanging.setPiston(Value.kReverse);
-    m_hanging.controlArmNeo(0.1);
+    m_hanging.controlArmNeo(-0.1);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    m_hanging.controlArmNeo(0.1);
   }
 
   // Called once the command ends or is interrupted.

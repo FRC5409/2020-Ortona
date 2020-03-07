@@ -63,8 +63,8 @@ public class Hanging extends SubsystemBase {
     mot_hanging_neo_Slave.setSmartCurrentLimit(60);    
     mot_hanging_neo_Master.setSmartCurrentLimit(60);
 
-    mot_hanging_neo_Slave.setIdleMode(IdleMode.kCoast);
-    mot_hanging_neo_Master.setIdleMode(IdleMode.kCoast);
+    mot_hanging_neo_Slave.setIdleMode(IdleMode.kBrake);
+    mot_hanging_neo_Master.setIdleMode(IdleMode.kBrake);
 
     enc1_hanging = mot_hanging_neo_Slave.getEncoder();
     enc2_hanging = mot_hanging_neo_Master.getEncoder();
@@ -178,6 +178,15 @@ public double getEncoderAvgPosition() {
   return (enc1_hanging.getPosition() + enc2_hanging.getPosition()) / 2.0;
 }
 
+public void setMotorsBrake() {
+  mot_hanging_neo_Master.setIdleMode(IdleMode.kBrake);
+  mot_hanging_neo_Slave.setIdleMode(IdleMode.kBrake);
+}
+
+public void setMotorsCoast() {
+  mot_hanging_neo_Master.setIdleMode(IdleMode.kCoast);
+  mot_hanging_neo_Slave.setIdleMode(IdleMode.kCoast);
+}
 /**
  * isSwitchSet
  * Boolean that determines if the limit switch is set or not
