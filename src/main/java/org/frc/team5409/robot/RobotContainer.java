@@ -10,7 +10,7 @@ package org.frc.team5409.robot;
 import java.util.List;
 
 import org.frc.team5409.robot.commands.*;
-import org.frc.team5409.robot.commands.Hanging.ExtendHang;
+import org.frc.team5409.robot.commands.Hanging.ExtendHangMax;
 import org.frc.team5409.robot.commands.Hanging.RetractHang;
 import org.frc.team5409.robot.commands.autonomous.ComplexAuto;
 import org.frc.team5409.robot.commands.autonomous.SimpleAutoBackward;
@@ -28,6 +28,7 @@ import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
@@ -187,10 +188,11 @@ public class RobotContainer {
 		but_main_bmp_left.whileHeld(new IndexerReverse(sys_indexer));
 
 		// climb
+
 		but_secondary_back.whileHeld(new RetractHang(sys_hang));
-		but_secondary_start.whenPressed(new ExtendHang(sys_hang));
+		but_secondary_start.whenPressed(new ExtendHangMax(sys_hang));
 		but_main_back.whileHeld(new RetractHang(sys_hang));
-		but_main_start.whenPressed(new ExtendHang(sys_hang));
+		but_main_start.whenPressed(new ExtendHangMax(sys_hang));
 
 		but_secondary_bmp_right.whenPressed(new OffsetFlywheel(sys_shooter_flywheel, true));
 		but_secondary_bmp_left.whenPressed(new OffsetFlywheel(sys_shooter_flywheel, false));
@@ -211,25 +213,60 @@ public class RobotContainer {
 			sys_shooter_flywheel, sys_shooter_turret, sys_limelight,
 			sys_indexer, sys_driveTrain, sys_intake
 		));
-/*
+
 		var robot_config = Shuffleboard.getTab("Robot Configuration");
 			var auto_config = robot_config.getLayout("Autonomous Configuration", BuiltInLayouts.kList);
-				auto_config.withPosition(0, 0);
-				auto_config.withSize(2, 4);
+				//auto_config.withPosition(0, 0);
+				//auto_config.withSize(2, 4);
 					auto_config.add("Autonomous State", auto_command);
 
 		var robot_info = Shuffleboard.getTab("Robot Information");
-			var auto_info = robot_config.getLayout("Autonomous Information", BuiltInLayouts.kList);
-				auto_info.withPosition(0, 0);
-				auto_info.withSize(7, 13);
+			var auto_info = robot_info.getLayout("Autonomous Information", BuiltInLayouts.kList)
+									  .withPosition(0, 0)
+									  .withSize(2, 2);
 				var auto_state = auto_info.getLayout("Autonomous State", BuiltInLayouts.kGrid);
 					auto_state.addBoolean("Shooting State", () -> { return ((AutoCommand) auto_command.getSelected()).getState(AutonomousState.kShooting); });
 					auto_state.addBoolean("Driving State", () -> { return ((AutoCommand) auto_command.getSelected()).getState(AutonomousState.kDriving); });
+			
 					auto_state.addBoolean("Intaking State", () -> { return ((AutoCommand) auto_command.getSelected()).getState(AutonomousState.kIntaking); });
 				auto_info.addBoolean("Autonomous Finished", () -> { return ((AutoCommand) auto_command.getSelected()).getState(AutonomousState.kFinished); });
 			
-			var shooter_info = robot_config.getLayout("Shooter Information")*/
+			var shooter_info = robot_info.getLayout("Shooter Information", BuiltInLayouts.kList)
+									     .withPosition(7, 0)
+									     .withSize(2, 4);
+				shooter_info.addNumber("Flywheel Velocity", sys_shooter_flywheel::getVelocity)
+							.withWidget(BuiltInWidgets.kDial);
+				shooter_info.addNumber("Turret Rotation", sys_shooter_turret::getRotation)
+							.withWidget(BuiltInWidgets.kGyro);
 
+				var target_info = shooter_info.getLayout("Shooter Target Information", BuiltInLayouts.kGrid);
+					target_info.addNumber("Velocity Target", sys_shooter_flywheel::getTarget)
+							   .withPosition(0, 0);
+					target_info.addNumber("Rotation Target", sys_shooter_turret::getTarget)
+							   .withPosition(1, 0);
+					target_info.addBoolean("Vel. Reached", sys_shooter_flywheel::isTargetReached)
+							   .withPosition(0, 1);
+					target_info.addBoolean("Rot. Reached", sys_shooter_turret::isTargetReached)
+							   .withPosition(1, 1);
+
+			var general_info = robot_info.getLayout("General Information", BuiltInLayouts.kList)
+										 .withPosition(5,0)
+										 .withSize(2, 2);
+				general_info.addNumber("Velocity Offset", sys_shooter_flywheel::getVelocityOffset);
+
+			var indexer_info = robot_info.getLayout("Indexer Information", BuiltInLayouts.kList);
+										 //.withPosition(8, 3)
+										 //.withSize(5, 10);
+				var indexer_state = indexer_info.getLayout("Indexer State", BuiltInLayouts.kGrid);
+					indexer_state.addBoolean("Indexer Active", sys_indexer::isActive)
+								 .withPosition(0, 0);
+					indexer_state.addBoolean("Indexer Full", sys_indexer::ballDetectionExit)
+								 .withPosition(1, 0);
+			
+			var intake_info = robot_info.getLayout("Intake Information", BuiltInLayouts.kList);
+										//.withPosition(14, 3)
+										//.withSize(5, 5);
+				intake_info.addBoolean("Intake Jammed", sys_intake::isIntakeJammed);
 	}
 
 	  /**

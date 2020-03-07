@@ -96,11 +96,11 @@ public final class ShooterTurret extends SubsystemBase implements Toggleable {
 
         m_watchdog = new Watchdog(Constants.ShooterControl.shooter_watchdog_expire_time);
 
-        var parent = Shuffleboard.getTab("Robot Information").getLayout("Shooter Information", BuiltInLayouts.kList);
+        /*var parent = Shuffleboard.getTab("Robot Information").getLayout("Shooter Information", BuiltInLayouts.kList);
             parent.addNumber("Turret Angle", this::getRotation);
             var child = parent.getLayout("Shooter Target Information", BuiltInLayouts.kGrid);
                 child.addNumber("Rotation Target", () -> { return m_target; });
-                child.addBoolean("Rot. Reached", this::isTargetReached);
+                child.addBoolean("Rot. Reached", this::isTargetReached);*/
     }
  
     /**
@@ -214,6 +214,10 @@ public final class ShooterTurret extends SubsystemBase implements Toggleable {
             m_target = m_turret_range.clamp(type.angle);
             enc_C05_shooter_turret.setPosition(m_target);
         }
+    }
+
+    public double getTarget() {
+        return m_target;
     }
 
     /**

@@ -91,16 +91,6 @@ public final class ShooterFlywheel extends SubsystemBase implements Toggleable {
 
         m_watchdog = new Watchdog(Constants.ShooterControl.shooter_watchdog_expire_time);
         //m_logger = new RawLogger("flywheel/"+MatchData.getEventString()+".log");
-    
-        var parent = Shuffleboard.getTab("Robot Information").getLayout("Shooter Information", BuiltInLayouts.kList);
-            parent.addNumber("Flywheel Velocity", this::getVelocity);
-            var child = parent.getLayout("Shooter Target Information", BuiltInLayouts.kGrid);
-                child.addNumber("Velocity Target", () -> { return m_target; });
-                child.addBoolean("Vel. Reached", this::isTargetReached);
-
-        Shuffleboard.getTab("Robot Information")
-                    .getLayout("General Information", BuiltInLayouts.kList)
-                    .addNumber("Velocity Offset", () -> { return m_velocity_offset; });
     }
     
     /**
@@ -260,6 +250,10 @@ public final class ShooterFlywheel extends SubsystemBase implements Toggleable {
      */
     public double getOutputCurrent() {
         return mot_C07_shooter_flywheel.getOutputCurrent();
+    }
+
+    public double getTarget() {
+        return m_target;
     }
      
     @Override

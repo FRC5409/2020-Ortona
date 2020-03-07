@@ -52,7 +52,7 @@ public class Hanging extends SubsystemBase {
   public Hanging() {
     // Piston
     dsl_hangSolenoid = new DoubleSolenoid(Constants.Hanging.FORWARD_CHANEL, Constants.Hanging.BACKWARD_CHANEL);
-
+    setPiston(Value.kForward);
     // Neo
     mot_hanging_neo_Slave = new CANSparkMax(Constants.Hanging.NEO_SLAVE_ID, MotorType.kBrushless);
     mot_hanging_neo_Master = new CANSparkMax(Constants.Hanging.NEO_MASTER_ID, MotorType.kBrushless);

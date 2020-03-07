@@ -38,8 +38,8 @@ public class Intake extends SubsystemBase {
 
 		intakeEncoder = mot_intake_sparkMax_C12.getEncoder();
 
-		Shuffleboard.getTab("Robot Information").getLayout("Intake Information", BuiltInLayouts.kList)
-				    .addBoolean("Intake Jammed", this::isIntakeJammed);
+		/*Shuffleboard.getTab("Robot Information").getLayout("Intake Information", BuiltInLayouts.kList)
+				    .addBoolean("Intake Jammed", this::isIntakeJammed);*/
 	}
 
 	/**	

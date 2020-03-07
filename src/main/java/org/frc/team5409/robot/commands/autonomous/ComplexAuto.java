@@ -24,7 +24,7 @@ public class ComplexAuto extends SequentialCommandGroup implements AutoCommand {
             new ParallelCommandGroup(
                 internal_decorate(new DriveStraightAuto(sys_driveTrain, 0.75, 0.75), AutonomousState.kDriving),
                 internal_decorate(new RotateTurret(sys_rotation, 0), AutonomousState.kShooting),
-                internal_decorate(new IntakeIndexActive(sys_indexer, sys_intake), AutonomousState.kIntaking)
+                internal_decorate(new IntakeIndexActiveAuto(sys_indexer, sys_intake), AutonomousState.kIntaking)
             ).withTimeout(3),
 
             internal_decorate(new DriveStraightAuto(sys_driveTrain, -0.8, -0.8), AutonomousState.kDriving).withTimeout(2.5),
@@ -38,12 +38,12 @@ public class ComplexAuto extends SequentialCommandGroup implements AutoCommand {
         m_intaking = false;
         m_finished = false;
 
-        var parent = Shuffleboard.getTab("Robot Information").getLayout("Autonomous Information", BuiltInLayouts.kList);
+        /*var parent = Shuffleboard.getTab("Robot Information").getLayout("Autonomous Information", BuiltInLayouts.kList);
             parent.addBoolean("Autonomous Finished", () -> { return m_finished; });
             var child = parent.getLayout("Autonomous State", BuiltInLayouts.kGrid);
                 child.addBoolean("Shooting State", () -> { return m_shooting; });
                 child.addBoolean("Driving State", () -> { return m_driving; });
-                child.addBoolean("Intaking State", () -> { return m_intaking; });
+                child.addBoolean("Intaking State", () -> { return m_intaking; });*/
     }
 
     private Command internal_decorate(Command cmd, AutonomousState state) {

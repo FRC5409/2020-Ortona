@@ -191,6 +191,78 @@
               "_source0": "network_table:///SmartDashboard/Range of ExitSensor",
               "_title": "Range of ExitSensor"
             }
+          },
+          "9,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/TOF_ENTER",
+              "_title": "TOF_ENTER"
+            }
+          },
+          "11,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/TOF_BALL1",
+              "_title": "TOF_BALL1"
+            }
+          },
+          "12,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/TOF_EXIT",
+              "_title": "TOF_EXIT"
+            }
+          },
+          "6,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/TOF_ENTER_INRANGE",
+              "_title": "TOF_ENTER_INRANGE",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "7,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/TOF_BALL1_INRANGE",
+              "_title": "TOF_BALL1_INRANGE",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "8,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/TOF_EXIT_INRANGE",
+              "_title": "TOF_EXIT_INRANGE",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
           }
         }
       }
@@ -369,15 +441,15 @@
                   "Layout/Number of rows": 1,
                   "Layout/Label position": "BOTTOM",
                   "_children": {
-                    "1,0": {
-                      "_type": "Boolean Box",
-                      "_title": "Indexer Full",
-                      "Colors/Color when true": "#FFDE14FF",
-                      "Colors/Color when false": "#333333FF"
-                    },
                     "0,0": {
                       "_type": "Boolean Box",
                       "_title": "Indexer Active",
+                      "Colors/Color when true": "#FFDE14FF",
+                      "Colors/Color when false": "#333333FF"
+                    },
+                    "1,0": {
+                      "_type": "Boolean Box",
+                      "_title": "Indexer Full",
                       "Colors/Color when true": "#FFDE14FF",
                       "Colors/Color when false": "#333333FF"
                     }

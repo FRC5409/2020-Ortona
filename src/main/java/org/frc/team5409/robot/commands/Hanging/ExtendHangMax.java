@@ -16,13 +16,13 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
  * ExtendArmNeo Command
  * Runs neo to move while hang extends
  */
-public class ExtendHang extends CommandBase {
+public class ExtendHangMax extends CommandBase {
   /**
    * Creates a new ExtendNeo.
    */
   private final Hanging m_hanging;
 
-  public ExtendHang(Hanging subsystem) {
+  public ExtendHangMax(Hanging subsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_hanging = subsystem;
     addRequirements(m_hanging);
@@ -33,13 +33,13 @@ public class ExtendHang extends CommandBase {
   public void initialize() {
     m_hanging.setMotorsCoast();
     m_hanging.setPiston(Value.kReverse);
-    m_hanging.controlArmNeo(-0.1);
+    m_hanging.controlArmNeo(-0.8);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_hanging.controlArmNeo(0.1);
+    m_hanging.controlArmNeo(0.3);
   }
 
   // Called once the command ends or is interrupted.

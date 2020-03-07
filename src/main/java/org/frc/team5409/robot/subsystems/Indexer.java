@@ -72,11 +72,11 @@ public class Indexer extends SubsystemBase {
 
 		m_output = 0;
 
-		var parent = Shuffleboard.getTab("Robot Information")
+		/*var parent = Shuffleboard.getTab("Robot Information")
 								 .getLayout("Indexer Information", BuiltInLayouts.kList)
 							     .getLayout("Indexer State", BuiltInLayouts.kGrid);
         	parent.addBoolean("Indexer Active", () -> { return m_output != 0; });
-        	parent.addBoolean("Indexer Full", () -> { return ballDetectionExit(); });
+        	parent.addBoolean("Indexer Full", () -> { return ballDetectionExit(); });*/
 	}
 
 	// the measured distance in mm
@@ -149,6 +149,10 @@ public class Indexer extends SubsystemBase {
 
 	public boolean isRangeValidBall1() {
 		return TOF_Ball1.isRangeValid();
+	}
+
+	public boolean isActive() {
+		return m_output != 0;
 	}
 
 	// set ranging mode (short)
