@@ -10,7 +10,9 @@ package org.frc.team5409.robot;
 import java.util.List;
 
 import org.frc.team5409.robot.commands.*;
-import org.frc.team5409.robot.commands.Hanging.ExtendHangMax;
+import org.frc.team5409.robot.commands.Hanging.ExtendHangHigh;
+import org.frc.team5409.robot.commands.Hanging.ExtendHangMiddle;
+import org.frc.team5409.robot.commands.Hanging.ExtendHangLow;
 import org.frc.team5409.robot.commands.Hanging.RetractHang;
 import org.frc.team5409.robot.commands.autonomous.ComplexAuto;
 import org.frc.team5409.robot.commands.autonomous.SimpleAutoBackward;
@@ -178,7 +180,7 @@ public class RobotContainer {
 		but_main_B.whileHeld(new ReverseIntake(sys_intake));
 
 		// Toggle AntiTip
-		but_secondary_Y.whenPressed(new AntiTipToggle(sys_driveTrain));
+		//but_secondary_Y.whenPressed(new AntiTipToggle(sys_driveTrain));
 
 		// Shift gear to fast
 		but_main_bmp_right.whenPressed(new FastGearShift(sys_driveTrain));
@@ -190,9 +192,13 @@ public class RobotContainer {
 		// climb
 
 		but_secondary_back.whileHeld(new RetractHang(sys_hang));
-		but_secondary_start.whenPressed(new ExtendHangMax(sys_hang));
+		but_secondary_Y.whenPressed(new ExtendHangHigh(sys_hang));
+		but_secondary_B.whenPressed(new ExtendHangMiddle(sys_hang));
+		but_secondary_A.whenPressed(new ExtendHangLow(sys_hang));
+
+		
 		but_main_back.whileHeld(new RetractHang(sys_hang));
-		but_main_start.whenPressed(new ExtendHangMax(sys_hang));
+		but_main_start.whenPressed(new ExtendHangHigh(sys_hang));
 
 		but_secondary_bmp_right.whenPressed(new OffsetFlywheel(sys_shooter_flywheel, true));
 		but_secondary_bmp_left.whenPressed(new OffsetFlywheel(sys_shooter_flywheel, false));

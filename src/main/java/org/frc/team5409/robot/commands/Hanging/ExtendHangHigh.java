@@ -16,13 +16,13 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
  * ExtendArmNeo Command
  * Runs neo to move while hang extends
  */
-public class ExtendHangMax extends CommandBase {
+public class ExtendHangHigh extends CommandBase {
   /**
    * Creates a new ExtendNeo.
    */
   private final Hanging m_hanging;
 
-  public ExtendHangMax(Hanging subsystem) {
+  public ExtendHangHigh(Hanging subsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_hanging = subsystem;
     addRequirements(m_hanging);
@@ -56,7 +56,7 @@ public class ExtendHangMax extends CommandBase {
     // if(m_hanging.isSwitchSet() == false){
     // finished = true;
     // }
-    return m_hanging.getEncoderAvgPosition() > Constants.Hanging.EXTEND_NEO_POS;
+    return m_hanging.getEncoderAvgPosition() > Constants.Hanging.EXTEND_NEO_POS_MAX;
     //return false;
   }
 }

@@ -275,7 +275,11 @@ public final class Constants {
 
         public static final int NEO_MASTER_ID = 11;
 
-        public static final double EXTEND_NEO_POS = 97;
+        public static final double EXTEND_NEO_POS_MAX = 97;
+
+        public static final double EXTEND_NEO_POS_MIDDLE = 97;
+
+        public static final double EXTEND_NEO_POS_MIN = 97;
 
         public static final double RETRACT_NEO_POS = -10;
 
