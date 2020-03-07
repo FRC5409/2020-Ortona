@@ -23,7 +23,7 @@ public final class Constants {
 
 
     // Timing Constants
-        public static final double vision_acquisition_delay = 0.5;
+        public static final double vision_acquisition_delay = 0.35;
 
         public static final double vision_aligned_thresh = 3.5;
     }
@@ -113,7 +113,7 @@ public final class Constants {
 
 
     // Smooth Sweep Constants (experimental)
-        public static final double shooter_smooth_sweep_period = 1.5;
+        public static final double shooter_smooth_sweep_period = 18;
 
         public static final SimpleEquation shooter_smooth_sweep_func = t -> {
             return (Math.cos(2d*Math.PI*t/shooter_smooth_sweep_period)+1d)/2d*shooter_turret_range.magnitude+shooter_turret_range.min;
