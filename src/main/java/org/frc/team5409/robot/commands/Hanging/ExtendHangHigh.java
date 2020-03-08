@@ -39,7 +39,7 @@ public class ExtendHangHigh extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_hanging.controlArmNeo(0.3);
+    m_hanging.controlArmNeo(0.45);
   }
 
   // Called once the command ends or is interrupted.
@@ -56,7 +56,7 @@ public class ExtendHangHigh extends CommandBase {
     // if(m_hanging.isSwitchSet() == false){
     // finished = true;
     // }
-    return m_hanging.getEncoderAvgPosition() > Constants.Hanging.EXTEND_NEO_POS_MAX;
-    //return false;
+    //return m_hanging.getEncoderAvgPosition() > Constants.Hanging.EXTEND_NEO_POS_MAX;
+    return false;
   }
 }

@@ -11,8 +11,11 @@ import java.util.List;
 
 import org.frc.team5409.robot.commands.*;
 import org.frc.team5409.robot.commands.Hanging.ExtendHangHigh;
+import org.frc.team5409.robot.commands.Hanging.ExtendHangHighSeq;
 import org.frc.team5409.robot.commands.Hanging.ExtendHangMiddle;
+import org.frc.team5409.robot.commands.Hanging.ExtendHangMiddleSeq;
 import org.frc.team5409.robot.commands.Hanging.ExtendHangLow;
+import org.frc.team5409.robot.commands.Hanging.ExtendHangLowSeq;
 import org.frc.team5409.robot.commands.Hanging.RetractHang;
 import org.frc.team5409.robot.commands.autonomous.ComplexAuto;
 import org.frc.team5409.robot.commands.autonomous.SimpleAutoBackward;
@@ -192,9 +195,9 @@ public class RobotContainer {
 		// climb
 
 		but_secondary_back.whileHeld(new RetractHang(sys_hang));
-		but_secondary_Y.whenPressed(new ExtendHangHigh(sys_hang));
-		but_secondary_B.whenPressed(new ExtendHangMiddle(sys_hang));
-		but_secondary_A.whenPressed(new ExtendHangLow(sys_hang));
+		but_secondary_Y.whenPressed(new ExtendHangHighSeq(sys_hang));
+		but_secondary_B.whenPressed(new ExtendHangMiddleSeq(sys_hang));
+		but_secondary_A.whenPressed(new ExtendHangLowSeq(sys_hang));
 
 		
 		but_main_back.whileHeld(new RetractHang(sys_hang));

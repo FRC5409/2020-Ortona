@@ -95,7 +95,7 @@ public final class Constants {
 
 
     // Shooter Turret Constants
-        public static final double shooter_turret_target_thresh = 0.4;
+        public static final double shooter_turret_target_thresh = 6.4; // 0.4
 
         public static final double shooter_turret_limit_left_angle = -270;
 
@@ -107,7 +107,7 @@ public final class Constants {
 
 
     // Shooter Flywheel Constants
-        public static final double shooter_flywheel_target_thresh = 170;
+        public static final double shooter_flywheel_target_thresh = 200; //170
 
         public static final double shooter_flywheel_offset_increment = 150;
 
@@ -281,7 +281,7 @@ public final class Constants {
 
         public static final double EXTEND_NEO_POS_MIN = 97;
 
-        public static final double RETRACT_NEO_POS = -10;
+        public static final double RETRACT_NEO_POS = 10;
 
         //Piston
         public static final int FORWARD_CHANEL = 4;

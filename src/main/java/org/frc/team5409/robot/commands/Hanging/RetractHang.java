@@ -38,7 +38,7 @@ public class RetractHang extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_hanging.controlArmNeo(-0.3);
+    m_hanging.controlArmNeo(-0.7);
     m_hanging.setPiston(Value.kForward);
   }
 
