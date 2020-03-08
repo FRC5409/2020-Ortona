@@ -69,8 +69,7 @@ public class Hanging extends SubsystemBase {
     enc1_hanging = mot_hanging_neo_Slave.getEncoder();
     enc2_hanging = mot_hanging_neo_Master.getEncoder();
 
-    enc1_hanging.setPosition(0);
-    enc2_hanging.setPosition(0); 
+    resetEncoders();
 
     mot_hanging_neo_Master.follow(ExternalFollower.kFollowerDisabled, 0);
     mot_hanging_neo_Slave.follow(mot_hanging_neo_Master, true);
@@ -186,6 +185,11 @@ public void setMotorsBrake() {
 public void setMotorsCoast() {
   mot_hanging_neo_Master.setIdleMode(IdleMode.kCoast);
   mot_hanging_neo_Slave.setIdleMode(IdleMode.kCoast);
+}
+
+public void resetEncoders() {
+  enc1_hanging.setPosition(0);
+  enc2_hanging.setPosition(0);
 }
 /**
  * isSwitchSet
