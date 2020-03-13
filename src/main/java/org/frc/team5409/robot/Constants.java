@@ -9,6 +9,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import org.frc.team5409.robot.util.*;
 
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.wpilibj.util.Units;
 
 public final class Constants {
     public static final class Vision {
@@ -19,7 +20,7 @@ public final class Constants {
     // Robot configuration Constants
         public static final double vision_limelight_height = 42.75d/12.0d;
 
-        public static final double vision_limelight_pitch = 13.4;//13.15
+        public static final double vision_limelight_pitch = 15.1;//13.4;//13.15
 
 
     // Timing Constants
@@ -41,13 +42,13 @@ public final class Constants {
 
     // PID Configurations
         public static final PIDFConfig shooter_turret_pid = new PIDFConfig(
-            0.03d, 0, 0, 0
+            0.35d, 0, 1.852d, 0
         );
 
         public static final double shooter_turret_max_speed = 0.42;
 
         public static final PIDFConfig shooter_flywheel_pid = new PIDFConfig(
-            7e-5, 0, 0, 0.00018851d
+            5e-4, 0, 0, 0.00018851d
         );
 
 
@@ -113,7 +114,7 @@ public final class Constants {
 
 
     // Smooth Sweep Constants (experimental)
-        public static final double shooter_smooth_sweep_period = 18;
+        public static final double shooter_smooth_sweep_period = 3.6;
 
         public static final SimpleEquation shooter_smooth_sweep_func = t -> {
             return (Math.cos(2d*Math.PI*t/shooter_smooth_sweep_period)+1d)/2d*shooter_turret_range.magnitude+shooter_turret_range.min;
@@ -228,13 +229,11 @@ public final class Constants {
         public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(
             kTrackwidthMeters);
 
-        public static final int kEncoderCPR = 0;
+        public static final int kEncoderCPR = 4096;
 
-        public static final double kWheelDiameterMeters = 0;
+        public static final double kWheelDiameterMeters = 6/39.37d;
 
-        public static final double kEncoderDistancePerPulse =
-                // Assumes the encoders are directly mounted on the wheel shafts
-                (kWheelDiameterMeters * Math.PI) / (double) kEncoderCPR;
+        public static final double kEncoderDistancePerPulse = 1/Constants.DriveTrain.neo_encoder_position * Units.inchesToMeters(6) * Math.PI;
 
         // encoder port id
         public static final int[] kLeftEncoderPorts = new int[] { 0, 1 };
@@ -249,7 +248,7 @@ public final class Constants {
 
         public static final double gearRatio = 0;
 
-        public static final double neo_encoder_position = 42.0;
+        public static final double neo_encoder_position = 18.0;
 
         public static final double distanceCalculate = (Math.PI*kWheelDiameterMeters) / gearRatio;
     }

@@ -26,7 +26,7 @@ public class Pneumatics extends SubsystemBase {
   }
 
   public void compressAir(){
-    compressor1.setClosedLoopControl(true);
+    //compressor1.setClosedLoopControl(true);
 }
 
   public void releaseAir(){

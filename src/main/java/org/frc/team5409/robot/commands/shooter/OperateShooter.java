@@ -211,8 +211,8 @@ public final class OperateShooter extends CommandBase {
 
         if (m_shooter_turret.isTargetReached() && m_shooter_flywheel.isTargetReached()) {
             m_indexer.moveIndexerMotor(1);
-        } else {
+        } /*else {
             m_indexer.moveIndexerMotor(0);
-        }
+        }*/
     }
 }

@@ -157,8 +157,7 @@ public class RobotContainer {
 		// but_main_Y.whileActiveOnce(new SmoothSweep(sys_shooter_turret,
 		// sys_shooter_flywheel));
 		but_main_A
-				.whileActiveOnce(
-						new OperateShooter(sys_shooter_flywheel, sys_shooter_turret, sys_limelight, sys_indexer))
+				.whileActiveOnce(new DriveByShooter(sys_shooter_flywheel, sys_shooter_turret, sys_limelight, sys_indexer, sys_driveTrain), false)
 				.whenInactive(new RotateTurret(sys_shooter_turret, 0));
 		// sys_shooter_flywheel.setDefaultCommand(new
 		// RunShooterFlywheel(sys_shooter_flywheel, sys_indexer, sys_limelight,
@@ -200,8 +199,9 @@ public class RobotContainer {
 		but_secondary_A.whenPressed(new ExtendHangLowSeq(sys_hang));
 
 		
-		but_main_back.whileHeld(new RetractHang(sys_hang));
-		but_main_start.whenPressed(new ExtendHangHigh(sys_hang));
+		//but_main_back.whileHeld(new RetractHang(sys_hang));
+		//but_main_start.whenPressed(new ExtendHangHigh(sys_hang));
+		but_main_start.whenPressed(new CalibrateTurret(sys_shooter_turret));
 
 		but_secondary_bmp_right.whenPressed(new OffsetFlywheel(sys_shooter_flywheel, true));
 		but_secondary_bmp_left.whenPressed(new OffsetFlywheel(sys_shooter_flywheel, false));

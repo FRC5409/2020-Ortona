@@ -18,7 +18,7 @@ import org.frc.team5409.robot.util.*;
  * 
  * @author Keith Davies
  */
-public final class FastOperateShooter extends CommandBase {
+public final class DriveByShooter extends CommandBase {
     /**
      * The state of the OperareTurret command
      * during it's execution.
@@ -31,6 +31,7 @@ public final class FastOperateShooter extends CommandBase {
     private final ShooterTurret   m_turret;
     private final Limelight       m_limelight;
     private final Indexer         m_indexer;
+    private final DriveTrain      m_drivetrain;
 
     private final SimpleEquation  m_rpm_curve;
     private final SimpleEquation  m_smooth_sweep, m_smooth_sweep_inverse;
@@ -40,15 +41,18 @@ public final class FastOperateShooter extends CommandBase {
     private final Range           m_distance_range;
 
     private       CommandState    m_state;
-    private       double          m_distance, m_leniency;
-    private       double          m_timer;
+    private       double          m_distance, m_leniency, m_distance_vel;
+    private       double          m_timer, m_timer_last;
     private       double          m_smooth_sweep_toff;
 
-    public FastOperateShooter(ShooterFlywheel sys_flywheel, ShooterTurret sys_rotation, Limelight sys_limelight, Indexer sys_indexer) {
+    private       Vec2            m_port_pos, m_robot_pos;
+
+    public DriveByShooter(ShooterFlywheel sys_flywheel, ShooterTurret sys_rotation, Limelight sys_limelight, Indexer sys_indexer, DriveTrain sys_drivetrain) {
         m_flywheel = sys_flywheel;
         m_turret = sys_rotation;
         m_limelight = sys_limelight;
         m_indexer = sys_indexer;
+        m_drivetrain = sys_drivetrain;
 
         m_distance_range = Constants.ShooterControl.shooter_distance_range;
         m_port_height = Math.abs(Constants.Vision.vision_outerport_height - Constants.Vision.vision_limelight_height);
@@ -57,7 +61,12 @@ public final class FastOperateShooter extends CommandBase {
         m_rpm_leniency_func = Constants.ShooterControl.shooter_rpm_leniency_func;
         m_smooth_sweep = Constants.ShooterControl.shooter_smooth_sweep_func;
         m_rpm_curve = Constants.ShooterControl.shooter_distance_rpm_curve;
+
+        m_port_pos = new Vec2();
+        m_robot_pos = new Vec2();
     
+        SmartDashboard.setDefaultNumber("Scalll", 0);
+
         addRequirements(sys_flywheel, sys_rotation, sys_limelight, sys_indexer);
     }
 
@@ -65,14 +74,14 @@ public final class FastOperateShooter extends CommandBase {
     public void initialize() {
         m_flywheel.enable();
 
-        m_flywheel.startFeeder();
+        //m_flywheel.startFeeder();
         m_flywheel.setVelocity(m_rpm_curve.calculate(m_distance_range.median));
 
-        m_turret.enable();
+        //m_turret.enable();
 
         m_limelight.enable();
         m_limelight.setLedMode(Limelight.LedMode.kModeOn);
-
+        m_timer_last = 0;
         internal_switchState(CommandState.kSearching);
     }
 
@@ -105,6 +114,8 @@ public final class FastOperateShooter extends CommandBase {
         m_limelight.disable();
         
         m_indexer.moveIndexerMotor(0);
+
+        (new RotateTurret(m_turret, 0)).schedule();
     }
     
     @Override
@@ -170,7 +181,7 @@ public final class FastOperateShooter extends CommandBase {
      */
     private void internal_operateSweeping(double time) {
         if (m_limelight.hasTarget() && m_limelight.getTargetType() == Limelight.TargetType.kOuterPort) {
-            internal_switchState(CommandState.kAligning);
+            internal_switchState(CommandState.kShooting);
         } else if (time / Constants.ShooterControl.shooter_smooth_sweep_period > Constants.ShooterControl.shooter_smooth_sweep_max_sweeps) {
             internal_switchState(CommandState.kEnd);
         } else {
@@ -205,24 +216,44 @@ public final class FastOperateShooter extends CommandBase {
      * @param time The time since the this state began execution.
      */
     private void internal_operateShooting(double time) {
+        //double time_diff = time - m_timer_last;
+        //m_timer_last = time;    
+
         if (m_limelight.hasTarget() && m_limelight.getTargetType() == Limelight.TargetType.kOuterPort) {
             Vec2 target = m_limelight.getTarget();
 
             m_distance = m_port_height / Math.tan(Math.toRadians(target.y + Constants.Vision.vision_limelight_pitch));
+            //m_distance_vel = (distance - m_distance) / (time_diff);    
+
             m_leniency = m_rpm_leniency_func.calculate(m_distance);
+            //m_distance = distance;
+
+            if (target.x < Constants.ShooterControl.shooter_turret_target_thresh) {
+                double heading = m_drivetrain.getHeading()/180*Math.PI;
+                
+                Vec2 direction = new Vec2(-Math.sin(heading), Math.cos(heading));
+
+                m_port_pos = new Vec2(
+                    
+
+                );
+
+                SmartDashboard.putNumber("heading", m_drivetrain.getHeading());
+                SmartDashboard.putString("Direction", String.format("{%f, %f}", direction.x, direction.y));
+            }
+
+            SmartDashboard.putNumber("Velo", -m_drivetrain.getAverageEncoderRate()*SmartDashboard.getNumber("Scalll", 1));
 
             m_flywheel.setVelocity(m_rpm_curve.calculate(m_distance));
-            m_turret.setRotation(m_turret.getRotation()+target.x);
+            m_turret.setRotation(m_turret.getRotation()+target.x+m_drivetrain.getAverageEncoderRate()*12);
         }
 
         if (m_turret.isTargetReached() && Math.abs(m_flywheel.getVelocity()-m_flywheel.getTarget()) < m_leniency) {
             m_indexer.moveIndexerMotor(1);
         } else if (!m_indexer.ballDetectionExit()) {
             m_indexer.moveIndexerMotor(1);
-        } /*else {
+        } else {
             m_indexer.moveIndexerMotor(0);
-        }*/
-
-        //internal_advanceIndexer();
+        }
     }
 }

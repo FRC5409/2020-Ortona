@@ -95,10 +95,11 @@ public class DriveTrain extends SubsystemBase {
     // Sets the distance per pulse for the encoders
     // https://www.chiefdelphi.com/t/encoder-distance-per-pulse/156742
 
-    m_leftEncoder.setPositionConversionFactor(
-        (Constants.DriveTrain.neo_encoder_position) * Constants.DriveTrain.kEncoderDistancePerPulse);
-    m_rightEncoder.setPositionConversionFactor(
-        (Constants.DriveTrain.neo_encoder_position) * Constants.DriveTrain.kEncoderDistancePerPulse);
+    m_leftEncoder.setPositionConversionFactor(Constants.DriveTrain.kEncoderDistancePerPulse);
+    m_rightEncoder.setPositionConversionFactor(Constants.DriveTrain.kEncoderDistancePerPulse);
+
+    m_leftEncoder.setVelocityConversionFactor(Constants.DriveTrain.kEncoderDistancePerPulse / 60);
+    m_rightEncoder.setVelocityConversionFactor(Constants.DriveTrain.kEncoderDistancePerPulse / 60);
 
     resetEncoders();
     //m_odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
@@ -121,8 +122,8 @@ public class DriveTrain extends SubsystemBase {
     //m_odometry.update(Rotation2d.fromDegrees(getHeading()), m_leftEncoder.getPosition(), m_rightEncoder.getPosition());
 
     // Get the encoder positions and display in smart dashboard
-    SmartDashboard.putNumber("kleftencoder value", m_leftEncoder.getPosition());
-    SmartDashboard.putNumber("krightencoder value", m_rightEncoder.getPosition());
+    SmartDashboard.putNumber("kleftencoder value", m_leftEncoder.getVelocity()/* / Constants.DriveTrain.neo_encoder_position * 6 * Math.PI*/);
+    SmartDashboard.putNumber("krightencoder value", m_rightEncoder.getVelocity()/* / Constants.DriveTrain.neo_encoder_position * 6 * Math.PI*/);
   }
 
   /**
@@ -352,5 +353,9 @@ public class DriveTrain extends SubsystemBase {
   public void setRightMotors(double speed) {
     mot_rightDriveFront_sparkmax_C15.set(speed);
   }
+
+public double getAverageEncoderRate() {
+	return (getLeftEncoderRate() + getRightEncoderRate())/2;
+}
 
 }
