@@ -105,10 +105,6 @@ public class Indexer extends SubsystemBase {
 		return false;
 	}
 
-	// function that returns how many power cells are in the indexer
-	// public int getNumberOfPowerCellsEnter() {
-	// return getNumberOfPowerCellsEnter;
-	// }
 
 	// detects whether or not power cells are in range of ball1 sensor
 	public boolean ballDetectionBall1() {
