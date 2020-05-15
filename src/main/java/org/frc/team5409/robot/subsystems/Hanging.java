@@ -35,6 +35,7 @@ public class Hanging extends SubsystemBase {
   //Piston
   private DoubleSolenoid dsl_hangSolenoid;
 
+  //Limit switch code is still in for future updates of the subsystem
   //Limit Switch
   // private static DigitalInput limitSwitch;
 
@@ -46,6 +47,7 @@ public class Hanging extends SubsystemBase {
   private CANPIDController m_pidController_hanging;
   public double rotations;
 
+  //TOF is still in for future updates of the subsystem
   //Time Of Flight
   // protected TimeOfFlight TOF_Hang;
 
@@ -53,6 +55,7 @@ public class Hanging extends SubsystemBase {
     // Piston
     dsl_hangSolenoid = new DoubleSolenoid(Constants.Hanging.FORWARD_CHANEL, Constants.Hanging.BACKWARD_CHANEL);
     setPiston(Value.kForward);
+    
     // Neo
     mot_hanging_neo_Slave = new CANSparkMax(Constants.Hanging.NEO_SLAVE_ID, MotorType.kBrushless);
     mot_hanging_neo_Master = new CANSparkMax(Constants.Hanging.NEO_MASTER_ID, MotorType.kBrushless);
@@ -77,6 +80,7 @@ public class Hanging extends SubsystemBase {
     mot_hanging_neo_Slave.burnFlash();
     mot_hanging_neo_Master.burnFlash();
 
+    /**Leave in code for future updates to subsystem
     //Time Of Flight
     // TOF_Hang = new TimeOfFlight(Constants.Hanging.TOF_ID);     
     // TOF_Hang.setRangingMode(TimeOfFlight.RangingMode.Short, Constants.Hanging.TOF_SAMPLE_TIME);    
@@ -85,6 +89,7 @@ public class Hanging extends SubsystemBase {
 
     // Limit Switch
     // limitSwitch = new DigitalInput(1);
+    */
   }
 
   public void setPid() {
@@ -115,6 +120,7 @@ public class Hanging extends SubsystemBase {
     SmartDashboard.putNumber("Average Encoder Value", getEncoderAvgPosition());
   }
 
+  //Is still in code for future update, if pid is neeeded
   public void adjustPid() {
     double kP = Constants.Hanging.kP;
     double kI = Constants.Hanging.kI;
@@ -191,7 +197,7 @@ public void resetEncoders() {
   enc1_hanging.setPosition(0);
   enc2_hanging.setPosition(0);
 }
-/**
+/**Is still in code for system updates, when sensors need to be used
  * isSwitchSet
  * Boolean that determines if the limit switch is set or not
  */
@@ -199,7 +205,7 @@ public void resetEncoders() {
   //   return !limitSwitch.get();
   // }
 
-  /**
+  /**Is still in code for system updates, when sensors need to be used
    * getTOF
    * gets the time of flight sensor
    */

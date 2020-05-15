@@ -57,6 +57,5 @@ public class ExtendHangHigh extends CommandBase {
     // finished = true;
     // }
     return m_hanging.getEncoderAvgPosition() > Constants.Hanging.EXTEND_NEO_POS_MAX;
-    //return false;
   }
 }

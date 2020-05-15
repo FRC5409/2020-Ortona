@@ -54,6 +54,7 @@ public class RetractHang extends CommandBase {
   @Override
   public boolean isFinished() {
 
+    //For the subsystem update when sensors are added
     // if (m_hanging.range_Hang < Constants.Hanging.TOF_RANGE){
     //   return = true;
     // }

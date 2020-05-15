@@ -254,6 +254,7 @@ public final class Constants {
     }
     public static class Hanging{
 
+        //For future subsystem updates
         //PID Variables
         public static final double kP = 0.1;
 
@@ -287,6 +288,7 @@ public final class Constants {
 
         public static final int BACKWARD_CHANEL = 5;
 
+        //For future subsystem updates
         //Time Of Flight
         // public static final int TOF_ID = 4;
 

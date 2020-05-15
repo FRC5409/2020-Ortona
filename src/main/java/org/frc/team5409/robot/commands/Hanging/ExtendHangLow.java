@@ -57,6 +57,5 @@ public class ExtendHangLow extends CommandBase {
     // finished = true;
     // }
     return m_hanging.getEncoderAvgPosition() > Constants.Hanging.EXTEND_NEO_POS_MIN;
-    //return false;
   }
 }
