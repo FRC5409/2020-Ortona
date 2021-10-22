@@ -51,10 +51,6 @@ public class IntakeIndexActive extends CommandBase {
 			subsys_Intake.intakeOn(1);
 			subsys_Intake.solenoidsDown();
 		}
-<<<<<<< HEAD
-=======
-
->>>>>>> Took out some comments that didn't need to be there
 	}
 
 	// Called every time the scheduler runs while the command is scheduled.
