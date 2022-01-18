@@ -8,6 +8,7 @@
 package org.frc.team5409.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Pneumatics extends SubsystemBase {
@@ -15,9 +16,9 @@ public class Pneumatics extends SubsystemBase {
    * Creates a new Pneumatics.
    */
   Compressor compressor1;
+
   public Pneumatics() {
-    compressor1 = new Compressor(0);
-    compressAir();
+    compressor1 = new Compressor(0, PneumaticsModuleType.CTREPCM);
   }
 
   @Override
@@ -25,12 +26,12 @@ public class Pneumatics extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public void compressAir(){
-    //compressor1.setClosedLoopControl(true);
-}
+  public void disable() {
+    this.compressor1.disable();
+  }
 
-  public void releaseAir(){
-    compressor1.setClosedLoopControl(false);
-}
+  public void enable() {
+    this.compressor1.enableDigital();
+  }
 
 }
