@@ -47,6 +47,6 @@ public final class MatchData {
      * Gets the name of the event location.
      */
     public static final String getEventString() {
-        return DriverStation.getInstance().getEventName();
+        return DriverStation.getEventName();
     }
 }
