@@ -104,7 +104,13 @@ public class DriveTrain extends SubsystemBase {
     resetEncoders();
     //m_odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
     
-    dsl_gearSolenoid = new DoubleSolenoid(Constants.DriveTrain.kShiftSolenoid1, Constants.DriveTrain.kShiftSolenoid2);
+    /**
+     * TODO: Make sure PneumaticsModuleType.CTREPCM is correct type
+     * WPILib 2022 update
+     * https://first.wpi.edu/wpilib/allwpilib/docs/release/java/edu/wpi/first/wpilibj/DoubleSolenoid.html
+     * https://first.wpi.edu/wpilib/allwpilib/docs/release/java/edu/wpi/first/wpilibj/PneumaticsModuleType.html
+     */
+    dsl_gearSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.DriveTrain.kShiftSolenoid1, Constants.DriveTrain.kShiftSolenoid2);
 
     // Calibrate the gyro
     m_navX = new AHRS(SPI.Port.kMXP);

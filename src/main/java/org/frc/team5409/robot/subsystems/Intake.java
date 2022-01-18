@@ -33,8 +33,14 @@ public class Intake extends SubsystemBase {
 			mot_intake_sparkMax_C12.setIdleMode(IdleMode.kBrake);	
 		mot_intake_sparkMax_C12.burnFlash();  	
 
-		dsl_rightIntakeSolenoid = new DoubleSolenoid(Constants.Intake.kRightIntakeSolenoid1, Constants.Intake.kRightIntakeSolenoid2);	
-		dsl_leftIntakeSolenoid = new DoubleSolenoid(Constants.Intake.kLeftIntakeSolenoid1, Constants.Intake.kLeftIntakeSolenoid2);
+		/**
+		 * TODO: Make sure PneumaticsModuleType.CTREPCM is correct type
+		 * WPILib 2022 update
+		 * https://first.wpi.edu/wpilib/allwpilib/docs/release/java/edu/wpi/first/wpilibj/DoubleSolenoid.html
+		 * https://first.wpi.edu/wpilib/allwpilib/docs/release/java/edu/wpi/first/wpilibj/PneumaticsModuleType.html
+		 */
+		dsl_rightIntakeSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.Intake.kRightIntakeSolenoid1, Constants.Intake.kRightIntakeSolenoid2);	
+		dsl_leftIntakeSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.Intake.kLeftIntakeSolenoid1, Constants.Intake.kLeftIntakeSolenoid2);
 
 		intakeEncoder = mot_intake_sparkMax_C12.getEncoder();
 

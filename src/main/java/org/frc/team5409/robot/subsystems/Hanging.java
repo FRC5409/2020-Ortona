@@ -53,7 +53,13 @@ public class Hanging extends SubsystemBase {
 
   public Hanging() {
     // Piston
-    dsl_hangSolenoid = new DoubleSolenoid(Constants.Hanging.FORWARD_CHANEL, Constants.Hanging.BACKWARD_CHANEL);
+    /**
+     * TODO: Make sure PneumaticsModuleType.CTREPCM is correct type
+     * WPILib 2022 update
+     * https://first.wpi.edu/wpilib/allwpilib/docs/release/java/edu/wpi/first/wpilibj/DoubleSolenoid.html
+     * https://first.wpi.edu/wpilib/allwpilib/docs/release/java/edu/wpi/first/wpilibj/PneumaticsModuleType.html
+     */
+    dsl_hangSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.Hanging.FORWARD_CHANEL, Constants.Hanging.BACKWARD_CHANEL);
     setPiston(Value.kForward);
     
     // Neo
