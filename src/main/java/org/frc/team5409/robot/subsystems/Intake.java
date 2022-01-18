@@ -7,20 +7,20 @@
 
 package org.frc.team5409.robot.subsystems;
 
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
+
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANEncoder;
+import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.frc.team5409.robot.Constants;
 
 public class Intake extends SubsystemBase {
 	private CANSparkMax mot_intake_sparkMax_C12;
-	private final CANEncoder intakeEncoder;
+	private final RelativeEncoder intakeEncoder;
 	private DoubleSolenoid dsl_rightIntakeSolenoid;	
 	private DoubleSolenoid dsl_leftIntakeSolenoid;
 
