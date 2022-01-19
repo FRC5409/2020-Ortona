@@ -7,15 +7,9 @@
 
 package org.frc.team5409.robot.commands;
 
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import org.frc.team5409.robot.subsystems.Intake;
-import org.frc.team5409.robot.util.Logger;
-
-import java.time.Instant;
-
 import org.frc.team5409.robot.subsystems.Indexer;
 
 public class IntakeIndexActiveAuto extends CommandBase {
