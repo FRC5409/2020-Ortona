@@ -2,6 +2,7 @@ package org.frc.team5409.robot.subsystems.shooter;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.*;
+import com.revrobotics.CANSparkMax.ControlType;
 
 import org.frc.team5409.robot.Constants;
 import org.frc.team5409.robot.util.*;
@@ -143,7 +144,12 @@ public final class ShooterFlywheel extends SubsystemBase implements Toggleable {
             return;
 
         m_target = m_velocity_range.clamp(target + m_velocity_offset);
-        pid_C07_shooter_flywheel.setReference(m_target, ControlType.kVelocity);
+        /**
+         * TODO: Make sure third parameter is using correct PID
+         * https://codedocs.revrobotics.com/java/com/revrobotics/sparkmaxpidcontroller#setReference(double,com.revrobotics.ControlType,int)
+         * Old implementation deprecated, see new implementation
+         */
+        pid_C07_shooter_flywheel.setReference(m_target, ControlType.kVelocity, (int)Constants.ShooterControl.shooter_flywheel_pid.P);
        
         m_watchdog.feed();
     }
