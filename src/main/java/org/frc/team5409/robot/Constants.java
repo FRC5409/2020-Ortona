@@ -1,7 +1,5 @@
 package org.frc.team5409.robot;
 
-import java.util.function.Function;
-
 //import com.revrobotics.CANError;
 import com.revrobotics.CANSparkMax.IdleMode;
 
