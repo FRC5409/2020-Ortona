@@ -47,6 +47,7 @@ public class SimpleAutoForward extends SequentialCommandGroup implements AutoCom
             case kShooting: m_shooting = state; break;
             case kDriving: m_driving = state; break;
             case kFinished: m_finished = state; break;
+            case kIntaking: break;
         }
     }
 

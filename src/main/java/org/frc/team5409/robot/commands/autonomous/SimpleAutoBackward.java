@@ -45,6 +45,7 @@ public class SimpleAutoBackward extends SequentialCommandGroup implements AutoCo
             case kShooting: m_shooting = state; break;
             case kDriving: m_driving = state; break;
             case kFinished: m_finished = state; break;
+            case kIntaking: break;
         }
     }
 
