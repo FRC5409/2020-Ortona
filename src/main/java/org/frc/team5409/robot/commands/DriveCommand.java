@@ -9,8 +9,6 @@ package org.frc.team5409.robot.commands;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.GenericHID.Hand;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import org.frc.team5409.robot.subsystems.DriveTrain;
 
@@ -52,9 +50,9 @@ public class DriveCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    leftTrigger = m_joystick.getTriggerAxis(Hand.kLeft);
-    rightTrigger = m_joystick.getTriggerAxis(Hand.kRight);
-    lxAxis = m_joystick.getX(Hand.kLeft);
+    leftTrigger = m_joystick.getLeftTriggerAxis();
+    rightTrigger = m_joystick.getRightTriggerAxis();
+    lxAxis = m_joystick.getLeftX();
     lyAxis = rightTrigger - leftTrigger;
     pitchAngleDegrees = sys_driveSubsystem.getPitchAngle();
     rollAngleDegrees = sys_driveSubsystem.getRollAngle();

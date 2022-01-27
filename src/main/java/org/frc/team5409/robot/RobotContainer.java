@@ -7,14 +7,9 @@
 
 package org.frc.team5409.robot;
 
-import java.util.List;
-
 import org.frc.team5409.robot.commands.*;
-import org.frc.team5409.robot.commands.Hanging.ExtendHangHigh;
 import org.frc.team5409.robot.commands.Hanging.ExtendHangHighSeq;
-import org.frc.team5409.robot.commands.Hanging.ExtendHangMiddle;
 import org.frc.team5409.robot.commands.Hanging.ExtendHangMiddleSeq;
-import org.frc.team5409.robot.commands.Hanging.ExtendHangLow;
 import org.frc.team5409.robot.commands.Hanging.ExtendHangLowSeq;
 import org.frc.team5409.robot.commands.Hanging.RetractHang;
 import org.frc.team5409.robot.commands.autonomous.ComplexAuto;
@@ -27,19 +22,10 @@ import org.frc.team5409.robot.util.*;
 import org.frc.team5409.robot.util.AutoCommand.AutonomousState;
 
 import edu.wpi.first.wpilibj.*;
-import edu.wpi.first.wpilibj.controller.RamseteController;
-import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
-import edu.wpi.first.wpilibj.geometry.Pose2d;
-import edu.wpi.first.wpilibj.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.trajectory.Trajectory;
-import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
-import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
-import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
 
 import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -125,10 +111,10 @@ public class RobotContainer {
 		but_main_B = new JoystickButton(joy_main, XboxController.Button.kB.value);
 		but_main_X = new JoystickButton(joy_main, XboxController.Button.kX.value);
 		but_main_Y = new JoystickButton(joy_main, XboxController.Button.kY.value);
-		but_main_sck_left = new JoystickButton(joy_main, XboxController.Button.kStickLeft.value);
-		but_main_sck_right = new JoystickButton(joy_main, XboxController.Button.kStickRight.value);
-		but_main_bmp_left = new JoystickButton(joy_main, XboxController.Button.kBumperLeft.value);
-		but_main_bmp_right = new JoystickButton(joy_main, XboxController.Button.kBumperRight.value);
+		but_main_sck_left = new JoystickButton(joy_main, XboxController.Button.kLeftStick.value);
+		but_main_sck_right = new JoystickButton(joy_main, XboxController.Button.kRightStick.value);
+		but_main_bmp_left = new JoystickButton(joy_main, XboxController.Button.kLeftBumper.value);
+		but_main_bmp_right = new JoystickButton(joy_main, XboxController.Button.kLeftBumper.value);
 		but_main_start = new JoystickButton(joy_main, XboxController.Button.kStart.value);
 		but_main_back = new JoystickButton(joy_main, XboxController.Button.kBack.value);
 
@@ -136,10 +122,10 @@ public class RobotContainer {
 		but_secondary_B = new JoystickButton(joy_secondary, XboxController.Button.kB.value);
 		but_secondary_X = new JoystickButton(joy_secondary, XboxController.Button.kX.value);
 		but_secondary_Y = new JoystickButton(joy_secondary, XboxController.Button.kY.value);
-		but_secondary_sck_left = new JoystickButton(joy_secondary, XboxController.Button.kStickLeft.value);
-		but_secondary_sck_right = new JoystickButton(joy_secondary, XboxController.Button.kStickRight.value);
-		but_secondary_bmp_left = new JoystickButton(joy_secondary, XboxController.Button.kBumperLeft.value);
-		but_secondary_bmp_right = new JoystickButton(joy_secondary, XboxController.Button.kBumperRight.value);
+		but_secondary_sck_left = new JoystickButton(joy_secondary, XboxController.Button.kLeftStick.value);
+		but_secondary_sck_right = new JoystickButton(joy_secondary, XboxController.Button.kRightStick.value);
+		but_secondary_bmp_left = new JoystickButton(joy_secondary, XboxController.Button.kLeftBumper.value);
+		but_secondary_bmp_right = new JoystickButton(joy_secondary, XboxController.Button.kLeftBumper.value);
 		but_secondary_start = new JoystickButton(joy_secondary, XboxController.Button.kStart.value);
 		but_secondary_back = new JoystickButton(joy_secondary, XboxController.Button.kBack.value);
 

@@ -1,10 +1,8 @@
 package org.frc.team5409.robot.subsystems.shooter;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.*;
+import com.revrobotics.CANSparkMax.ControlType;
 
 import org.frc.team5409.robot.Constants;
 import org.frc.team5409.robot.util.*;
@@ -31,21 +29,21 @@ public final class ShooterFlywheel extends SubsystemBase implements Toggleable {
         public final byte id;
     }
 
-    private       CANSparkMax      mot_C07_shooter_flywheel;
-    private       CANSparkMax      mot_C19_shooter_flywheel;
-    private       CANSparkMax      mot_C18_shooter_feeder;
+    private       CANSparkMax           mot_C07_shooter_flywheel;
+    private       CANSparkMax           mot_C19_shooter_flywheel;
+    private       CANSparkMax           mot_C18_shooter_feeder;
 
-    private       CANEncoder       enc_C07_shooter_flywheel;
-    private       CANPIDController pid_C07_shooter_flywheel;
+    private       RelativeEncoder       enc_C07_shooter_flywheel;
+    private       SparkMaxPIDController pid_C07_shooter_flywheel;
 
-    private final Range            m_velocity_range;
-    private       double           m_velocity_offset;
+    private final Range                 m_velocity_range;
+    private       double                m_velocity_offset;
 
-    private       double           m_target;
-    private       boolean          m_enabled, m_safety_enabled;
-    private       Watchdog         m_watchdog;
+    private       double                m_target;
+    private       boolean               m_enabled, m_safety_enabled;
+    private       Watchdog              m_watchdog;
 
-    private       RawLogger        m_logger;
+    private       RawLogger             m_logger;
 
     /**
      * Constructs a Turret Flywheel subsystem.
@@ -146,7 +144,12 @@ public final class ShooterFlywheel extends SubsystemBase implements Toggleable {
             return;
 
         m_target = m_velocity_range.clamp(target + m_velocity_offset);
-        pid_C07_shooter_flywheel.setReference(m_target, ControlType.kVelocity);
+        /**
+         * TODO: Make sure third parameter is using correct PID
+         * https://codedocs.revrobotics.com/java/com/revrobotics/sparkmaxpidcontroller#setReference(double,com.revrobotics.ControlType,int)
+         * Old implementation deprecated, see new implementation
+         */
+        pid_C07_shooter_flywheel.setReference(m_target, ControlType.kVelocity, (int)Constants.ShooterControl.shooter_flywheel_pid.P);
        
         m_watchdog.feed();
     }

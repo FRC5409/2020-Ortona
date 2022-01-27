@@ -8,10 +8,10 @@
 package org.frc.team5409.robot.subsystems;
 
 // import com.playingwithfusion.TimeOfFlight;
-import com.revrobotics.CANEncoder;
-import com.revrobotics.CANPIDController;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.ControlType;
+import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.ExternalFollower;
 // import com.revrobotics.CANDigitalInput.LimitSwitchPolarity;
 import com.revrobotics.CANSparkMax.IdleMode;
@@ -21,6 +21,7 @@ import org.frc.team5409.robot.Constants;
 
 //import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -41,10 +42,10 @@ public class Hanging extends SubsystemBase {
 
   //Neo
   private final CANSparkMax mot_hanging_neo_Slave;
-  public CANEncoder enc1_hanging;
+  public RelativeEncoder enc1_hanging;
   private final CANSparkMax mot_hanging_neo_Master;
-  public CANEncoder enc2_hanging;
-  private CANPIDController m_pidController_hanging;
+  public RelativeEncoder enc2_hanging;
+  private SparkMaxPIDController m_pidController_hanging;
   public double rotations;
 
   //TOF is still in for future updates of the subsystem
@@ -53,7 +54,13 @@ public class Hanging extends SubsystemBase {
 
   public Hanging() {
     // Piston
-    dsl_hangSolenoid = new DoubleSolenoid(Constants.Hanging.FORWARD_CHANEL, Constants.Hanging.BACKWARD_CHANEL);
+    /**
+     * TODO: Make sure PneumaticsModuleType.CTREPCM is correct type
+     * WPILib 2022 update
+     * https://first.wpi.edu/wpilib/allwpilib/docs/release/java/edu/wpi/first/wpilibj/DoubleSolenoid.html
+     * https://first.wpi.edu/wpilib/allwpilib/docs/release/java/edu/wpi/first/wpilibj/PneumaticsModuleType.html
+     */
+    dsl_hangSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.Hanging.FORWARD_CHANEL, Constants.Hanging.BACKWARD_CHANEL);
     setPiston(Value.kForward);
     
     // Neo

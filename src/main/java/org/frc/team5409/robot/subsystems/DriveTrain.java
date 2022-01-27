@@ -8,19 +8,17 @@
 package org.frc.team5409.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.geometry.Pose2d;
-import edu.wpi.first.wpilibj.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
-import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.frc.team5409.robot.Constants;
 
-import com.revrobotics.CANEncoder;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.ExternalFollower;
 import com.revrobotics.CANSparkMax.IdleMode;
@@ -35,8 +33,8 @@ public class DriveTrain extends SubsystemBase {
   private final CANSparkMax mot_leftDriveRear_sparkmax_C4;
   private final CANSparkMax mot_rightDriveRear_sparkmax_C6;
   private final DifferentialDrive m_drive;
-  private final CANEncoder m_leftEncoder;
-  private final CANEncoder m_rightEncoder;
+  private final RelativeEncoder m_leftEncoder;
+  private final RelativeEncoder m_rightEncoder;
   private boolean m_antiTipToggle;
   private DifferentialDriveOdometry m_odometry;
   private static DoubleSolenoid dsl_gearSolenoid;
@@ -104,7 +102,13 @@ public class DriveTrain extends SubsystemBase {
     resetEncoders();
     //m_odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
     
-    dsl_gearSolenoid = new DoubleSolenoid(Constants.DriveTrain.kShiftSolenoid1, Constants.DriveTrain.kShiftSolenoid2);
+    /**
+     * TODO: Make sure PneumaticsModuleType.CTREPCM is correct type
+     * WPILib 2022 update
+     * https://first.wpi.edu/wpilib/allwpilib/docs/release/java/edu/wpi/first/wpilibj/DoubleSolenoid.html
+     * https://first.wpi.edu/wpilib/allwpilib/docs/release/java/edu/wpi/first/wpilibj/PneumaticsModuleType.html
+     */
+    dsl_gearSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.DriveTrain.kShiftSolenoid1, Constants.DriveTrain.kShiftSolenoid2);
 
     // Calibrate the gyro
     m_navX = new AHRS(SPI.Port.kMXP);
@@ -275,7 +279,7 @@ public class DriveTrain extends SubsystemBase {
    * 
    * @return the left drive encoder
    */
-  public CANEncoder getLeftEncoder() {
+  public RelativeEncoder getLeftEncoder() {
     return m_leftEncoder;
   }
 
@@ -288,7 +292,7 @@ public class DriveTrain extends SubsystemBase {
    *
    * @return the right drive encoder
    */
-  public CANEncoder getRightEncoder() {
+  public RelativeEncoder getRightEncoder() {
     return m_rightEncoder;
   }
 

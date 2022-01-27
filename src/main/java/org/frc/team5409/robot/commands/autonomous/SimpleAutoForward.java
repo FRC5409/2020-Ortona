@@ -1,8 +1,6 @@
 package org.frc.team5409.robot.commands.autonomous;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.*;
 
 import org.frc.team5409.robot.subsystems.shooter.*;
@@ -49,6 +47,7 @@ public class SimpleAutoForward extends SequentialCommandGroup implements AutoCom
             case kShooting: m_shooting = state; break;
             case kDriving: m_driving = state; break;
             case kFinished: m_finished = state; break;
+            case kIntaking: break;
         }
     }
 
