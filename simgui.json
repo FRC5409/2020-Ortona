@@ -1,0 +1,110 @@
+{
+  "HALProvider": {
+    "Other Devices": {
+      "Compressor[0]": {
+        "header": {
+          "open": true
+        }
+      },
+      "Pigeon 2[0]": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon FX[0]": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon FX[14]": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon FX[15]": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon FX[15]/Fwd Limit": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon FX[15]/Integrated Sensor": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon FX[15]/Rev Limit": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon FX[4]": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon FX[4]/Fwd Limit": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon FX[4]/Integrated Sensor": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon FX[4]/Rev Limit": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon FX[6]": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon FX[6]/Fwd Limit": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon FX[6]/Integrated Sensor": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon FX[6]/Rev Limit": {
+        "header": {
+          "open": true
+        }
+      }
+    }
+  },
+  "NTProvider": {
+    "types": {
+      "/FMSInfo": "FMSInfo",
+      "/LiveWindow/DriveTrain": "Subsystem",
+      "/LiveWindow/ExampleSubsystem": "Subsystem",
+      "/LiveWindow/IntakeIndexer": "Subsystem",
+      "/LiveWindow/Pigeon": "Subsystem",
+      "/LiveWindow/Ungrouped/DifferentialDrive[1]": "DifferentialDrive",
+      "/LiveWindow/Ungrouped/PIDController[1]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[2]": "PIDController",
+      "/LiveWindow/Ungrouped/Scheduler": "Scheduler"
+    }
+  },
+  "NetworkTables": {
+    "LiveWindow": {
+      "DriveTrain": {
+        "open": true
+      },
+      "open": true
+    },
+    "SmartDashboard": {
+      "open": true
+    }
+  }
+}
