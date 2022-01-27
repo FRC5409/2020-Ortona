@@ -100,13 +100,22 @@ public class DriveTrain extends SubsystemBase{
      * This method is called once per scheduler run and is used to update smart dashboard data.
      */
     public void periodic() {
-
+        displayTemperatures();
     }
 
     @Override
     public void simulationPeriodic() {
         displayEncoder();
         displayDriveMode();
+    }
+
+    // -------------------------- Utilities -------------------------- //
+
+    public void displayTemperatures(){
+        SmartDashboard.putNumber("LF Temp", mot_leftFrontDrive.getMotorTemperature());
+        SmartDashboard.putNumber("LB Temp", mot_leftRearDrive.getMotorTemperature());
+        SmartDashboard.putNumber("RF Temp", mot_rightFrontDrive.getMotorTemperature());
+        SmartDashboard.putNumber("RB Temp", mot_rightRearDrive.getMotorTemperature());
     }
 
     // ------------------------- Drive Modes ------------------------- //
