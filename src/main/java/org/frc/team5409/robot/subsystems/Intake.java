@@ -63,15 +63,15 @@ public class Intake extends SubsystemBase {
 	 */	
 	public void solenoidsDown(){	
 
-		dsl_rightIntakeSolenoid.set(DoubleSolenoid.Value.kForward);	
-		dsl_leftIntakeSolenoid.set(DoubleSolenoid.Value.kForward);	
+		dsl_rightIntakeSolenoid.set(DoubleSolenoid.Value.kReverse);	
+		dsl_leftIntakeSolenoid.set(DoubleSolenoid.Value.kReverse);	
 
 	}	
 
 	public boolean isExtended(){	
 
-		return (dsl_leftIntakeSolenoid.get() == DoubleSolenoid.Value.kForward && 	
-		dsl_rightIntakeSolenoid.get() == DoubleSolenoid.Value.kForward); 	
+		return (dsl_leftIntakeSolenoid.get() == DoubleSolenoid.Value.kReverse && 	
+		dsl_rightIntakeSolenoid.get() == DoubleSolenoid.Value.kReverse); 	
 
 	}	
 
@@ -79,10 +79,11 @@ public class Intake extends SubsystemBase {
 	/**	
 	 * method to raise intake up	
 	 */	
+
 	public void solenoidsUp(){	
 
-		dsl_rightIntakeSolenoid.set(DoubleSolenoid.Value.kReverse);	
-		dsl_leftIntakeSolenoid.set(DoubleSolenoid.Value.kReverse);	
+		dsl_rightIntakeSolenoid.set(DoubleSolenoid.Value.kForward);	
+		dsl_leftIntakeSolenoid.set(DoubleSolenoid.Value.kForward);	
 
 	}	
 	/**	
