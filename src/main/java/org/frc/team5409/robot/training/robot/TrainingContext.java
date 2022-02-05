@@ -3,13 +3,11 @@ package org.frc.team5409.robot.training.robot;
 public class TrainingContext {
     private TrainingModel _model;
     private Setpoint _target;
-    private Setpoint _active;
     private double _distance;
 
     public TrainingContext(Setpoint initialTarget) {
         _model = new TrainingModel(0.0, 0.0, 0.0, 0.0);
         _target = initialTarget;
-        _active = initialTarget;
         _distance = 0.0;
     }
 
@@ -17,12 +15,8 @@ public class TrainingContext {
         _model = model;
     }
     
-    public void setTargetSetpoint(Setpoint target) {
+    public void setSetpoint(Setpoint target) {
         _target = target;
-    }
-    
-    public void setActiveSetpoint(Setpoint target) {
-        _active = target;
     }
     
     public void setDistance(double distance) {
@@ -33,12 +27,8 @@ public class TrainingContext {
         return _model;
     }
 
-    public Setpoint getTargetSetpoint() {
+    public Setpoint getSetpoint() {
         return _target;
-    }
-
-    public Setpoint getActiveSetpoint() {
-        return _active;
     }
 
     public double getDistance() {
