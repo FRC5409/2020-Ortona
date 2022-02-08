@@ -249,6 +249,8 @@ public final class Constants {
         public static final double neo_encoder_position = 18.0;
 
         public static final double distanceCalculate = (Math.PI*kWheelDiameterMeters) / gearRatio;
+
+        public static final double turnOffset = 0.1;
     }
     public static class Hanging{
 
