@@ -50,6 +50,8 @@ public final class TrainerAlignTurret extends CommandBase {
         m_training_context.setDistance(
             Constants.Vision.vision_outerport_height / Math.tan(Math.toRadians(target.y + Constants.Vision.vision_limelight_pitch))
         );
+
+        m_dashboard.update();
     }
 
     @Override
