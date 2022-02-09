@@ -37,7 +37,7 @@ public class DriveTrain extends SubsystemBase {
   private final RelativeEncoder m_rightEncoder;
   private boolean m_antiTipToggle;
   private DifferentialDriveOdometry m_odometry;
-  private static DoubleSolenoid dsl_gearSolenoid;
+  //private static DoubleSolenoid dsl_gearSolenoid;
 
   /**
    * Creates a new DriveTrain.
@@ -108,7 +108,7 @@ public class DriveTrain extends SubsystemBase {
      * https://first.wpi.edu/wpilib/allwpilib/docs/release/java/edu/wpi/first/wpilibj/DoubleSolenoid.html
      * https://first.wpi.edu/wpilib/allwpilib/docs/release/java/edu/wpi/first/wpilibj/PneumaticsModuleType.html
      */
-    dsl_gearSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.DriveTrain.kShiftSolenoid1, Constants.DriveTrain.kShiftSolenoid2);
+    //dsl_gearSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.DriveTrain.kShiftSolenoid1, Constants.DriveTrain.kShiftSolenoid2);
 
     // Calibrate the gyro
     m_navX = new AHRS(SPI.Port.kMXP);
@@ -175,14 +175,14 @@ public class DriveTrain extends SubsystemBase {
    * Method to shift to fast gear
    */
   public void fastShift() {
-    dsl_gearSolenoid.set(Value.kReverse);
+    //dsl_gearSolenoid.set(Value.kReverse);
   }
 
   /**
    * Method to shift to slow gear
    */
   public void slowShift() {
-    dsl_gearSolenoid.set(Value.kForward);
+    //dsl_gearSolenoid.set(Value.kForward);
   }
 
   /**

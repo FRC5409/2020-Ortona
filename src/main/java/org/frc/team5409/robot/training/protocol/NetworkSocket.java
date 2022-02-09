@@ -5,7 +5,7 @@ import java.net.Socket;
 
 public class NetworkSocket {
     public static final int DEFAULT_PORT = 5409;
-    public static final String DEFAULT_ADDRESS = "127.0.0.1";
+    public static final String DEFAULT_ADDRESS = "localhost";
 
     public static NetworkSocket create() throws IOException {
         return create(DEFAULT_ADDRESS, DEFAULT_PORT);

@@ -15,6 +15,7 @@ import org.frc.team5409.robot.commands.autonomous.SimpleAutoBackward;
 import org.frc.team5409.robot.commands.autonomous.SimpleAutoForward;
 import org.frc.team5409.robot.commands.shooter.*;
 import org.frc.team5409.robot.commands.trainer.BranchTargetSetpoint;
+import org.frc.team5409.robot.commands.trainer.FlipTargetSetpoint;
 import org.frc.team5409.robot.commands.trainer.RequestModelUpdate;
 import org.frc.team5409.robot.commands.trainer.SubmitSetpointData;
 import org.frc.team5409.robot.commands.trainer.TrainerAlignTurret;
@@ -143,7 +144,7 @@ public class RobotContainer {
 		try {
 			configureTraining();
 		} catch (IOException e) {
-			throw new RuntimeException();
+			throw new RuntimeException(e);
 		}
 
 		configureBindings();
@@ -167,7 +168,12 @@ public class RobotContainer {
 		// Reverse intake while held
 		but_main_B.whileHeld(new ReverseIntake(sys_intake));
 		
-		but_main_back.whenPressed(new CalibrateTurret(sys_shooter_turret));
+		but_main_back.whenPressed(
+			new SequentialCommandGroup(	
+				new CalibrateTurret(sys_shooter_turret),
+				new RotateTurret(sys_shooter_turret, 0)
+			)	
+		);
 
 		// Toggle AntiTip
 		//but_secondary_Y.whenPressed(new AntiTipToggle(sys_driveTrain));
@@ -185,8 +191,12 @@ public class RobotContainer {
 			new BranchTargetSetpoint(trainer_dashboard, training_context, true)
 		);
 
-		but_secondary_Y.whenPressed(
+		but_secondary_B.whenPressed(
 			new BranchTargetSetpoint(trainer_dashboard, training_context, false)
+		);
+
+		but_secondary_Y.whenPressed(
+			new FlipTargetSetpoint(trainer_dashboard, training_context)
 		);
 
 		but_secondary_start.whenPressed(
@@ -197,12 +207,16 @@ public class RobotContainer {
 			new UndoTargetSetpoint(trainer_dashboard, training_context)
 		);
 
-		but_secondary_Y.whenPressed(
+		but_secondary_bmp_left.whenPressed(
 			new RequestModelUpdate(trainer_client, training_context)
 		);
 
-		but_secondary_A.whenPressed(
-			new TrainerAlignTurret(training_context, trainer_dashboard, sys_shooter_turret, sys_limelight)
+		but_secondary_A.whileHeld(
+			new TrainerAlignTurret(trainer_dashboard, training_context, sys_shooter_flywheel, sys_shooter_turret, sys_limelight, sys_indexer)
+		);
+
+		but_secondary_A.whenReleased(
+			new RotateTurret(sys_shooter_turret, 0)
 		);
 	}
 
@@ -287,7 +301,8 @@ public class RobotContainer {
               context.registerSendable(KeyValueSendable.class);
               context.registerSendable(StringSendable.class);
 			  
-		NetworkSocket socket = NetworkSocket.create();
+		NetworkSocket socket = NetworkSocket.create(
+			Constants.Training.TRAINER_HOSTNAME);
 
 		trainer_client = new NetworkClient(socket, context);
 

@@ -12,13 +12,13 @@ import edu.wpi.first.math.util.Units;
 public final class Constants {
     public static final class Vision {
     // Target Constants
-        public static final double vision_outerport_height = 90.75d/12.0d;
+        public static final double vision_outerport_height = 104d/12.0d;
         
 
     // Robot configuration Constants
         public static final double vision_limelight_height = 42.75d/12.0d;
 
-        public static final double vision_limelight_pitch = 15.1;//13.4;//13.15
+        public static final double vision_limelight_pitch = 90 - 60.4;//13.4;//13.15
 
 
     // Timing Constants
@@ -112,7 +112,7 @@ public final class Constants {
 
 
     // Smooth Sweep Constants (experimental)
-        public static final double shooter_smooth_sweep_period = 3.6;
+        public static final double shooter_smooth_sweep_period = 5.6;
 
         public static final SimpleEquation shooter_smooth_sweep_func = t -> {
             return (Math.cos(2d*Math.PI*t/shooter_smooth_sweep_period)+1d)/2d*shooter_turret_range.magnitude+shooter_turret_range.min;
@@ -298,5 +298,9 @@ public final class Constants {
 
         public static final double shiftThreshF = 0; // Encoder pulse rate threshold for fast shift
         public static final double shiftThreshS = 0; // Encoder pulse raet threshold for slow shift
+    }
+
+    public static final class Training {
+        public static final String TRAINER_HOSTNAME = "10.54.9.150";
     }
 }

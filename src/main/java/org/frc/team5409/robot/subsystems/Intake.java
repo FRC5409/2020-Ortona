@@ -21,8 +21,8 @@ import org.frc.team5409.robot.Constants;
 public class Intake extends SubsystemBase {
 	private CANSparkMax mot_intake_sparkMax_C12;
 	private final RelativeEncoder intakeEncoder;
-	private DoubleSolenoid dsl_rightIntakeSolenoid;	
-	private DoubleSolenoid dsl_leftIntakeSolenoid;
+	//private DoubleSolenoid dsl_rightIntakeSolenoid;	
+	//private DoubleSolenoid dsl_leftIntakeSolenoid;
 
 	/**
 	 * Creates a new Intake.
@@ -39,8 +39,8 @@ public class Intake extends SubsystemBase {
 		 * https://first.wpi.edu/wpilib/allwpilib/docs/release/java/edu/wpi/first/wpilibj/DoubleSolenoid.html
 		 * https://first.wpi.edu/wpilib/allwpilib/docs/release/java/edu/wpi/first/wpilibj/PneumaticsModuleType.html
 		 */
-		dsl_rightIntakeSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.Intake.kRightIntakeSolenoid1, Constants.Intake.kRightIntakeSolenoid2);	
-		dsl_leftIntakeSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.Intake.kLeftIntakeSolenoid1, Constants.Intake.kLeftIntakeSolenoid2);
+		//dsl_rightIntakeSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.Intake.kRightIntakeSolenoid1, Constants.Intake.kRightIntakeSolenoid2);	
+		//dsl_leftIntakeSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.Intake.kLeftIntakeSolenoid1, Constants.Intake.kLeftIntakeSolenoid2);
 
 		intakeEncoder = mot_intake_sparkMax_C12.getEncoder();
 
@@ -63,15 +63,15 @@ public class Intake extends SubsystemBase {
 	 */	
 	public void solenoidsDown(){	
 
-		dsl_rightIntakeSolenoid.set(DoubleSolenoid.Value.kForward);	
-		dsl_leftIntakeSolenoid.set(DoubleSolenoid.Value.kForward);	
+		//dsl_rightIntakeSolenoid.set(DoubleSolenoid.Value.kForward);	
+		//dsl_leftIntakeSolenoid.set(DoubleSolenoid.Value.kForward);	
 
 	}	
 
 	public boolean isExtended(){	
-
-		return (dsl_leftIntakeSolenoid.get() == DoubleSolenoid.Value.kForward && 	
-		dsl_rightIntakeSolenoid.get() == DoubleSolenoid.Value.kForward); 	
+		return true;
+		//return (dsl_leftIntakeSolenoid.get() == DoubleSolenoid.Value.kForward && 	
+		//dsl_rightIntakeSolenoid.get() == DoubleSolenoid.Value.kForward); 	
 
 	}	
 
@@ -81,8 +81,8 @@ public class Intake extends SubsystemBase {
 	 */	
 	public void solenoidsUp(){	
 
-		dsl_rightIntakeSolenoid.set(DoubleSolenoid.Value.kReverse);	
-		dsl_leftIntakeSolenoid.set(DoubleSolenoid.Value.kReverse);	
+		//dsl_rightIntakeSolenoid.set(DoubleSolenoid.Value.kReverse);	
+		//dsl_leftIntakeSolenoid.set(DoubleSolenoid.Value.kReverse);	
 
 	}	
 	/**	
