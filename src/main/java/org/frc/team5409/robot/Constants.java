@@ -252,7 +252,7 @@ public final class Constants {
 
         public static final double turnOffset = 0.1;
 
-        public static final double differentialDriveOffset = 0.95;
+        public static final double rightOffset = 0.95;
     }
     public static class Hanging{
 

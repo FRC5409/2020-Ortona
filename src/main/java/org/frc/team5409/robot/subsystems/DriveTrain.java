@@ -252,7 +252,7 @@ public class DriveTrain extends SubsystemBase {
    */
   public void tankDriveVolts(double leftVolts, double rightVolts) {
     mot_leftDriveFront_sparkmax_C14.setVoltage(leftVolts);
-    mot_rightDriveFront_sparkmax_C15.setVoltage(-rightVolts * Constants.DriveTrain.differentialDriveOffset);
+    mot_rightDriveFront_sparkmax_C15.setVoltage(-rightVolts * Constants.DriveTrain.rightOffset);
     m_drive.feed();
   }
 
