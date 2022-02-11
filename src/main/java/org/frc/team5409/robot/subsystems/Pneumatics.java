@@ -18,7 +18,7 @@ public class Pneumatics extends SubsystemBase {
   Compressor compressor1;
 
   public Pneumatics() {
-    compressor1 = new Compressor(0, PneumaticsModuleType.CTREPCM);
+    //compressor1 = new Compressor(0, PneumaticsModuleType.CTREPCM);
   }
 
   @Override
@@ -27,11 +27,11 @@ public class Pneumatics extends SubsystemBase {
   }
 
   public void disable() {
-    this.compressor1.disable();
+    //this.compressor1.disable();
   }
 
   public void enable() {
-    this.compressor1.enableDigital();
+    //this.compressor1.enableDigital();
   }
 
 }
