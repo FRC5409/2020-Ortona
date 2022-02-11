@@ -64,6 +64,7 @@ public class RobotContainer {
 	public DriveStraightAuto cmd_DriveStraightAuto;
 	public final IndexerReverse cmd_IndexerReverse;
 	private final IntakeActivateSolenoids cmd_IntakeActivateSolenoids;
+	//private final ReverseIntake cmd_ReverseIntake;
 
 	// joystick controllers
 	private final XboxController joy_main, joy_secondary;
@@ -113,6 +114,7 @@ public class RobotContainer {
 		// Sanad's stuff
 		sys_intake = new Intake();
 		cmd_IntakeActivateSolenoids = new IntakeActivateSolenoids(sys_intake);
+		//cmd_ReverseIntake = new ReverseIntake(sys_intake);
 
 		cmd_IntakeIndexActive = new IntakeIndexActive(sys_indexer, sys_intake);
 

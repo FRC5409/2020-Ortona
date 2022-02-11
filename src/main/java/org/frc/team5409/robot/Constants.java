@@ -200,7 +200,7 @@ public final class Constants {
 
     public static class DriveTrain{
 
-        public static final IdleMode idle = IdleMode.kCoast;
+        public static final IdleMode idle = IdleMode.kBrake;
 
         public static final double loopRampRate= 0;
 
