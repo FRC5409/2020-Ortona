@@ -3,12 +3,14 @@ package org.frc.team5409.robot.commands.trainer;
 import java.util.concurrent.Future;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import org.frc.team5409.robot.training.protocol.NetworkClient;
-import org.frc.team5409.robot.training.protocol.NetworkStatus;
-import org.frc.team5409.robot.training.protocol.NetworkTransaction;
-import org.frc.team5409.robot.training.protocol.NetworkTransactionResult;
-import org.frc.team5409.robot.training.protocol.generic.KeyValueSendable;
-import org.frc.team5409.robot.training.protocol.generic.StringSendable;
+import frc.robot.training.protocol.NetworkClient;
+import frc.robot.training.protocol.NetworkStatus;
+import frc.robot.training.protocol.NetworkResponse;
+import frc.robot.training.protocol.NetworkRequest;
+import frc.robot.training.protocol.generic.KeyValueSendable;
+import frc.robot.training.protocol.generic.StringSendable;
+
+import org.frc.team5409.robot.Constants;
 import org.frc.team5409.robot.training.robot.TrainerDashboard;
 import org.frc.team5409.robot.training.robot.TrainingContext;
 import org.frc.team5409.robot.training.robot.TrainingModel;
@@ -18,7 +20,7 @@ public class SubmitSetpointData extends CommandBase {
     private final NetworkClient _client;
     private final TrainerDashboard _dashboard;
 
-    private Future<NetworkTransactionResult> _request;
+    private Future<NetworkResponse> _request;
 
     public SubmitSetpointData(TrainerDashboard dashboard, NetworkClient client, TrainingContext context) {
         _context = context;
@@ -30,36 +32,38 @@ public class SubmitSetpointData extends CommandBase {
     @Override
     public void initialize() {
         KeyValueSendable payload = new KeyValueSendable();
-            payload.putSendable("trainer.topic", new StringSendable("trainer.setpoint"));
-            payload.putDouble("trainer.data.speed", _context.getSetpoint().getTarget());
-            payload.putDouble("trainer.data.distance", _context.getDistance());
+            payload.putSendable("trainer.topic", new StringSendable("trainer:submitData"));
+            payload.putDouble("trainer.data.speed", _context.getSetpoint().getTarget() / Constants.Training.MAX_SPEED);
+            payload.putDouble("trainer.data.distance", _context.getDistance() / Constants.Training.MAX_DISTANCE);
 
-        _request = _client.submitTransactionAsync(
-            new NetworkTransaction(payload)
+        _request = _client.submitRequestAsync(
+            new NetworkRequest(payload)
         );
+
+        System.out.println("Sent request");
     }
 
     @Override
     public void end(boolean interrupted) {    
         try {
-            NetworkTransactionResult result = _request.get();
-            if (result.getStatus() == NetworkStatus.STATUS_OK) {
-                KeyValueSendable payload = (KeyValueSendable) result.getSendableResult();
-                StringSendable topic = (StringSendable) payload.getSendable("trainer.topic");
+            NetworkResponse response = _request.get();
 
-                if (topic.getValue().equals("trainer.update-model")) {
-                    double modelA = payload.getDouble("trainer.model.parameters[0]");
-                    double modelB = payload.getDouble("trainer.model.parameters[1]");
-                    double modelC = payload.getDouble("trainer.model.parameters[2]");
-                    double modelD = payload.getDouble("trainer.model.parameters[3]");
+            System.out.println("Received status : " + response.getStatus());
+            if (response.getSendableResult() != null)
+                System.out.println("Received payload : " + response.getSendableResult());
 
-                    _context.setModel(new TrainingModel(modelA, modelB, modelC, modelD));
-                    _dashboard.update();
-                }
+            if (response.getStatus() == NetworkStatus.STATUS_OK) {
+                KeyValueSendable payload = (KeyValueSendable) response.getSendableResult();
+            
+                double modelA = payload.getDouble("trainer.model.parameters[0]");
+                double modelB = payload.getDouble("trainer.model.parameters[1]");
+                double modelC = payload.getDouble("trainer.model.parameters[2]");
+                double modelD = payload.getDouble("trainer.model.parameters[3]");
 
-                System.out.println("Received payload : " + payload);
+                _context.setModel(new TrainingModel(modelA, modelB, modelC, modelD));
+                _dashboard.update();
             } else {
-                System.out.println("Received status : " + result.getStatus());
+                System.out.println("Received status : " + response.getStatus());
             }
         } catch (Exception e) {
             throw new RuntimeException("Failed to retrieve result of request", e);
