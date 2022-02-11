@@ -302,5 +302,7 @@ public final class Constants {
 
     public static final class Training {
         public static final String TRAINER_HOSTNAME = "10.54.9.150";
+        public static final double MAX_DISTANCE = 19.066485;
+        public static final double MAX_SPEED = 6000;
     }
 }
