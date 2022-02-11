@@ -62,17 +62,13 @@ public class Intake extends SubsystemBase {
 	 * method to put intake down	
 	 */	
 	public void solenoidsDown(){	
-
 		dsl_rightIntakeSolenoid.set(DoubleSolenoid.Value.kReverse);	
-		dsl_leftIntakeSolenoid.set(DoubleSolenoid.Value.kReverse);	
-
+		dsl_leftIntakeSolenoid.set(DoubleSolenoid.Value.kReverse);
 	}	
 
 	public boolean isExtended(){	
-
 		return (dsl_leftIntakeSolenoid.get() == DoubleSolenoid.Value.kReverse && 	
 		dsl_rightIntakeSolenoid.get() == DoubleSolenoid.Value.kReverse); 	
-
 	}	
 
 
@@ -81,18 +77,16 @@ public class Intake extends SubsystemBase {
 	 */	
 
 	public void solenoidsUp(){	
-
 		dsl_rightIntakeSolenoid.set(DoubleSolenoid.Value.kForward);	
 		dsl_leftIntakeSolenoid.set(DoubleSolenoid.Value.kForward);	
-
 	}	
 	/**	
 	 * Method to reverse intake, in case of jamming	
 	 */	
 	public void reverse(double output) {	
 
-		// dsl_rightIntakeSolenoid.set(DoubleSolenoid.Value.kForward);	
-		// dsl_leftIntakeSolenoid.set(DoubleSolenoid.Value.kForward);	
+		dsl_rightIntakeSolenoid.set(DoubleSolenoid.Value.kForward);	
+		dsl_leftIntakeSolenoid.set(DoubleSolenoid.Value.kForward);	
 
 		mot_intake_sparkMax_C12.set(output);	
 

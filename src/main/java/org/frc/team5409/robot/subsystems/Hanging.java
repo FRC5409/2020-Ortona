@@ -34,7 +34,7 @@ public class Hanging extends SubsystemBase {
    * Creates a new Hanging.
    */
   //Piston
-  private DoubleSolenoid dsl_hangSolenoid;
+  //private DoubleSolenoid dsl_hangSolenoid;
 
   //Limit switch code is still in for future updates of the subsystem
   //Limit Switch
@@ -60,7 +60,7 @@ public class Hanging extends SubsystemBase {
      * https://first.wpi.edu/wpilib/allwpilib/docs/release/java/edu/wpi/first/wpilibj/DoubleSolenoid.html
      * https://first.wpi.edu/wpilib/allwpilib/docs/release/java/edu/wpi/first/wpilibj/PneumaticsModuleType.html
      */
-    dsl_hangSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.Hanging.FORWARD_CHANEL, Constants.Hanging.BACKWARD_CHANEL);
+    //dsl_hangSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.Hanging.FORWARD_CHANEL, Constants.Hanging.BACKWARD_CHANEL);
     setPiston(Value.kForward);
     
     // Neo
@@ -179,7 +179,7 @@ public class Hanging extends SubsystemBase {
  * sets the piston to lock/unlock the hang
  */
 public void setPiston(Value value) {
-  dsl_hangSolenoid.set(value);
+  //dsl_hangSolenoid.set(value);
 }
 
 /**
