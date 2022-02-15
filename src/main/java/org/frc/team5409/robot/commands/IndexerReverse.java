@@ -39,7 +39,10 @@ public class IndexerReverse extends CommandBase {
   public void execute() {
     subsys_indexer.moveIndexerMotor(-0.5);
 
-    subsys_intake.solenoidsUp();
+    if (subsys_intake.solenoidsDown()) {
+      subsys_intake.solenoidsUp();
+    } 
+ 
   }
 
   // Called once the command ends or is interrupted.
@@ -51,7 +54,10 @@ public class IndexerReverse extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    subsys_intake.solenoidsDown();
+    if (subsys_intake.solenoidsUp()) {
+      subsys_intake.solenoidsDown();
+    }
+
     
     return false;
   }

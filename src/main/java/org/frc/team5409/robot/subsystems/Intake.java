@@ -62,13 +62,13 @@ public class Intake extends SubsystemBase {
 	 * method to put intake down	
 	 */	
 	public void solenoidsDown(){	
-		dsl_rightIntakeSolenoid.set(DoubleSolenoid.Value.kReverse);	
-		dsl_leftIntakeSolenoid.set(DoubleSolenoid.Value.kReverse);
+		dsl_rightIntakeSolenoid.set(DoubleSolenoid.Value.kForward);	
+		dsl_leftIntakeSolenoid.set(DoubleSolenoid.Value.kForward);
 	}	
 
 	public boolean isExtended(){	
-		return (dsl_leftIntakeSolenoid.get() == DoubleSolenoid.Value.kReverse && 	
-		dsl_rightIntakeSolenoid.get() == DoubleSolenoid.Value.kReverse); 	
+		return (dsl_leftIntakeSolenoid.get() == DoubleSolenoid.Value.kForward && 	
+		dsl_rightIntakeSolenoid.get() == DoubleSolenoid.Value.kForward); 	
 	}	
 
 
@@ -77,8 +77,8 @@ public class Intake extends SubsystemBase {
 	 */	
 
 	public void solenoidsUp(){	
-		dsl_rightIntakeSolenoid.set(DoubleSolenoid.Value.kForward);	
-		dsl_leftIntakeSolenoid.set(DoubleSolenoid.Value.kForward);	
+		dsl_rightIntakeSolenoid.set(DoubleSolenoid.Value.kReverse);	
+		dsl_leftIntakeSolenoid.set(DoubleSolenoid.Value.kReverse);	
 	}	
 	/**	
 	 * Method to reverse intake, in case of jamming	
