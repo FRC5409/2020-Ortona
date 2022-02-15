@@ -8,6 +8,7 @@
 package org.frc.team5409.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
@@ -202,7 +203,8 @@ public class DriveTrain extends SubsystemBase {
 
 
   public void arcadeDrive(double fwd, double rot) {
-    m_drive.arcadeDrive(fwd, rot + Constants.DriveTrain.turnOffset);
+
+    m_drive.arcadeDrive(fwd, rot);
   }
 
   /**
@@ -241,7 +243,6 @@ public class DriveTrain extends SubsystemBase {
    */
   public void manualDrive(final double acceleration, final double deceleration, final double turn) {
     final double accelerate = acceleration - deceleration;
-<<<<<<< HEAD
 
     double turnOffset = 0;
     if(accelerate > 0.005){
@@ -252,9 +253,6 @@ public class DriveTrain extends SubsystemBase {
     }
 
     m_drive.arcadeDrive(accelerate, turn + turnOffset, true);
-=======
-    m_drive.arcadeDrive(accelerate, turn + Constants.DriveTrain.turnOffset, true);
->>>>>>> parent of b9a22a3 (Fixed drivetrain offset)
   }
   
   /**
@@ -264,8 +262,11 @@ public class DriveTrain extends SubsystemBase {
    * @param rightVolts the commanded right output
    */
   public void tankDriveVolts(double leftVolts, double rightVolts) {
+
+    double rightOffset = 0.95;
+
     mot_leftDriveFront_sparkmax_C14.setVoltage(leftVolts);
-    mot_rightDriveFront_sparkmax_C15.setVoltage(-rightVolts * Constants.DriveTrain.rightOffset);
+    mot_rightDriveFront_sparkmax_C15.setVoltage(-rightVolts * rightOffset);
     m_drive.feed();
   }
 
