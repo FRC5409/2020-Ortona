@@ -242,7 +242,6 @@ public class DriveTrain extends SubsystemBase {
   public void manualDrive(final double acceleration, final double deceleration, final double turn) {
     final double accelerate = acceleration - deceleration;
 <<<<<<< HEAD
-<<<<<<< HEAD
 
     double turnOffset = 0;
     if(accelerate > 0.005){
@@ -253,9 +252,6 @@ public class DriveTrain extends SubsystemBase {
     }
 
     m_drive.arcadeDrive(accelerate, turn + turnOffset, true);
-=======
-    m_drive.arcadeDrive(accelerate, turn + Constants.DriveTrain.turnOffset, true);
->>>>>>> parent of b9a22a3 (Fixed drivetrain offset)
 =======
     m_drive.arcadeDrive(accelerate, turn + Constants.DriveTrain.turnOffset, true);
 >>>>>>> parent of b9a22a3 (Fixed drivetrain offset)
