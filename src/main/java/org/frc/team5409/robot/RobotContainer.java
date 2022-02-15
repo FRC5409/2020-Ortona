@@ -177,15 +177,17 @@ public class RobotContainer {
 		// Shift gear to slow
 		but_main_bmp_right.whenReleased(new SlowGearShift(sys_driveTrain));
 
-		but_main_bmp_left.whileHeld(new IndexerReverse(sys_indexer));
+		but_main_bmp_left.whileHeld(new IndexerReverse(sys_indexer, sys_intake));
 
 		// climb
 
 		but_secondary_back.whileHeld(new RetractHang(sys_hang));
 		but_secondary_Y.whenPressed(new ExtendHangHighSeq(sys_hang));
 		but_secondary_B.whenPressed(new ExtendHangMiddleSeq(sys_hang));
-		but_secondary_A.whenPressed(new ExtendHangLowSeq(sys_hang));
 
+
+		but_secondary_A.whileHeld(new IntakeIndexActive(sys_indexer, sys_intake));
+		but_secondary_X.whileHeld(new IndexerReverse(sys_indexer, sys_intake));
 		
 		//but_main_back.whileHeld(new RetractHang(sys_hang));
 		//but_main_start.whenPressed(new ExtendHangHigh(sys_hang));
@@ -194,7 +196,7 @@ public class RobotContainer {
 		but_secondary_bmp_right.whenPressed(new OffsetFlywheel(sys_shooter_flywheel, true));
 		but_secondary_bmp_left.whenPressed(new OffsetFlywheel(sys_shooter_flywheel, false));
 
-		but_secondary_X.whenPressed(new ResetFlywheelOffset(sys_shooter_flywheel));
+
 	}
 
 	public void configureDashboard() {

@@ -11,17 +11,21 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import org.frc.team5409.robot.subsystems.Indexer;
 
+import org.frc.team5409.robot.subsystems.Intake;
+
 public class IndexerReverse extends CommandBase {
   /**
    * Creates a new IndexerReverse.
    */
 
    private final Indexer subsys_indexer;
+   private final Intake subsys_intake;
 
-  public IndexerReverse(Indexer Subsystem) {
-    subsys_indexer = Subsystem; 
+  public IndexerReverse(Indexer indexerSubsystem, Intake intakeSubsystem) {
+    subsys_indexer = indexerSubsystem;
+    subsys_intake = intakeSubsystem;
 
-    addRequirements(Subsystem); 
+    addRequirements(subsys_indexer, subsys_intake); 
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -34,6 +38,8 @@ public class IndexerReverse extends CommandBase {
   @Override
   public void execute() {
     subsys_indexer.moveIndexerMotor(-0.5);
+
+    subsys_intake.solenoidsUp();
   }
 
   // Called once the command ends or is interrupted.
@@ -45,6 +51,8 @@ public class IndexerReverse extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    subsys_intake.solenoidsDown();
+    
     return false;
   }
 }

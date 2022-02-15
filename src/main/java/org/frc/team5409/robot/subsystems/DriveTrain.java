@@ -241,7 +241,16 @@ public class DriveTrain extends SubsystemBase {
    */
   public void manualDrive(final double acceleration, final double deceleration, final double turn) {
     final double accelerate = acceleration - deceleration;
-    m_drive.arcadeDrive(accelerate, turn, true);
+
+    double turnOffset = 0;
+    if(accelerate > 0.005){
+      turnOffset = 0.35;
+    } 
+    else if(accelerate < -0.005){
+      turnOffset = -0.35;
+    }
+
+    m_drive.arcadeDrive(accelerate, turn + turnOffset, true);
   }
 
   /**
