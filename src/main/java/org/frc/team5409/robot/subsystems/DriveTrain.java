@@ -202,7 +202,7 @@ public class DriveTrain extends SubsystemBase {
 
 
   public void arcadeDrive(double fwd, double rot) {
-    m_drive.arcadeDrive(fwd, rot + Constants.DriveTrain.turnOffset);
+    m_drive.arcadeDrive(fwd, rot);
   }
 
   /**
@@ -243,7 +243,7 @@ public class DriveTrain extends SubsystemBase {
     final double accelerate = acceleration - deceleration;
     m_drive.arcadeDrive(accelerate, turn + Constants.DriveTrain.turnOffset, true);
   }
-  
+
   /**
    * Controls the left and right sides of the drive directly with voltages.
    *
@@ -252,7 +252,7 @@ public class DriveTrain extends SubsystemBase {
    */
   public void tankDriveVolts(double leftVolts, double rightVolts) {
     mot_leftDriveFront_sparkmax_C14.setVoltage(leftVolts);
-    mot_rightDriveFront_sparkmax_C15.setVoltage(-rightVolts * Constants.DriveTrain.differentialDriveOffset);
+    mot_rightDriveFront_sparkmax_C15.setVoltage(-rightVolts);
     m_drive.feed();
   }
 
