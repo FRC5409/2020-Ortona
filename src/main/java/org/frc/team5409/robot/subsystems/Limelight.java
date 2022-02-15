@@ -69,7 +69,7 @@ public class Limelight extends SubsystemBase implements Toggleable {
      * Constructs the Limelight subsystem.
      */
     public Limelight() {
-        m_limelight_data         = NetworkTableInstance.getDefault().getTable("limelight");
+        m_limelight_data         = NetworkTableInstance.getDefault().getTable("limelight-gwss");
 
         m_data_entry_tx          = m_limelight_data.getEntry("tx");
         m_data_entry_ty          = m_limelight_data.getEntry("ty");

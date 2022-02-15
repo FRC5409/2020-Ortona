@@ -33,7 +33,7 @@ public class IndexerReverse extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    subsys_indexer.moveIndexerMotor(0.5);
+    subsys_indexer.moveIndexerMotor(-0.5);
   }
 
   // Called once the command ends or is interrupted.
