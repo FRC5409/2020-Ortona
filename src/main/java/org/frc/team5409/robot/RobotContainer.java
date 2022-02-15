@@ -14,25 +14,25 @@ import org.frc.team5409.robot.commands.autonomous.ComplexAuto;
 import org.frc.team5409.robot.commands.autonomous.SimpleAutoBackward;
 import org.frc.team5409.robot.commands.autonomous.SimpleAutoForward;
 import org.frc.team5409.robot.commands.shooter.*;
-//import org.frc.team5409.robot.commands.trainer.BranchTargetSetpoint;
-//import org.frc.team5409.robot.commands.trainer.FlipTargetSetpoint;
-//import org.frc.team5409.robot.commands.trainer.RequestModelUpdate;
-//import org.frc.team5409.robot.commands.trainer.SubmitSetpointData;
-//import org.frc.team5409.robot.commands.trainer.TrainerAlignTurret;
-//import org.frc.team5409.robot.commands.trainer.TrainerOperateShooter;
-//import org.frc.team5409.robot.commands.trainer.UndoTargetSetpoint;
+import org.frc.team5409.robot.commands.trainer.BranchTargetSetpoint;
+import org.frc.team5409.robot.commands.trainer.FlipTargetSetpoint;
+import org.frc.team5409.robot.commands.trainer.RequestModelUpdate;
+import org.frc.team5409.robot.commands.trainer.SubmitSetpointData;
+import org.frc.team5409.robot.commands.trainer.TrainerAlignTurret;
+import org.frc.team5409.robot.commands.trainer.TrainerOperateShooter;
+import org.frc.team5409.robot.commands.trainer.UndoTargetSetpoint;
 import org.frc.team5409.robot.subsystems.*;
 import org.frc.team5409.robot.subsystems.shooter.*;
-//import org.frc.team5409.robot.training.robot.NetworkClient;
-//import frc.robot.training.protocol.NetworkSocket;
-//import frc.robot.training.protocol.SendableContext;
-//import frc.robot.training.protocol.generic.KeyValueSendable;
-//import frc.robot.training.protocol.generic.StringSendable;
-//import frc.robot.training.protocol.generic.ValueSendable;
-//import org.frc.team5409.robot.training.robot.Range;
-//import org.frc.team5409.robot.training.robot.Setpoint;
-//import org.frc.team5409.robot.training.robot.TrainerDashboard;
-//import org.frc.team5409.robot.training.robot.TrainingContext;
+import frc.robot.training.protocol.NetworkClient;
+import frc.robot.training.protocol.NetworkSocket;
+import frc.robot.training.protocol.SendableContext;
+import frc.robot.training.protocol.generic.KeyValueSendable;
+import frc.robot.training.protocol.generic.StringSendable;
+import frc.robot.training.protocol.generic.ValueSendable;
+import org.frc.team5409.robot.training.robot.Range;
+import org.frc.team5409.robot.training.robot.Setpoint;
+import org.frc.team5409.robot.training.robot.TrainerDashboard;
+import org.frc.team5409.robot.training.robot.TrainingContext;
 import org.frc.team5409.robot.util.*;
 import org.frc.team5409.robot.util.AutoCommand.AutonomousState;
 
@@ -76,9 +76,9 @@ public class RobotContainer {
 
 	private SendableChooser<Command> auto_command;
 
-//	private TrainingContext training_context;
-//	private TrainerDashboard trainer_dashboard;
-//	private NetworkClient trainer_client;
+	private TrainingContext training_context;
+	private TrainerDashboard trainer_dashboard;
+	private NetworkClient trainer_client;
 
 	// buttons
 	private final JoystickButton but_main_A, but_main_B, but_main_X, but_main_Y, but_main_sck_left, but_main_sck_right,
@@ -182,13 +182,40 @@ public class RobotContainer {
 		//but_secondary_Y.whenPressed(new AntiTipToggle(sys_driveTrain));
 
 		but_main_bmp_left.whileHeld(new IndexerReverse(sys_indexer));
-		but_main_bmp_right.whileHeld(new IntakeIndexActive(sys_indexer, sys_intake));
+		but_main_bmp_right.whileHeld(new RunIndexer(sys_indexer, -1));
 
 		but_main_start.whenPressed(new CalibrateTurret(sys_shooter_turret));
 		
-		but_secondary_X.whenPressed(new ReverseIndexer(sys_indexer, sys_intake));
+		but_secondary_X.whenPressed(
+			new BranchTargetSetpoint(trainer_dashboard, training_context, true)
+		);
 
-		but_secondary_A.whenPressed(new IntakeIndexActive(sys_indexer, sys_intake))
+		but_secondary_B.whenPressed(
+			new BranchTargetSetpoint(trainer_dashboard, training_context, false)
+		);
+
+		but_secondary_Y.whenPressed(
+			new FlipTargetSetpoint(trainer_dashboard, training_context)
+		);
+
+		but_secondary_start.whenPressed(
+			new SubmitSetpointData(trainer_dashboard, trainer_client, training_context)
+		);
+
+		but_secondary_back.whenPressed(
+			new UndoTargetSetpoint(trainer_dashboard, training_context)
+		);
+
+		but_secondary_bmp_left.whenPressed(
+			new RequestModelUpdate(trainer_client, training_context)
+		);
+
+		but_secondary_A.whileHeld(
+			new TrainerAlignTurret(trainer_dashboard, training_context, sys_shooter_flywheel, sys_shooter_turret, sys_limelight, sys_indexer)
+		);
+
+		but_secondary_A.whenReleased(
+			new RotateTurret(sys_shooter_turret, 0)
 		);
 	}
 
@@ -267,7 +294,7 @@ public class RobotContainer {
 		return auto_command.getSelected();
 	}
 
-	/*public void configureTraining() throws IOException {
+	public void configureTraining() throws IOException {
 		SendableContext context = new SendableContext();
               context.registerSendable(ValueSendable.class);
               context.registerSendable(KeyValueSendable.class);
@@ -284,5 +311,4 @@ public class RobotContainer {
 
 		trainer_dashboard = new TrainerDashboard(training_context);
 	}
-	*/
 }
