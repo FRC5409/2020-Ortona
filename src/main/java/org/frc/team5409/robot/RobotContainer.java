@@ -23,12 +23,12 @@ import org.frc.team5409.robot.commands.trainer.TrainerOperateShooter;
 import org.frc.team5409.robot.commands.trainer.UndoTargetSetpoint;
 import org.frc.team5409.robot.subsystems.*;
 import org.frc.team5409.robot.subsystems.shooter.*;
-import frc.robot.training.protocol.NetworkClient;
-import frc.robot.training.protocol.NetworkSocket;
-import frc.robot.training.protocol.SendableContext;
-import frc.robot.training.protocol.generic.KeyValueSendable;
-import frc.robot.training.protocol.generic.StringSendable;
-import frc.robot.training.protocol.generic.ValueSendable;
+import org.frc.team5409.robot.training.protocol.NetworkClient;
+import org.frc.team5409.robot.training.protocol.NetworkSocket;
+import org.frc.team5409.robot.training.protocol.SendableContext;
+import org.frc.team5409.robot.training.protocol.generic.KeyValueSendable;
+import org.frc.team5409.robot.training.protocol.generic.StringSendable;
+import org.frc.team5409.robot.training.protocol.generic.ValueSendable;
 import org.frc.team5409.robot.training.robot.Range;
 import org.frc.team5409.robot.training.robot.Setpoint;
 import org.frc.team5409.robot.training.robot.TrainerDashboard;
@@ -157,9 +157,7 @@ public class RobotContainer {
 		but_main_A.whileActiveOnce(new TrainerOperateShooter(training_context, sys_shooter_flywheel, sys_shooter_turret, sys_limelight, sys_indexer))
 			      .whenInactive(new RotateTurret(sys_shooter_turret, 0));
 		
-		//but_main_B.whileActiveOnce();
-		but_main_X.whileHeld(new RunIntake(sys_intake, 0.5));
-		but_main_B.whileHeld(new RunIndexer(sys_indexer, -0.5));
+		but_main_B.whileActiveOnce(new ReverseIntake(sys_intake));
 
 		// but_main_A.whileActiveOnce(cmd_turret_run);
 		// but_main_A.cancelWhenPressed(cmd_IndexActive);
@@ -167,9 +165,10 @@ public class RobotContainer {
 		// Run intake while held
 		but_main_Y.whileHeld(new IntakeIndexActive(sys_indexer, sys_intake));
 
-		//but_main_X.whenPressed(new IntakeActivateSolenoids(sys_intake));
+		but_main_X.whenPressed(new IntakeActivateSolenoids(sys_intake));
 
 		// Reverse intake while held
+		but_main_B.whileHeld(new ReverseIntake(sys_intake));
 		
 		but_main_back.whenPressed(
 			new SequentialCommandGroup(	
@@ -181,8 +180,12 @@ public class RobotContainer {
 		// Toggle AntiTip
 		//but_secondary_Y.whenPressed(new AntiTipToggle(sys_driveTrain));
 
+		// Shift gear to fast
+		but_main_bmp_right.whenPressed(new FastGearShift(sys_driveTrain));
+		// Shift gear to slow
+		but_main_bmp_right.whenReleased(new SlowGearShift(sys_driveTrain));
+
 		but_main_bmp_left.whileHeld(new IndexerReverse(sys_indexer));
-		but_main_bmp_right.whileHeld(new RunIndexer(sys_indexer, -1));
 
 		but_main_start.whenPressed(new CalibrateTurret(sys_shooter_turret));
 		
