@@ -10,19 +10,16 @@ public class TrainerDashboard {
     }
 
     public void update() {
-        Setpoint target = _context.getTargetSetpoint();
-        SmartDashboard.putNumber("Setpoint Target", target.getTarget());
-        SmartDashboard.putString("Setpoint Type", target.getType().name());
-        SmartDashboard.putNumber("Setpoint Range Max", target.getRange().max());
-        SmartDashboard.putNumber("Setpoint Range Min", target.getRange().min());
+        SmartDashboard.putNumber("Setpoint Target", _context.getTargetSetpoint().getTarget());
+        SmartDashboard.putNumber("Setpoint Range Max", _context.getTargetSetpoint().getRange().max());
+        SmartDashboard.putNumber("Setpoint Range Min", _context.getTargetSetpoint().getRange().min());
+        SmartDashboard.putNumber("Estimated Distance", _context.getDistance());
 
         TrainingModel model = _context.getModel();
         SmartDashboard.putNumber("Training Model kA", model.kA);
         SmartDashboard.putNumber("Training Model kB", model.kB);
         SmartDashboard.putNumber("Training Model kC", model.kC);
         SmartDashboard.putNumber("Training Model kD", model.kD);
-        
-        SmartDashboard.putNumber("Estimated Distance", _context.getDistance());
     }
 
     public void sync() {
@@ -32,7 +29,7 @@ public class TrainerDashboard {
         if (newSetpointTarget != setpoint.getTarget()) {
             newSetpointTarget = setpoint.getRange().limit(newSetpointTarget);
             _context.setTargetSetpoint(
-                new Setpoint(setpoint.getParent(), newSetpointTarget, setpoint.getRange(), setpoint.getType())
+                new Setpoint(setpoint.getParent(), newSetpointTarget, setpoint.getRange())
             );
         }
     }
