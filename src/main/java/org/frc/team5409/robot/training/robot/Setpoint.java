@@ -8,11 +8,7 @@ public class Setpoint {
     private final Range _range;
     private final SetpointType _type;
 
-    public Setpoint(double target, Range range) {
-        this(null, target, range, SetpointType.ROOT);
-    }
-
-    protected Setpoint(double target, Range range, SetpointType type) {
+    public Setpoint(double target, Range range, SetpointType type) {
         this(null, target, range, type);
     }
 

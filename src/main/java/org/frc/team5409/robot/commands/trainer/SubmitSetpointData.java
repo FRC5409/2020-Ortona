@@ -31,8 +31,8 @@ public class SubmitSetpointData extends CommandBase {
     public void initialize() {
         KeyValueSendable payload = new KeyValueSendable();
             payload.putSendable("trainer.topic", new StringSendable("trainer.setpoint"));
-            payload.putDouble("trainer.data.speed", _context.getSetpoint().getTarget());
-            payload.putDouble("trainer.data.distance", _context.getDistance());
+            payload.putDouble("trainer.setpoint.target", _context.getSetpoint().getTarget());
+            payload.putDouble("trainer.setpoint.distance", _context.getDistance());
 
         _request = _client.submitTransactionAsync(
             new NetworkTransaction(payload)
@@ -48,10 +48,10 @@ public class SubmitSetpointData extends CommandBase {
                 StringSendable topic = (StringSendable) payload.getSendable("trainer.topic");
 
                 if (topic.getValue().equals("trainer.update-model")) {
-                    double modelA = payload.getDouble("trainer.model.parameters[0]");
-                    double modelB = payload.getDouble("trainer.model.parameters[1]");
-                    double modelC = payload.getDouble("trainer.model.parameters[2]");
-                    double modelD = payload.getDouble("trainer.model.parameters[3]");
+                    double modelA = payload.getDouble("trainer.model.kA");
+                    double modelB = payload.getDouble("trainer.model.kB");
+                    double modelC = payload.getDouble("trainer.model.kC");
+                    double modelD = payload.getDouble("trainer.model.kD");
 
                     _context.setModel(new TrainingModel(modelA, modelB, modelC, modelD));
                     _dashboard.update();

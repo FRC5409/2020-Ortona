@@ -7,31 +7,17 @@
 
 package org.frc.team5409.robot;
 
-import java.io.IOException;
-
 import org.frc.team5409.robot.commands.*;
+import org.frc.team5409.robot.commands.Hanging.ExtendHangHighSeq;
+import org.frc.team5409.robot.commands.Hanging.ExtendHangMiddleSeq;
+import org.frc.team5409.robot.commands.Hanging.ExtendHangLowSeq;
+import org.frc.team5409.robot.commands.Hanging.RetractHang;
 import org.frc.team5409.robot.commands.autonomous.ComplexAuto;
 import org.frc.team5409.robot.commands.autonomous.SimpleAutoBackward;
 import org.frc.team5409.robot.commands.autonomous.SimpleAutoForward;
 import org.frc.team5409.robot.commands.shooter.*;
-import org.frc.team5409.robot.commands.trainer.BranchTargetSetpoint;
-import org.frc.team5409.robot.commands.trainer.RequestModelUpdate;
-import org.frc.team5409.robot.commands.trainer.SubmitSetpointData;
-import org.frc.team5409.robot.commands.trainer.TrainerAlignTurret;
-import org.frc.team5409.robot.commands.trainer.TrainerOperateShooter;
-import org.frc.team5409.robot.commands.trainer.UndoTargetSetpoint;
 import org.frc.team5409.robot.subsystems.*;
 import org.frc.team5409.robot.subsystems.shooter.*;
-import org.frc.team5409.robot.training.protocol.NetworkClient;
-import org.frc.team5409.robot.training.protocol.NetworkSocket;
-import org.frc.team5409.robot.training.protocol.SendableContext;
-import org.frc.team5409.robot.training.protocol.generic.KeyValueSendable;
-import org.frc.team5409.robot.training.protocol.generic.StringSendable;
-import org.frc.team5409.robot.training.protocol.generic.ValueSendable;
-import org.frc.team5409.robot.training.robot.Range;
-import org.frc.team5409.robot.training.robot.Setpoint;
-import org.frc.team5409.robot.training.robot.TrainerDashboard;
-import org.frc.team5409.robot.training.robot.TrainingContext;
 import org.frc.team5409.robot.util.*;
 import org.frc.team5409.robot.util.AutoCommand.AutonomousState;
 
@@ -75,10 +61,6 @@ public class RobotContainer {
 
 	private SendableChooser<Command> auto_command;
 
-	private TrainingContext training_context;
-	private TrainerDashboard trainer_dashboard;
-	private NetworkClient trainer_client;
-
 	// buttons
 	private final JoystickButton but_main_A, but_main_B, but_main_X, but_main_Y, but_main_sck_left, but_main_sck_right,
 			but_main_bmp_left, but_main_bmp_right, but_main_start, but_main_back;
@@ -100,6 +82,7 @@ public class RobotContainer {
 		sys_hang = new Hanging();
 
 		cmd_drive = new DriveCommand(sys_driveTrain, joy_main);
+		// cmd_DriveStraightAuto = new DriveStraightAuto(sys_driveTrain);
 
 		sys_shooter_turret = new ShooterTurret();
 		sys_shooter_flywheel = new ShooterFlywheel();
@@ -115,7 +98,15 @@ public class RobotContainer {
 		cmd_IntakeActivateSolenoids = new IntakeActivateSolenoids(sys_intake);
 		//cmd_ReverseIntake = new ReverseIntake(sys_intake);
 
+		// Keith's stuff
+		// subsys_shooter_flywheel = new ShooterFlywheel();
+		// subsys_shooter_turret = new ShooterTurret();
+
 		cmd_IntakeIndexActive = new IntakeIndexActive(sys_indexer, sys_intake);
+
+		// grp_configure_turret = new SequentialCommandGroup(new
+		// CalibrateShooter(subsys_shooter_turret, subsys_shooter_flywheel),
+		// new RotateTurret(subsys_shooter_turret, 0));
 
 		// Buttons
 		but_main_A = new JoystickButton(joy_main, XboxController.Button.kA.value);
@@ -140,24 +131,33 @@ public class RobotContainer {
 		but_secondary_start = new JoystickButton(joy_secondary, XboxController.Button.kStart.value);
 		but_secondary_back = new JoystickButton(joy_secondary, XboxController.Button.kBack.value);
 
+		// configureBindings();
+
 		sys_driveTrain.setDefaultCommand(new DriveCommand(sys_driveTrain, joy_main));
 
-		try {
-			configureTraining();
-		} catch (IOException e) {
-			throw new RuntimeException();
-		}
+		/*
+		 * sys_indexer.setDefaultCommand(new IntakeIndexActive(sys_indexer,
+		 * subsys_intake)); but_main_A.whenPressed( new SequentialCommandGroup( new
+		 * CalibrateShooter(sys_shooter_turret, sys_shooter_flywheel), new
+		 * RotateTurret(sys_shooter_turret, 0) ) );
+		 */
 
+		// but_main_Y.whileActiveOnce(new SmoothSweep(sys_shooter_turret,
+		// sys_shooter_flywheel));
+		but_main_A
+				.whileActiveOnce(new DriveByShooter(sys_shooter_flywheel, sys_shooter_turret, sys_limelight, sys_indexer, sys_driveTrain), false)
+				.whenInactive(new RotateTurret(sys_shooter_turret, 0));
+		// sys_shooter_flywheel.setDefaultCommand(new
+		// RunShooterFlywheel(sys_shooter_flywheel, sys_indexer, sys_limelight,
+		// joy_main, joy_secondary));
+		but_main_B.whileActiveOnce(new ReverseIntake(sys_intake));
+		// sys_indexer.setDefaultCommand(new IntakeIndexActive(sys_indexer,
+		// subsys_intake));
 		configureBindings();
 		configureDashboard();
 	}
 
 	private void configureBindings() {
-		but_main_A.whileActiveOnce(new TrainerOperateShooter(training_context, sys_shooter_flywheel, sys_shooter_turret, sys_limelight, sys_indexer))
-			      .whenInactive(new RotateTurret(sys_shooter_turret, 0));
-		
-		but_main_B.whileActiveOnce(new ReverseIntake(sys_intake));
-
 		// but_main_A.whileActiveOnce(cmd_turret_run);
 		// but_main_A.cancelWhenPressed(cmd_IndexActive);
 
@@ -168,8 +168,6 @@ public class RobotContainer {
 
 		// Reverse intake while held
 		but_main_B.whileHeld(new ReverseIntake(sys_intake));
-		
-		but_main_back.whenPressed(new CalibrateTurret(sys_shooter_turret));
 
 		// Toggle AntiTip
 		//but_secondary_Y.whenPressed(new AntiTipToggle(sys_driveTrain));
@@ -181,31 +179,22 @@ public class RobotContainer {
 
 		but_main_bmp_left.whileHeld(new IndexerReverse(sys_indexer));
 
-		but_main_start.whenPressed(new CalibrateTurret(sys_shooter_turret));
+		// climb
+
+		but_secondary_back.whileHeld(new RetractHang(sys_hang));
+		but_secondary_Y.whenPressed(new ExtendHangHighSeq(sys_hang));
+		but_secondary_B.whenPressed(new ExtendHangMiddleSeq(sys_hang));
+		but_secondary_A.whenPressed(new ExtendHangLowSeq(sys_hang));
+
 		
-		but_secondary_X.whenPressed(
-			new BranchTargetSetpoint(trainer_dashboard, training_context, true)
-		);
+		//but_main_back.whileHeld(new RetractHang(sys_hang));
+		//but_main_start.whenPressed(new ExtendHangHigh(sys_hang));
+		but_main_start.whenPressed(new CalibrateTurret(sys_shooter_turret));
 
-		but_secondary_Y.whenPressed(
-			new BranchTargetSetpoint(trainer_dashboard, training_context, false)
-		);
+		but_secondary_bmp_right.whenPressed(new OffsetFlywheel(sys_shooter_flywheel, true));
+		but_secondary_bmp_left.whenPressed(new OffsetFlywheel(sys_shooter_flywheel, false));
 
-		but_secondary_start.whenPressed(
-			new SubmitSetpointData(trainer_dashboard, trainer_client, training_context)
-		);
-
-		but_secondary_back.whenPressed(
-			new UndoTargetSetpoint(trainer_dashboard, training_context)
-		);
-
-		but_secondary_Y.whenPressed(
-			new RequestModelUpdate(trainer_client, training_context)
-		);
-
-		but_secondary_A.whenPressed(
-			new TrainerAlignTurret(training_context, trainer_dashboard, sys_shooter_turret, sys_limelight)
-		);
+		but_secondary_X.whenPressed(new ResetFlywheelOffset(sys_shooter_flywheel));
 	}
 
 	public void configureDashboard() {
@@ -277,26 +266,66 @@ public class RobotContainer {
 				intake_info.addBoolean("Intake Jammed", sys_intake::isIntakeJammed);
 	}
 
+	  /**
+   * Use this to pass the autonomous command to the main {@link Robot} class.
+   *
+   * @return the command to run in autonomous
+   */
+//   public Command getAutonomousCommand() {
+
+//     // Create a voltage constraint to ensure we don't accelerate too fast
+//     final var autoVoltageConstraint = new DifferentialDriveVoltageConstraint(
+//         new SimpleMotorFeedforward(Constants.Trajectory.ksVolts, Constants.Trajectory.kvVoltSecondsPerMeter,
+//             Constants.Trajectory.kaVoltSecondsSquaredPerMeter),
+//         Constants.Trajectory.kDriveKinematics, 10);
+
+//     // Create config for trajectory
+//     final TrajectoryConfig config = new TrajectoryConfig(Constants.Trajectory.kMaxSpeedMetersPerSecond,
+//         Constants.Trajectory.kMaxAccelerationMetersPerSecondSquare)
+//';'
+//             // Add kinematics to ensure max speed is actually obeyed
+//             .setKinematics(Constants.Trajectory.kDriveKinematics)
+
+//             // Apply the voltage constraint
+//             .addConstraint(autoVoltageConstraint);
+
+//     // An example trajectory to follow. All units in meters.
+//     final Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
+
+//         // Start at the origin facing the +X direction
+//         new Pose2d(0, 0, new Rotation2d(0)),
+
+//         // Pass through these two interior waypoints, making an 's' curve path
+//         List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
+
+//         // End 3 meters straight ahead of where we started, facing forward
+//         new Pose2d(3, 0, new Rotation2d(0)),
+
+//         // Pass config
+//         config);
+
+//     final RamseteCommand ramseteCommand = new RamseteCommand( 
+
+//         trajectory, subsys_driveTrain::getPose, new RamseteController(Constants.Trajectory.kRamseteB, Constants.Trajectory.kRamseteZeta),
+
+//         new SimpleMotorFeedforward(Constants.Trajectory.ksVolts, Constants.Trajectory.kvVoltSecondsPerMeter,
+
+//             Constants.Trajectory.kaVoltSecondsSquaredPerMeter),
+
+//         Constants.Trajectory.kDriveKinematics, subsys_driveTrain::getWheelSpeeds, new PIDController(Constants.Trajectory.kPDriveVel, 0, 0),
+
+//         new PIDController(Constants.Trajectory.kPDriveVel, 0, 0),
+
+//         // RamseteCommand passes volts to the callback
+//         subsys_driveTrain::tankDriveVolts, subsys_driveTrain);
+
+//     // Run path following command, then stop at the end.
+//     return ramseteCommand.andThen(() -> subsys_driveTrain.tankDriveVolts(0, 0));
+//   }
+
 	public Command getAutonomousCommand() {
 		//return new ShootAuto(sys_shooter_flywheel, sys_shooter_turret, sys_limelight, sys_indexer, sys_driveTrain, sys_intake);
 		//return new shootAuto();
 		return auto_command.getSelected();
-	}
-
-	public void configureTraining() throws IOException {
-		SendableContext context = new SendableContext();
-              context.registerSendable(ValueSendable.class);
-              context.registerSendable(KeyValueSendable.class);
-              context.registerSendable(StringSendable.class);
-			  
-		NetworkSocket socket = NetworkSocket.create();
-
-		trainer_client = new NetworkClient(socket, context);
-
-		training_context = new TrainingContext(
-			new Setpoint(1000, new Range(0, 6000))
-		);
-
-		trainer_dashboard = new TrainerDashboard(training_context);
 	}
 }
