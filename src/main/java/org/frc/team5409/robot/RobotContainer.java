@@ -89,15 +89,16 @@ public class RobotContainer {
 
 		sys_limelight = new Limelight();
 
-		// Liz's stuff
-		sys_indexer = new Indexer();
-		cmd_IndexerReverse = new IndexerReverse(sys_indexer);
+
 
 		// Sanad's stuff
 		sys_intake = new Intake();
 		cmd_IntakeActivateSolenoids = new IntakeActivateSolenoids(sys_intake);
 		//cmd_ReverseIntake = new ReverseIntake(sys_intake);
 
+		// Liz's stuff
+		sys_indexer = new Indexer();
+		cmd_IndexerReverse = new IndexerReverse(sys_indexer, sys_intake);
 		// Keith's stuff
 		// subsys_shooter_flywheel = new ShooterFlywheel();
 		// subsys_shooter_turret = new ShooterTurret();
