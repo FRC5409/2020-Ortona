@@ -90,7 +90,6 @@ public class RobotContainer {
 		sys_limelight = new Limelight();
 
 
-
 		// Sanad's stuff
 		sys_intake = new Intake();
 		cmd_IntakeActivateSolenoids = new IntakeActivateSolenoids(sys_intake);
@@ -99,6 +98,7 @@ public class RobotContainer {
 		// Liz's stuff
 		sys_indexer = new Indexer();
 		cmd_IndexerReverse = new IndexerReverse(sys_indexer, sys_intake);
+
 		// Keith's stuff
 		// subsys_shooter_flywheel = new ShooterFlywheel();
 		// subsys_shooter_turret = new ShooterTurret();
@@ -178,7 +178,8 @@ public class RobotContainer {
 		// Shift gear to slow
 		but_main_bmp_right.whenReleased(new SlowGearShift(sys_driveTrain));
 
-		but_main_bmp_left.whileHeld(new IndexerReverse(sys_indexer, sys_intake));
+		but_main_bmp_left.whileHeld(new IndexerReverse(sys_indexer, sys_intake))
+                         .whenReleased(new IntakeActivateSolenoids(sys_intake));
 
 		// climb
 
@@ -188,7 +189,8 @@ public class RobotContainer {
 
 
 		but_secondary_A.whileHeld(new IntakeIndexActive(sys_indexer, sys_intake));
-		but_secondary_X.whileHeld(new IndexerReverse(sys_indexer, sys_intake));
+		but_secondary_X.whileHeld(new IndexerReverse(sys_indexer, sys_intake))
+                       .whenReleased(new IntakeActivateSolenoids(sys_intake));
 		
 		//but_main_back.whileHeld(new RetractHang(sys_hang));
 		//but_main_start.whenPressed(new ExtendHangHigh(sys_hang));
