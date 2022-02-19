@@ -10,7 +10,6 @@ package org.frc.team5409.robot;
 import org.frc.team5409.robot.commands.*;
 import org.frc.team5409.robot.commands.Hanging.ExtendHangHighSeq;
 import org.frc.team5409.robot.commands.Hanging.ExtendHangMiddleSeq;
-import org.frc.team5409.robot.commands.Hanging.ExtendHangLowSeq;
 import org.frc.team5409.robot.commands.Hanging.RetractHang;
 import org.frc.team5409.robot.commands.autonomous.ComplexAuto;
 import org.frc.team5409.robot.commands.autonomous.SimpleAutoBackward;
