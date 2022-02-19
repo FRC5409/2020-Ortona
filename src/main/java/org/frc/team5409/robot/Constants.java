@@ -200,7 +200,7 @@ public final class Constants {
 
     public static class DriveTrain{
 
-        public static final IdleMode idle = IdleMode.kCoast;
+        public static final IdleMode idle = IdleMode.kBrake;
 
         public static final double loopRampRate= 0;
 
@@ -249,6 +249,8 @@ public final class Constants {
         public static final double neo_encoder_position = 18.0;
 
         public static final double distanceCalculate = (Math.PI*kWheelDiameterMeters) / gearRatio;
+
+        public static final double turnOffset = 0.25;
     }
     public static class Hanging{
 

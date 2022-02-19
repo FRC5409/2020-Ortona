@@ -10,7 +10,6 @@ package org.frc.team5409.robot;
 import org.frc.team5409.robot.commands.*;
 import org.frc.team5409.robot.commands.Hanging.ExtendHangHighSeq;
 import org.frc.team5409.robot.commands.Hanging.ExtendHangMiddleSeq;
-import org.frc.team5409.robot.commands.Hanging.ExtendHangLowSeq;
 import org.frc.team5409.robot.commands.Hanging.RetractHang;
 import org.frc.team5409.robot.commands.autonomous.ComplexAuto;
 import org.frc.team5409.robot.commands.autonomous.SimpleAutoBackward;
@@ -49,6 +48,7 @@ public class RobotContainer {
 	public DriveStraightAuto cmd_DriveStraightAuto;
 	public final IndexerReverse cmd_IndexerReverse;
 	private final IntakeActivateSolenoids cmd_IntakeActivateSolenoids;
+	//private final ReverseIntake cmd_ReverseIntake;
 
 	// joystick controllers
 	private final XboxController joy_main, joy_secondary;
@@ -88,13 +88,15 @@ public class RobotContainer {
 
 		sys_limelight = new Limelight();
 
-		// Liz's stuff
-		sys_indexer = new Indexer();
-		cmd_IndexerReverse = new IndexerReverse(sys_indexer);
 
 		// Sanad's stuff
 		sys_intake = new Intake();
 		cmd_IntakeActivateSolenoids = new IntakeActivateSolenoids(sys_intake);
+		//cmd_ReverseIntake = new ReverseIntake(sys_intake);
+
+		// Liz's stuff
+		sys_indexer = new Indexer();
+		cmd_IndexerReverse = new IndexerReverse(sys_indexer, sys_intake);
 
 		// Keith's stuff
 		// subsys_shooter_flywheel = new ShooterFlywheel();
@@ -175,15 +177,19 @@ public class RobotContainer {
 		// Shift gear to slow
 		but_main_bmp_right.whenReleased(new SlowGearShift(sys_driveTrain));
 
-		but_main_bmp_left.whileHeld(new IndexerReverse(sys_indexer));
+		but_main_bmp_left.whileHeld(new IndexerReverse(sys_indexer, sys_intake))
+                         .whenReleased(new IntakeActivateSolenoids(sys_intake));
 
 		// climb
 
 		but_secondary_back.whileHeld(new RetractHang(sys_hang));
 		but_secondary_Y.whenPressed(new ExtendHangHighSeq(sys_hang));
 		but_secondary_B.whenPressed(new ExtendHangMiddleSeq(sys_hang));
-		but_secondary_A.whenPressed(new ExtendHangLowSeq(sys_hang));
 
+
+		but_secondary_A.whileHeld(new IntakeIndexActive(sys_indexer, sys_intake));
+		but_secondary_X.whileHeld(new IndexerReverse(sys_indexer, sys_intake))
+                       .whenReleased(new IntakeActivateSolenoids(sys_intake));
 		
 		//but_main_back.whileHeld(new RetractHang(sys_hang));
 		//but_main_start.whenPressed(new ExtendHangHigh(sys_hang));
@@ -192,7 +198,7 @@ public class RobotContainer {
 		but_secondary_bmp_right.whenPressed(new OffsetFlywheel(sys_shooter_flywheel, true));
 		but_secondary_bmp_left.whenPressed(new OffsetFlywheel(sys_shooter_flywheel, false));
 
-		but_secondary_X.whenPressed(new ResetFlywheelOffset(sys_shooter_flywheel));
+
 	}
 
 	public void configureDashboard() {
