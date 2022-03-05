@@ -22,7 +22,7 @@ public class MoveToDistance extends CommandBase {
     public MoveToDistance(DriveTrain _drive, double _setpoint){
         drive = _drive;
         setpoint = _setpoint;
-        useSmartDashboard = true;
+        useSmartDashboard = false;
     }
 
     @Override

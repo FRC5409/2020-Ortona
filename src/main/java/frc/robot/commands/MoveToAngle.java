@@ -1,6 +1,5 @@
 package frc.robot.commands;
 
-import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.revrobotics.CANSparkMax.ControlType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -16,8 +15,7 @@ public class MoveToAngle extends CommandBase {
 
     public MoveToAngle(DriveTrain _drive){
         drive = _drive;
-        setpoint = 0; // calculate distance
-        useSmartDashboard = true;
+        setpoint = 0; // calculate distance                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             useSmartDashboard = true;
     }
 
     public MoveToAngle(DriveTrain _drive, double _setpoint){

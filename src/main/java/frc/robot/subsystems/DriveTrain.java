@@ -53,6 +53,7 @@ public class DriveTrain extends SubsystemBase{
         mot_leftFrontDrive.restoreFactoryDefaults();
         mot_leftFrontDrive.setSmartCurrentLimit(60);
         mot_leftFrontDrive.setInverted(true);
+        mot_leftFrontDrive.setOpenLoopRampRate(kDriveTrain.rateLimit);
 
         mot_leftFrontDrive.burnFlash();
 
@@ -60,6 +61,7 @@ public class DriveTrain extends SubsystemBase{
         mot_leftRearDrive.restoreFactoryDefaults();
         mot_leftRearDrive.setSmartCurrentLimit(60);
         mot_leftRearDrive.follow(mot_leftFrontDrive);
+        mot_leftRearDrive.setOpenLoopRampRate(kDriveTrain.rateLimit);
         
         mot_leftRearDrive.setInverted(true);
         mot_leftRearDrive.burnFlash();
@@ -67,6 +69,7 @@ public class DriveTrain extends SubsystemBase{
         mot_rightFrontDrive = new CANSparkMax(kDriveTrain.CANRightDriveFront, MotorType.kBrushless);
         mot_rightFrontDrive.restoreFactoryDefaults();
         mot_rightFrontDrive.setSmartCurrentLimit(60);
+        mot_rightFrontDrive.setOpenLoopRampRate(kDriveTrain.rateLimit);
         //mot_rightFrontDrive.setInverted(true);
         
         mot_rightFrontDrive.burnFlash();
@@ -74,6 +77,7 @@ public class DriveTrain extends SubsystemBase{
         mot_rightRearDrive = new CANSparkMax(kDriveTrain.CANRightDriveBack, MotorType.kBrushless);
         mot_rightRearDrive.restoreFactoryDefaults();
         mot_rightRearDrive.setSmartCurrentLimit(60);
+        mot_rightRearDrive.setOpenLoopRampRate(kDriveTrain.rateLimit);
 
         mot_rightRearDrive.follow(mot_rightFrontDrive);
         mot_rightRearDrive.burnFlash();
@@ -101,12 +105,14 @@ public class DriveTrain extends SubsystemBase{
      */
     public void periodic() {
         displayTemperatures();
+        displayDriveMode();
+        
+        displayEncoder();
     }
 
     @Override
     public void simulationPeriodic() {
-        displayEncoder();
-        displayDriveMode();
+        
     }
 
     // -------------------------- Utilities -------------------------- //
@@ -194,7 +200,7 @@ public class DriveTrain extends SubsystemBase{
      *      REPEAT
      */
     public void cycleDriveMode(){
-        System.out.println("Cycling drive mode");
+        //System.out.println("Cycling drive mode");
         switch(driveMode){
             case kDriveTrain.AADIL_DRIVE:
                 driveMode = kDriveTrain.TANK_DRIVE;
@@ -274,6 +280,7 @@ public class DriveTrain extends SubsystemBase{
     }
 
     public void setControlMode(double setpoint, ControlType mode){
+        System.out.println(setpoint);
         pid_leftFront.setReference(setpoint, mode);
         pid_leftBack.setReference(setpoint, mode);
         pid_rightFront.setReference(setpoint, mode);

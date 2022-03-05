@@ -41,9 +41,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class RobotContainer {
 
   // The robot's subsystems and commands are defined here...
-  private final IntakeIndexer m_intakeindexer = new IntakeIndexer();
+  //private final IntakeIndexer m_intakeindexer = new IntakeIndexer();
 
-  private final IntakeIndexerCommands m_autoCommand = new IntakeIndexerCommands(m_intakeindexer);
+  //private final IntakeIndexerCommands m_autoCommand = new IntakeIndexerCommands(m_intakeindexer);
 
   // Define main joystick
   private final XboxController joystick_main; // = new XboxController(0);
@@ -53,7 +53,7 @@ public class RobotContainer {
       
   // Subsystems defined
   private final DriveTrain DriveTrain;
-  private final Pigeon Pigeon;
+  //private final Pigeon Pigeon;
 
   // Commands defined
   //private final ExampleCommand m_autoCommand;
@@ -79,10 +79,10 @@ public class RobotContainer {
 
      // Initialize sub systems
      DriveTrain = new DriveTrain();
-     Pigeon = new Pigeon();
+     //Pigeon = new Pigeon();
 
      // Init commands
-     defaultDrive = new DefaultDrive(DriveTrain, Pigeon, joystick_main);
+     defaultDrive = new DefaultDrive(DriveTrain, joystick_main);
 
  
     // Configure the button bindings
@@ -112,8 +112,8 @@ public class RobotContainer {
     but_main_RBumper.whenPressed(new FastGear(DriveTrain));
     but_main_RBumper.whenReleased( new SlowGear(DriveTrain));
 
-    but_main_A.toggleWhenPressed( new MoveToDistance(DriveTrain, 10));
-    but_main_B.toggleWhenPressed( new MoveToAngle(DriveTrain, 90));
+    //but_main_A.toggleWhenPressed( new MoveToDistance(DriveTrain, 10));
+    //but_main_B.toggleWhenPressed( new MoveToAngle(DriveTrain, 90));
   }
 
   /**

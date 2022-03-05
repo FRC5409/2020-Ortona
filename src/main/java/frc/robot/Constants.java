@@ -91,6 +91,12 @@ public final class Constants {
 
         public static final double wheelSeparation = 1;
 
+        // Temperature reading
+        public static final double tempWarningLimit = 0;
+
+        // Time in secondes from 0 to full throttle 
+        public static final double rateLimit = 0.5;
+
     }
 
     public final class kGyroSystem{

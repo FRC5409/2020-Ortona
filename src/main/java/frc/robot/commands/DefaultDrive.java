@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 public class DefaultDrive extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final DriveTrain drive;
-  private final Pigeon pigeon;
+  //private final Pigeon pigeon;
   private final XboxController joystick;
 
   /**
@@ -24,9 +24,9 @@ public class DefaultDrive extends CommandBase {
    * @param subsystem The subsystem used by this command.
    * @param joystick The input device used by this command.
    */
-  public DefaultDrive(DriveTrain _drive, Pigeon _pigeon, XboxController _joystick) {
+  public DefaultDrive(DriveTrain _drive, XboxController _joystick) {
     drive = _drive;
-    pigeon = _pigeon;
+    //pigeon = _pigeon;
     joystick = _joystick;
 
     // Use addRequirements() here to declare subsystem dependencies.
@@ -60,17 +60,18 @@ public class DefaultDrive extends CommandBase {
   private void aadilDriveExecute(){
     double leftTrigger = joystick.getLeftTriggerAxis();
     double rightTrigger = joystick.getRightTriggerAxis();
-    double lxAxis = joystick.getLeftX() * -1;
+    double lxAxis = joystick.getLeftX();
 
-    double pitch = 90/pigeon.Pitch();
-    double roll  = 90/pigeon.Roll(); // might need to transform roll depending on where 0 is
+    //double pitch = 90/pigeon.Pitch();
+    //double roll  = 90/pigeon.Roll(); // might need to transform roll depending on where 0 is
 
-    double pitchCompensation = drive.getAntiTip() ? pitch*kDriveTrain.pitchCompensation : 0;
-    double rollCompensation = drive.getAntiTip() && (leftTrigger != 0) && (rightTrigger != 0)? roll * kDriveTrain.rollCompensation : 0;
+    //double pitchCompensation = drive.getAntiTip() ? pitch*kDriveTrain.pitchCompensation : 0;
+    //double rollCompensation = drive.getAntiTip() && (leftTrigger != 0) && (rightTrigger != 0)? roll * kDriveTrain.rollCompensation : 0;
 
-    drive.aadilDrive(Math.max(rightTrigger - pitchCompensation - rollCompensation, 0), 
-                     Math.max(leftTrigger + pitchCompensation + rollCompensation, 0), 
-                     lxAxis);
+    //drive.aadilDrive(Math.max(rightTrigger - pitchCompensation - rollCompensation, 0), 
+    //                 Math.max(leftTrigger + pitchCompensation + rollCompensation, 0), 
+    //                 lxAxis);
+    drive.aadilDrive(rightTrigger, leftTrigger, lxAxis);
   }
 
   /**
